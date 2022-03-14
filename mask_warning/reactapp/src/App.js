@@ -1,17 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
-import { Routes, Route, Link } from "react-router-dom";
-import HomePage from "./pages/Home";
-import LoginPage from "./pages/Login";
-
+import "./App.css"
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import ScreensRoot from "./screens/root";
+import GlobalStyle from "./components/GlobalStyle";
+//hello
 function App() {
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<HomePage />}></Route>
-        <Route path="/login" element={<LoginPage />}></Route>
-      </Routes>
-    </div>
+    <GlobalStyle>
+      <BrowserRouter> 
+        <ScreensRoot />
+      </BrowserRouter>
+    </GlobalStyle>
   );
 }
 

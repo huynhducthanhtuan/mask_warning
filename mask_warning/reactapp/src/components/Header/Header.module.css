@@ -1,0 +1,51 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.headerNavigation {
+    display: flex;
+    justify-content: center;
+    color: none;
+    background-color: unset;
+    width: 1015px;
+    height: unset;
+    line-height: 18px;
+    -webkit-box-shadow: none;
+}
+
+.headerNavigation a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 25px;
+}
+
+.headerNavigation a img{
+    padding-right: 5px;
+    
+}
+
+.headerLogin {
+    padding: 10px;
+    width: 140px;
+}
+
+.headerLogin a{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+.headerLogin img{
+    padding-right: 5px;
+}
+
+p {
+    color: black;
+    font-size: 18px; 
+    margin-top: none;  
+    margin-bottom: unset; 
+    margin: unset;
+}

@@ -1,0 +1,26 @@
+.headerString{
+    padding: 20px;
+    color: #3751FE;
+    font-weight: 700;
+}  
+
+.headerGuide{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.contentString{
+    text-align: center;
+}
+
+.item{
+    padding-left: 200px;
+}
+
+.image{
+    
+    width: 350px;
+    height: 230px;
+}
