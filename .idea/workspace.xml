@@ -6,15 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5b32a4a4-88e5-4d83-9c60-1213aa5c6e9c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mask_warning/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mask_warning/mask_warning/asgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mask_warning/mask_warning/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/mask_warning/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mask_warning/mask_warning/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/mask_warning/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mask_warning/mask_warning/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Header/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Header/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
