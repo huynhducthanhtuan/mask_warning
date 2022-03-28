@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "./Home.module.css";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -17,6 +17,22 @@ const Home = () => {
         slidesToShow: 1,
         slidesToScroll: 1
     };
+
+    // Test to fetch datas from BE's API
+    useEffect(() => {
+        fetch("signin", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+            .then(res => res.json())
+            .then(datas => console.log(datas))
+            .catch((err) => {
+                console.log(err);
+            })
+    }, [])
+
     return (
         <body>
             <section className={`container_fluid ${styles.home}`}>
