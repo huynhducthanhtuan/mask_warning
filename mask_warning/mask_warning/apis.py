@@ -1,51 +1,84 @@
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth import authenticate, login
+import json
+import os
 import firebase_admin
 from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1.field_path import FieldPath
+# path = os.getcwd()
+
 # import datetime
 # import string
 # import random
 # import pytz
 # from proto.datetime_helpers import DatetimeWithNanoseconds
 
-# initialize_app use a service account
-cred = credentials.Certificate(r'C:\Users\asus\PycharmProjects\mask_warning\mask_warning\mask_warning\mask-warning-787c4c69708d.json')
+# init app use a service account
+cred = credentials.Certificate(r'C:\Users\asus\Desktop\NCKH\6. CODE\mask_warning\mask_warning\mask_warning\mask-warning-787c4c69708d.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# [READ] data
+
 def Home(request):
-    result = {
+    return JsonResponse({"page": "home"})
 
-    }
-    return JsonResponse(result)
 
+# --> OK, cần xử lí thêm JWT
+@require_http_methods(["POST"])
+@csrf_exempt
 def Signin(request):
-    result = {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjMzNjBhODUyMTlhMTljN2UyZjA2NDciLCJpYXQiOjE2NDg0NDUxMDd9.ySlGukTpYBTaVOquCgGrlgqUD_GnZqfUBYFfSWEpFbQ",
-        "user": {
-            "_id": "623360a85219a19c7e2f0647",
-            "email": "kante@gmail.com",
-            "name": "Kante"
-        }
-    }
-    return JsonResponse(result)
+    if request.method == 'POST':
+        # Lấy và convert dữ liệu từ request.body
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userName = body_data["userName"]
+        password = body_data["password"]
+
+        # Lấy thông tin _id và fullName của user
+        _id = ""
+        fullName = ""
+        docs = db.collection(f"users").where(u"userName", u"==", f"{userName}").stream()
+        for doc in docs:
+            _id = doc.id
+            fullName = doc.to_dict().get("fullName")
+
+        # Neu userName ko ton tai
+        if (_id == ""):
+            return JsonResponse({"error": "User not found."})
+        else:
+            check = False
+            docs_2 = db.collection(f"users").where(u"userName", u"==", f"{userName}").where(u"password", u"==", f"{password}").stream()
+            for doc in docs_2:
+                check = True if (doc.id != "") else False
+
+            if (check == False):
+                return JsonResponse({"error": "Email and password doesn't match."})
+            else:
+                return JsonResponse({
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjMzNjBhODUyMTlhMTljN2UyZjA2NDciLCJpYXQiOjE2NDg0NDUxMDd9.ySlGukTpYBTaVOquCgGrlgqUD_GnZqfUBYFfSWEpFbQ",
+                    "user": {
+                        "_id": _id,
+                        "userName": userName,
+                        "fullName": fullName
+                    }
+                })
+
+
 
 # --> OK
-def Profile(request, role, userId):
-    # test_userId: 6iNhPp5x1UFYhlUJ8WSA
-    # test_adminId: JDCfs6ZdljJLsUIwnQpZ
-
-    users_ref = db.collection(f"{role}s")
-    filter = [db.document(f'{role}s/{userId}')]
-
-    docs = users_ref.where(FieldPath.document_id(), u'in', filter).get()
+def Profile(request, userId):
+    filter = [db.document(f'users/{userId}')]
+    docs = db.collection(f"users").where(FieldPath.document_id(), u'in', filter).get()
     result = {}
+
     for doc in docs:
         result = doc.to_dict()
     return JsonResponse(result)
 
 
+# (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
 # [ADD] data
 # arr = [
 #     { "date": [2021,12,31], "totalGuest": 100000000000, "totalUnmaskGuest": 37, "onlineHours": 10, "userId": "9ijj7GXUcyKia6uc1UOq" },

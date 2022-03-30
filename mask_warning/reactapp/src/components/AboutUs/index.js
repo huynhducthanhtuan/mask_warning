@@ -9,7 +9,6 @@ import Slider from "react-slick";
 
 const AboutUs = () =>{
     var settings = {
-        dots: true,
         infinite: true,
         autoplay: true,
         speed: 500,

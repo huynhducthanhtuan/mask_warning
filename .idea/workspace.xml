@@ -5,7 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b32a4a4-88e5-4d83-9c60-1213aa5c6e9c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/mask_warning/apis.py" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/mask_warning/apis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/mask_warning/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/mask_warning/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/mask_warning/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/mask_warning/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/AboutUs/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/AboutUs/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Footer/Footer.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Footer/Footer.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Forgot password copy/ForgotPassword.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Forgot password copy/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Forgot password/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Forgot password/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Header/Header.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Header/Header.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Header/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Header/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/Home.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/Home.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/sliderDot.css" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/sliderDot.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Signin/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Signin/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/screens/root.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/screens/root.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +50,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../maskWarning" />
+    <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/learnPython" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">

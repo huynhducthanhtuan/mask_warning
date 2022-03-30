@@ -1,0 +1,15 @@
+.activeCamera {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.activeCamera img {
+    width: 90%;
+}
+
+.speaker
+{
+    text-align: center;
+    padding-left: 15px;
+}

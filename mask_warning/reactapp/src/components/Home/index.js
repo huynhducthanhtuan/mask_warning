@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import styles from "./Home.module.css";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -12,27 +12,11 @@ const Home = () => {
     var settings = {
         dots: true,
         infinite: true,
-        speed: 200,
+        speed: 500,
         autoplay: false,
         slidesToShow: 1,
         slidesToScroll: 1
     };
-
-    // Test to fetch datas from BE's API
-    useEffect(() => {
-        fetch("signin", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        })
-            .then(res => res.json())
-            .then(datas => console.log(datas))
-            .catch((err) => {
-                console.log(err);
-            })
-    }, [])
-
     return (
         <body>
             <section className={`container_fluid ${styles.home}`}>
@@ -166,11 +150,9 @@ const Home = () => {
                         <img src="./icons/line.png"></img>
                         <p>In this page. In the progress, If you have any problem. Please contact with developer team. Click View more to report this defect what you met.</p>
                     </div>
-                    <Link to="#">
-                        <div className={styles.homeButton}>
-                            <p>View more</p>
-                        </div>
-                    </Link>
+                    <div className={styles.homeButton}>
+                        <Link to="/about-us"><p>View more</p></Link>
+                    </div>
                 </div>
             </section>
             <Footer />

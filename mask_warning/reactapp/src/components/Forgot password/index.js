@@ -8,7 +8,7 @@ const ForgotPassword = () => {
             <h1 className={`${styles.headerString} d-flex`}>Forgot Password</h1>
 
             <form className={styles.form}>
-                <h2 className={styles.formHeader}>Reset your password</h2>
+                <h3 className={styles.formHeader}>Reset your password</h3>
                 <img src="./icons/Line.png" className={styles.line}></img>
                 <div >
                     <label className={styles.formString}>Please enter your email to reset your account</label>
