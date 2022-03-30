@@ -2,12 +2,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
-import json
-import os
-import firebase_admin
+import firebase_admin, json, os
 from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1.field_path import FieldPath
-# path = os.getcwd()
 
 # import datetime
 # import string
@@ -66,7 +63,6 @@ def Signin(request):
                 })
 
 
-
 # --> OK
 def Profile(request, userId):
     filter = [db.document(f'users/{userId}')]
@@ -109,16 +105,3 @@ def Profile(request, userId):
 
 # [DELETE] data
 # db.collection("userStatistics").document("4gdu7aK7eVwi3dBqKqCj").delete()
-
-
-# [QUERY] data
-# 1. Get full collection
-# admins = db.collection("admins").stream()
-# for admin in admins:
-#     print(f'{admin.to_dict()}')
-
-# 2. Get documents report has isSolved is False
-# docs = db.collection('reports').where('isSolved', '==', False).stream()
-# for doc in docs:
-#   print(f'{doc.id} => {doc.to_dict()}')
-
