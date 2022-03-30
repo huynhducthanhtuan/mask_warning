@@ -16,7 +16,7 @@ from google.cloud.firestore_v1.field_path import FieldPath
 # from proto.datetime_helpers import DatetimeWithNanoseconds
 
 # init app use a service account
-cred = credentials.Certificate(r'C:\Users\asus\Desktop\NCKH\6. CODE\mask_warning\mask_warning\mask_warning\mask-warning-787c4c69708d.json')
+cred = credentials.Certificate(fr"{os.getcwd()}\mask_warning\mask-warning-787c4c69708d.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
