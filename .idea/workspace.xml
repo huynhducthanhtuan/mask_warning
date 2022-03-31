@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b32a4a4-88e5-4d83-9c60-1213aa5c6e9c" name="Changes" comment="" />
+    <list default="true" id="5b32a4a4-88e5-4d83-9c60-1213aa5c6e9c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/mask_warning/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/mask_warning/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Camera/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Camera/index.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,7 +36,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/learnPython" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
