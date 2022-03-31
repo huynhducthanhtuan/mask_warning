@@ -91,11 +91,11 @@ def example_view(request):
     return render(request,'my_app/example.html', context=my_var)
 
 def variable_view(request):
-    
     return render(request,'my_app/variable.html')
 
 def webcam(request):
     return render(request, 'my_app/app1.html')
+
 @gzip.gzip_page
 def Home(request):
     try:
