@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from django.core.mail import EmailMessage
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse
-import threading
 
 # detect part import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -11,9 +10,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 from imutils.video import VideoStream
 import numpy as np
-import imutils
-import time
-import cv2
+import threading, imutils, time, cv2, os
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
 	# grab the dimensions of the frame and then construct a blob
@@ -73,17 +70,16 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 		faces = np.array(faces, dtype="float32")
 		preds = maskNet.predict(faces, batch_size=32)
 
-	# return a 2-tuple of the face locations and their corresponding
-	# locations
+	# return a 2-tuple of the face locations and their corresponding locations
 	return (locs, preds)
 
-# load our serialized face detector model from disk // can sua duong dan
-prototxtPath = r"C:\Users\asus\Desktop\NCKH\6. CODE\FULL-STACK\mask_warning\mask_warning\deploy.prototxt"
-weightsPath = r"C:\Users\asus\Desktop\NCKH\6. CODE\FULL-STACK\mask_warning\mask_warning\res10_300x300_ssd_iter_140000.caffemodel"
+# load our serialized face detector model from disk
+prototxtPath = fr"{os.getcwd()}\deploy.prototxt"
+weightsPath = fr"{os.getcwd()}\res10_300x300_ssd_iter_140000.caffemodel"
 faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # load the face mask detector model from disk
-maskNet = load_model(r"C:\Users\asus\Desktop\NCKH\6. CODE\mask_warning\mask_warning\mask_detector.model")
+maskNet = load_model(fr"{os.getcwd()}\mask_detector.model")
 # maskNet = load_model("keras_model.h5")
 # initialize the video stream
 
