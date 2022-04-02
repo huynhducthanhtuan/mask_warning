@@ -1,16 +1,11 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
-import firebase_admin, json, os
-from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1.field_path import FieldPath
+import firebase_admin, json, os, jwt, datetime
+from firebase_admin import credentials, firestore
 
-# import datetime
-# import string
-# import random
-# import pytz
-# from proto.datetime_helpers import DatetimeWithNanoseconds
 
 # init app use a service account
 cred = credentials.Certificate(fr"{os.getcwd()}\mask_warning\mask-warning-787c4c69708d.json")
@@ -22,7 +17,7 @@ def Home(request):
     return JsonResponse({"page": "home"})
 
 
-# --> OK, cần xử lí thêm JWT
+# --> Chưa xử lí xong
 @require_http_methods(["POST"])
 @csrf_exempt
 def Signin(request):
@@ -51,10 +46,28 @@ def Signin(request):
                 check = True if (doc.id != "") else False
 
             if (check == False):
-                return JsonResponse({"error": "Email and password doesn't match."})
+                return JsonResponse({"error": "userName and password doesn't match."})
             else:
+                # Token
+                payload_data = {"_id": _id}
+                my_secret = '1asda242efwefwe'
+                token = jwt.encode(
+                    payload=payload_data,
+                    key=my_secret
+                )
+                token = "Bearer " + token
+
+                # # Cookie
+                # response = HttpResponse()
+                # time = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+                # expires = time.strftime("%a, %d %b %Y %H:%M:%S GMT")
+                # response.set_cookie('t', token, max_age=None, expires=expires)
+                # # return response: lưu cookie
+                # return response
+                # logic này chưa thể done vì nó cần làm 2 tác vụ 1 lúc (lưu cookie và trả về json)
+
                 return JsonResponse({
-                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjMzNjBhODUyMTlhMTljN2UyZjA2NDciLCJpYXQiOjE2NDg0NDUxMDd9.ySlGukTpYBTaVOquCgGrlgqUD_GnZqfUBYFfSWEpFbQ",
+                    "token": token,
                     "user": {
                         "_id": _id,
                         "userName": userName,
@@ -63,12 +76,20 @@ def Signin(request):
                 })
 
 
+# --> Chưa xử lí xong
+def Signout(request):
+    # response = HttpResponse()
+    # if request.COOKIES.get('t'):
+    #     response.delete_cookie("t")
+    # return response
+    return JsonResponse({"message": "Sign out success !!"})
+
+
 # --> OK
 def Profile(request, userId):
     filter = [db.document(f'users/{userId}')]
     docs = db.collection(f"users").where(FieldPath.document_id(), u'in', filter).get()
     result = {}
-
     for doc in docs:
         result = doc.to_dict()
     return JsonResponse(result)

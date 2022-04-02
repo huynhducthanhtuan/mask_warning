@@ -1,8 +1,8 @@
 {
-  "name": "reactapp",
+  "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:8000",
+  "proxy": "http://127.0.0.1:8000/",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.3.0",
     "@fortawesome/react-fontawesome": "^0.1.17",

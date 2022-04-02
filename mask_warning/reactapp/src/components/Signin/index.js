@@ -2,6 +2,7 @@ import React, {useRef} from "react";
 import styles from "./Signin.module.css"
 import Header from "../Header";
 
+
 // (Tuấn) Hàm để test API (chỉnh sửa lại cho hợp lí)
 const signInAPI = (user) => {
     return fetch("/auth/signin/", {
@@ -25,7 +26,8 @@ const submitForm = (event, user) => {
       if (data.error) {
         alert("Error: " + data.error);
       } else {
-        alert("Login Success");
+         localStorage.setItem("jwt", JSON.stringify(data));
+         alert("Login Success");
       }
     });
 };

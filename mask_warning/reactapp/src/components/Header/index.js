@@ -41,7 +41,7 @@ const Header = () => {
                     </li>
                     <li>
                         <Link to="/about-us">
-                            <img src="./icons/about us.png" alt="" />
+                            <img src="./icons/aboutus.png" alt="" />
                             <p>About us</p>
                         </Link>
                     </li>
@@ -49,7 +49,7 @@ const Header = () => {
             </nav>
             <div className={styles.headerLogin}>
                 <Link to="/signin">
-                    <img src="./icons/sign in.png" atl="" />
+                    <img src="./icons/signin.png" atl="" />
                     <p>Sign in</p>
                 </Link>
             </div>

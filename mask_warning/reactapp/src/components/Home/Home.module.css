@@ -21,7 +21,7 @@
     position: absolute;
     z-index: 2;
     bottom: 15%;
-    right: 35%;
+    right: calc(100% / 2 - 271px);
     transform: translate(-50%, -50%);
     padding: 25px 60px;
     background-color: #1c4079;
@@ -38,14 +38,16 @@
   }
   
   .homeSlider .slick-dots {
-    display: none;
+    bottom: 50px;
+    left: calc(100% / 2 - 10px);
+    transform: translate(-50%, 0px);
   }
   
   .homeSliderArrowBot {
     position: absolute;
     z-index: 2;
     bottom: -14px;
-    right: 44%;
+    right: calc(100% / 2 - 100px);
     transform: translate(-50%, 0);
   }
   
@@ -88,8 +90,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 30px 320px;
-    width: 1028px;
   }
   
   .homeOurServiceItem {
