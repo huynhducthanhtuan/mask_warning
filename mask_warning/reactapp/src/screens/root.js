@@ -12,6 +12,7 @@ import SignIn from "../components/Signin"
 import Footer from "../components/Footer"
 
 import SignInAdmin from "../components/Signin(Admin)"
+import HomeAdmin from "../components/Home(Admin)"
 
 
 const ScreensRoot  = () => {
@@ -29,6 +30,7 @@ const ScreensRoot  = () => {
         <Route path="/footer"   element={ <Footer />} />
 
         <Route path="/signinAdmin"   element={ <SignInAdmin />} />
+        <Route path="/homeAdmin"   element={ <HomeAdmin />} />
 
       </Routes>
     )

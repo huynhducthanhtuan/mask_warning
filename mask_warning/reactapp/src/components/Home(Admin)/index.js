@@ -1,50 +1,49 @@
-import React, { useRef } from "react";
-import styles from "./Signin.module.css"
+import React, { useRef, useState } from "react";
+import styles from "./Home.module.css"
 import { Link } from "react-router-dom";
 
-const SignInAdmin = () => {
+const HomeAdmin = () => {
+
+    const [toggle, setToggle] = useState("home")
+
     return (
+        <section className={styles.homeMain}>
+            <div className={styles.homeLeftControl}>
+                <img src="../icons/logo.png" />
+                <h2>MANAGEMENTS</h2>
 
-        <div className={styles.main}>
-            <form className={styles.form} id="form-1">
-                <img src="../img/logo_Horizontal.png" className={styles.logo}></img>
-                <h2 className={styles.headingSignIn}>Sign In</h2>
-                <p className={styles.desc}>For admin control</p>
+                <div className={styles.homeTabs}>
+                    <div className={toggle === "home" ? `${styles.homeTabItem} ${styles.active}` : `${styles.homeTabItem}`}
+                        onClick={() => setToggle("home")}>
+                        <img src="./icons/home.png" />
+                        <p>Home</p>
+                    </div>
 
-                <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Email</label>
-                    <input
-                        className={styles.formControl}
-                        type="email"
-                        placeholder="Enter email"
-                    />
-                </div>
+                    <div className={toggle === "users" ? `${styles.homeTabItem} ${styles.active}` : `${styles.homeTabItem}`}
+                        onClick={() => setToggle("users")}>
+                        <img src="./icons/users_manager.png" />
+                        <p>Users Manager</p>
+                    </div>
 
-                <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Password</label>
-                    <input
-                        className={styles.formControl}
-                        type="password"
-                        placeholder="Enter password"
-                    />
-                </div>
-
-                <div className={styles.formRemind}>
-                    <div className={styles.formRemember}>
+                    <div className={toggle === "reports" ? `${styles.homeTabItem} ${styles.active}` : `${styles.homeTabItem}`}
+                        onClick={() => setToggle("reports")}>
+                        <img src="./icons/reports_manager.png" />
+                        <p>Reports Manager</p>
                     </div>
                 </div>
 
-                <button
-                    type="button"
-                    className={`${styles.formSubmit}`}
+                <div className={styles.homeDecs}>
+                    <img src="./icons/line.png"/>
+                    <h3>Mask Warning Admin Website</h3>
+                    <p>Mask Warning Admin Website is a system help store notify customer wearing mask</p>
+                </div>
 
-                >
-                    Sign in
-                </button>
-            </form>
-        </div>
+            </div>
 
+            <div className={styles.homeTabContents}>
 
+            </div>
+        </section>
     )
 }
-export default SignInAdmin;
+export default HomeAdmin;

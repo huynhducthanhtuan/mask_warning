@@ -7,7 +7,7 @@ const SignInAdmin = () => {
 
         <div className={styles.main}>
             <form className={styles.form} id="form-1">
-                <img src="../img/logo_Horizontal.png" className={styles.logo}></img>
+                <img src="../icons/logo_Horizontal.png" className={styles.logo}></img>
                 <h2 className={styles.headingSignIn}>Sign In</h2>
                 <p className={styles.desc}>For admin control</p>
 
@@ -48,3 +48,4 @@ const SignInAdmin = () => {
     )
 }
 export default SignInAdmin;
+
