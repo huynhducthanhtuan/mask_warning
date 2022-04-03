@@ -1,12 +1,17 @@
-import React, {useRef, useState} from "react";
+import React from "react";
+import { useState, useRef, useContext } from 'react'
 import styles from "./Signin.module.css"
 import Header from "../Header";
 import {signInAPI} from './apiSignin'
-import { ToastContainer, toast } from 'react-toastify';
-import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 import { authenticate } from '../Auth/index'
+import {UserContext} from '../../App'
 const SignIn = () => {
+
+    const {state, dispatch} = useContext(UserContext)
     const navigate = useNavigate()
+    
     const userNameInputRef = useRef();
     const passwordInputRef = useRef();
     
@@ -22,6 +27,7 @@ const SignIn = () => {
             toast.success("Login Success!")
           
             authenticate(data, () => {
+                dispatch({type:"USER", payload: data.user})
                 setRedirect(true)
             })
           }
@@ -31,7 +37,6 @@ const SignIn = () => {
         if(redirect)
             return navigate('/')
     }
-
 
     return (
         <>

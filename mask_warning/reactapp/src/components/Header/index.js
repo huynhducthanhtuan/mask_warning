@@ -1,18 +1,27 @@
-import React from "react";
+import React, {useContext} from 'react'
 import styles from "./Header.module.css";
 import {Link, Navigate, useNavigate} from 'react-router-dom'
 import { isAuthenticated } from "../Auth";
 import homeIcon from '../../assets/icons/home.png'
 import signOut from '../../assets/icons/signout.png'
 import { ToastContainer, toast } from 'react-toastify';
-const Header = () => {
+import { UserContext } from '../../App'
 
+const Header = () => {
+    const {state, dispatch} = useContext(UserContext)
     const navigate = useNavigate()
+
+    const notify = () => {
+        if(!state) {
+            toast.info("YOU MUST SIGN IN !")
+        }
+    };
 
     const signOutACtion = () => {
         localStorage.removeItem("jwt");
-        navigate('/signin')
         toast.success('Sign Out Success')
+        dispatch({type:"CLEAR"})
+        navigate('/signin')
     }
 
     const render = () => {
@@ -50,25 +59,25 @@ const Header = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/guide">
+                        <Link to={state? '/guide':'/signin'} onClick={notify}>
                             <img alt="" src="./icons/guide.png" />
                             <p>Guide</p>
                         </Link>
                     </li>
                     <li>
-                        <Link to="/camera">
+                        <Link to={state? '/camera':'/signin'} onClick={notify}>
                             <img alt="" src="./icons/camera.png" />
                             <p>Camera</p>
                         </Link>
                     </li>
                     <li>
-                        <Link to="#!">
+                        <Link to={state? '/statistic':'/signin'} onClick={notify}>
                             <img alt="" src="./icons/statistic.png" />
                             <p>Statistic</p>
                         </Link>
                     </li>
                     <li>
-                        <Link to="/report">
+                        <Link to={state? '/report':'/signin'} onClick={notify}>
                             <img alt="" src="./icons/report.png" />
                             <p>Report</p>
                         </Link>
