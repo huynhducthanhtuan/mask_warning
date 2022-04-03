@@ -21,7 +21,7 @@ const SignIn = () => {
       if (data.error) {
         toast.error(data.error.toUpperCase(), { pauseOnHover: true });
       } else {
-        toast.success("Login Success!");
+        toast.success("Login Success !!!".toLocaleUpperCase());
 
         authenticate(data, () => {
           dispatch({ type: "USER", payload: data.user });
@@ -46,7 +46,7 @@ const SignIn = () => {
             Sign in and start experiencing our app!
           </h4>
           <p className={styles.desc}>
-            Welcome back! Please login to your account.{" "}
+            Welcome back! Please signin to your account.{" "}
           </p>
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>User name</label>
