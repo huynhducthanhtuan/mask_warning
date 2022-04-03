@@ -37,6 +37,7 @@ def Signin(request):
         _id = ""
         fullName = ""
         docs = db.collection(f"users").where(u"userName", u"==", f"{userName}").stream()
+
         for doc in docs:
             _id = doc.id
             fullName = doc.to_dict().get("fullName")
@@ -71,8 +72,22 @@ def Profile(request, userId):
 
     for doc in docs:
         result = doc.to_dict()
+    
     return JsonResponse(result)
 
+def Notifications(request, quantity=0):
+
+    docs = db.collection(f'notifications').order_by(u'createdDate').stream()
+    notifications = []
+
+    for doc in docs:
+        notifications.append(doc.to_dict())
+
+    print('---------------------------\n' + str(quantity) + '------------------------')
+    return JsonResponse({
+        
+        'notifications': notifications[:quantity] if quantity else notifications
+    })
 
 # (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
 # [ADD] data

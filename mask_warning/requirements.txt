@@ -5,8 +5,8 @@ numpy
 opencv-python
 matplotlib
 scipy
+django
 firebase_admin
 gcloud
-django
 django-rest_framework
 django-cors-headers
