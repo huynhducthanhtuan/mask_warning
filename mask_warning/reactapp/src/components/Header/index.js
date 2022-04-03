@@ -19,7 +19,6 @@ const Header = () => {
 
     const signOutACtion = () => {
         localStorage.removeItem("jwt");
-        toast.success('Sign Out Success')
         dispatch({type:"CLEAR"})
         navigate('/signin')
     }
@@ -71,7 +70,7 @@ const Header = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to={state? '/statistic':'/signin'} onClick={notify}>
+                        <Link to={state? '/#!':'/signin'} onClick={notify}>
                             <img alt="" src="./icons/statistic.png" />
                             <p>Statistic</p>
                         </Link>

@@ -24,7 +24,7 @@ const SignIn = () => {
           if (data.error) {
             toast.error(data.error,{pauseOnHover: true,})
           } else {
-            toast.success("Login Success!")
+            toast.success("SIGN IN SUCCESS !")
           
             authenticate(data, () => {
                 dispatch({type:"USER", payload: data.user})
