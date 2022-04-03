@@ -22,7 +22,7 @@ const SignIn = () => {
     
         signInAPI(user).then((data) => {
           if (data.error) {
-            toast.error(data.error,{pauseOnHover: true,})
+            toast.error((data.error).toUpperCase(),{pauseOnHover: true,})
           } else {
             toast.success("SIGN IN SUCCESS !")
           

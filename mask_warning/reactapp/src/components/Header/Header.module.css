@@ -63,14 +63,15 @@
 .headerLogin {
     padding: 10px;
     width: 140px;
-}
-
-.headerLogin a {
     display: flex;
     justify-content: center;
     align-items: center; 
     text-decoration: unset;
     transition: 0.5s;
+}
+
+.headerLogin:hover  {
+    cursor: pointer;
 }
 
 .headerLogin a:hover {

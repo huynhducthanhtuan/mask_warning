@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import styles from "./Header.module.css";
 import {Link, Navigate, useNavigate} from 'react-router-dom'
 import { isAuthenticated } from "../Auth";
@@ -6,11 +6,11 @@ import homeIcon from '../../assets/icons/home.png'
 import signOut from '../../assets/icons/signout.png'
 import { ToastContainer, toast } from 'react-toastify';
 import { UserContext } from '../../App'
-
+import Modal from '../Modal';
 const Header = () => {
     const {state, dispatch} = useContext(UserContext)
     const navigate = useNavigate()
-
+    const [modalOpen, setModalOpen] = useState(false)
     const notify = () => {
         if(!state) {
             toast.info("YOU MUST SIGN IN !")
@@ -26,26 +26,23 @@ const Header = () => {
     const render = () => {
         if(isAuthenticated()) {
             return(
-                <div className={styles.headerLogin}>
-                    <Link to="/signin" onClick={signOutACtion}>
-                        <img src={signOut} atl="" />
-                        <p>Sign Out</p>
-                    </Link>
+                <div className={styles.headerLogin}  onClick={() => setModalOpen(true)}>                 
+                    <img src={signOut} atl="" />
+                    <p>Sign Out</p>
                 </div>
             )
         }
         else 
             return(
-                <div className={styles.headerLogin}>
-                    <Link to="/signin">
-                        <img src="./icons/signin.png" atl="" />
-                        <p>Sign In</p>
-                    </Link>
+                <div className={styles.headerLogin} onClick={() => navigate('/signin')}>
+                    <img src="./icons/signin.png" atl="" />
+                    <p>Sign In</p>
                 </div>
             )
     }
     return (
         <header className={`container ${styles.header}`}>
+            
             <div className={styles.headerLogo}>
                 <Link to="/"><img alt="" src="./icons/logo.png" /></Link>
             </div>
@@ -90,6 +87,7 @@ const Header = () => {
                 </ul>
             </nav>
             {render()}
+            {modalOpen && <Modal body="Are you sure you want to sign out?" setOpenModal={setModalOpen} action={signOutACtion}  />}
         </header>
     )
 }
