@@ -1,7 +1,41 @@
 import React from "react";
 import styles from "./Header.module.css";
-import {Link} from 'react-router-dom'
+import {Link, Navigate, useNavigate} from 'react-router-dom'
+import { isAuthenticated } from "../Auth";
+import homeIcon from '../../assets/icons/home.png'
+import signOut from '../../assets/icons/signout.png'
+import { ToastContainer, toast } from 'react-toastify';
 const Header = () => {
+
+    const navigate = useNavigate()
+
+    const signOutACtion = () => {
+        localStorage.removeItem("jwt");
+        navigate('/signin')
+        toast.success('Sign Out Success')
+    }
+
+    const render = () => {
+        if(isAuthenticated()) {
+            return(
+                <div className={styles.headerLogin}>
+                    <Link to="/signin" onClick={signOutACtion}>
+                        <img src={signOut} atl="" />
+                        <p>Sign Out</p>
+                    </Link>
+                </div>
+            )
+        }
+        else 
+            return(
+                <div className={styles.headerLogin}>
+                    <Link to="/signin">
+                        <img src="./icons/signin.png" atl="" />
+                        <p>Sign In</p>
+                    </Link>
+                </div>
+            )
+    }
     return (
         <header className={`container ${styles.header}`}>
             <div className={styles.headerLogo}>
@@ -11,7 +45,7 @@ const Header = () => {
                 <ul>
                     <li>
                         <Link to="/">
-                            <img alt="" src="./icons/home.png" />
+                            <img alt="" src={homeIcon} />
                             <p>Home</p>
                         </Link>
                     </li>
@@ -41,18 +75,13 @@ const Header = () => {
                     </li>
                     <li>
                         <Link to="/about-us">
-                            <img src="./icons/about us.png" alt="" />
+                            <img src="./icons/aboutus.png" alt="" />
                             <p>About us</p>
                         </Link>
                     </li>
                 </ul>
             </nav>
-            <div className={styles.headerLogin}>
-                <Link to="/signin">
-                    <img src="./icons/sign in.png" atl="" />
-                    <p>Sign in</p>
-                </Link>
-            </div>
+            {render()}
         </header>
     )
 }
