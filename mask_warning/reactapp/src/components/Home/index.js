@@ -1,11 +1,11 @@
 import React from "react";
-import styles from "./Home.module.css";
+import { Link } from "react-router-dom";
 import Header from "../Header";
 import Footer from "../Footer";
-import { Link } from "react-router-dom";
+import styles from "./Home.module.css";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
 import "./sliderDot.css";
 
 const Home = () => {

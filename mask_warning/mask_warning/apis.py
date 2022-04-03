@@ -46,7 +46,7 @@ def Signin(request):
                 check = True if (doc.id != "") else False
 
             if (check == False):
-                return JsonResponse({"error": "userName and password doesn't match."})
+                return JsonResponse({"error": "Username and password doesn't match."})
             else:
                 # Token
                 payload_data = {"_id": _id}
@@ -94,6 +94,19 @@ def Profile(request, userId):
     for doc in docs:
         result = doc.to_dict()
     return JsonResponse(result)
+
+
+
+def Notifications(request, quantity=0):
+    docs = db.collection(f'notifications').order_by(u'createdDate').stream()
+    notifications = []
+
+    for doc in docs:
+        notifications.append(doc.to_dict())
+        
+    return JsonResponse({
+        'notifications': notifications[:quantity] if quantity else notifications
+    })
 
 
 # (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase

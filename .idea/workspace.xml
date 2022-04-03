@@ -5,7 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b32a4a4-88e5-4d83-9c60-1213aa5c6e9c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/demo.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/demo.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Auth/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Auth/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Camera/Camera.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Camera/Camera.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Camera/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Camera/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Footer/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Footer/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Forgot password/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Forgot password/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/GlobalStyle/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/GlobalStyle/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Header/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Header/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/Home.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/Home.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Home/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Report/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Report/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Signin/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/components/Signin/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mask_warning/reactapp/src/screens/root.js" beforeDir="false" afterPath="$PROJECT_DIR$/mask_warning/reactapp/src/screens/root.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,8 +104,8 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.main" />
       <item itemvalue="Python.apis" />
+      <item itemvalue="Python.main" />
     </list>
     <recent_temporary>
       <list>

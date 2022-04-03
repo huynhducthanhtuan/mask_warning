@@ -1,43 +1,43 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useContext } from "react";
 import styles from "./Signin.module.css";
 import Header from "../Header";
-
-// (Tuấn) Hàm để test API (chỉnh sửa lại cho hợp lí)
-const signInAPI = (user) => {
-  return fetch("/auth/signin/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  })
-    .then((res) => res.json())
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-// (Tuấn) Hàm để test API (chỉnh sửa lại cho hợp lí)
-const submitForm = (event, user) => {
-  event.preventDefault();
-
-  signInAPI(user).then((data) => {
-    if (data.error) {
-      alert("Error: " + data.error);
-    } else {
-      localStorage.setItem("jwt", JSON.stringify(data));
-      alert("Login Success");
-    }
-  });
-};
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import { signInAPI } from "./apiSignin";
+import { authenticate } from "../Auth";
+import { UserContext } from "../../App";
 
 const SignIn = () => {
-  // (Tuấn) Dùng hook useRef để lấy ra DOM element của 2 thẻ input
+  const navigate = useNavigate();
   const userNameInputRef = useRef();
   const passwordInputRef = useRef();
+  const { state, dispatch } = useContext(UserContext);
+  const [redirect, setRedirect] = useState(false);
+
+  const submitForm = (event, user) => {
+    event.preventDefault();
+
+    signInAPI(user).then((data) => {
+      if (data.error) {
+        toast.error(data.error, { pauseOnHover: true });
+      } else {
+        toast.success("Login Success!");
+
+        authenticate(data, () => {
+          dispatch({ type: "USER", payload: data.user });
+          setRedirect(true);
+        });
+      }
+    });
+  };
+
+  const redirectToHome = () => {
+    if (redirect) return navigate("/");
+  };
 
   return (
     <>
+      {redirectToHome()}
       <Header />
       <div className={styles.main}>
         <form className={styles.form} id="form-1">
@@ -61,7 +61,7 @@ const SignIn = () => {
             <label className={styles.formLabel}>Password</label>
             <input
               className={styles.formControl}
-              type="text"
+              type="password"
               placeholder="eg: *********"
               ref={passwordInputRef}
             />
@@ -76,12 +76,14 @@ const SignIn = () => {
                 Remember Me
               </span>
             </div>
-            <span className={styles.formForgotPassword}>Forgot Password?</span>
+            <Link to="/forgot-password" className={styles.formForgotPassword}>
+              Forgot Password?
+            </Link>
           </div>
 
           <button
             type="button"
-            class={`${styles.formSubmit}`}
+            className={`${styles.formSubmit}`}
             onClick={(e) => {
               var userName = userNameInputRef.current.value;
               var password = passwordInputRef.current.value;

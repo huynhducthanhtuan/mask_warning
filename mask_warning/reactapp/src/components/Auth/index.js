@@ -18,13 +18,6 @@ export const initialLocalStorageConfig = () => {
   }
 };
 
-export const authenticate = (data, next) => {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("jwt", JSON.stringify(data));
-    next();
-  }
-};
-
 export const signOut = () => {
   localStorage.clear();
 
@@ -38,6 +31,13 @@ export const signOut = () => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+export const authenticate = (data, next) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("jwt", JSON.stringify(data));
+    next();
+  }
 };
 
 export const isAuthenticated = () => {
