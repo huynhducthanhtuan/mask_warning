@@ -1,13 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { isAuthenticated } from "../Auth";
 import { UserContext } from "../../App";
+import Modal from "../Modal";
 
 const Header = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(UserContext);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const notify = () => {
     if (!state) {
@@ -25,20 +27,16 @@ const Header = () => {
   const render = () => {
     if (isAuthenticated()) {
       return (
-        <div className={styles.headerLogin}>
-          <Link to="/signin" onClick={signOutACtion}>
-            <img src="./icons/signout.png" atl="" />
-            <p>Sign Out</p>
-          </Link>
+        <div className={styles.headerLogin} onClick={() => setModalOpen(true)}>
+          <img src="./icons/signout.png" atl="" />
+          <p>Sign Out</p>
         </div>
       );
     } else
       return (
-        <div className={styles.headerLogin}>
-          <Link to="/signin">
-            <img src="./icons/signin.png" atl="" />
-            <p>Sign In</p>
-          </Link>
+        <div className={styles.headerLogin} onClick={() => navigate("/signin")}>
+          <img src="./icons/signin.png" atl="" />
+          <p>Sign In</p>
         </div>
       );
   };
@@ -93,6 +91,13 @@ const Header = () => {
         </ul>
       </nav>
       {render()}
+      {modalOpen && (
+        <Modal
+          body="Are you sure to sign out ??"
+          setOpenModal={setModalOpen}
+          action={signOutACtion}
+        />
+      )}
     </header>
   );
 };

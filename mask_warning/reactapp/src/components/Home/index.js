@@ -17,6 +17,7 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
   return (
     <body>
       <section className={`container_fluid ${styles.home}`}>

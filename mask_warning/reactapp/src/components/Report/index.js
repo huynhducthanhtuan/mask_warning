@@ -54,7 +54,7 @@ const Report = () => {
           </div>
           <div className={`col-4 ${styles.reportDescription}`}>
             <h5>Description</h5>
-            <input type="text" placeholder="report description"></input>
+            <input type="text" placeholder="Report description"></input>
           </div>
         </div>
       </div>
