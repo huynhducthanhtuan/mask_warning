@@ -17,7 +17,7 @@ def Home(request):
     return JsonResponse({"page": "home"})
 
 
-# --> Chưa xử lí xong
+# --> OK
 @require_http_methods(["POST"])
 @csrf_exempt
 def Signin(request):
@@ -57,7 +57,7 @@ def Signin(request):
                 )
                 token = "Bearer " + token
 
-                # # Cookie
+                # # Cookie: Ko làm
                 # response = HttpResponse()
                 # time = datetime.datetime.utcnow() + datetime.timedelta(days=1)
                 # expires = time.strftime("%a, %d %b %Y %H:%M:%S GMT")
@@ -76,8 +76,9 @@ def Signin(request):
                 })
 
 
-# --> Chưa xử lí xong
+# --> OK
 def Signout(request):
+    # Cookie: Ko làm
     # response = HttpResponse()
     # if request.COOKIES.get('t'):
     #     response.delete_cookie("t")

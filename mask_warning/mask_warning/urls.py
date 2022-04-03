@@ -3,7 +3,6 @@ from django.contrib import admin
 from .apis import Home, Signin, Signout, Profile
 from .views import video_feed
 
-# specify URL Path for rest_framework
 urlpatterns = [
     path('', Home),
     path('auth/signin/', Signin),
