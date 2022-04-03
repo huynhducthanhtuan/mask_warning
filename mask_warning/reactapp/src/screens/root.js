@@ -3,6 +3,8 @@ import {Routes, Route } from "react-router-dom"
 import Home from "../components/Home"
 import Guide from "../components/Guide"
 import Report from "../components/Report"
+import ReportHistory from "../components/ReportHistory"
+import ReportHistoryDetail from "../components/ReportHistoryDetail"
 import GuideConnectCamera from "../components/GuideConnectCamera"
 import GuideReportDefect from "../components/GuideReportDefect"
 import Camera from "../components/Camera"
@@ -21,6 +23,8 @@ const ScreensRoot  = () => {
         <Route path="/report-defect" element={ <GuideReportDefect />} />
         <Route path="/camera" element={ <Camera />} />
         <Route path="/report" element={ <Report />} />
+        <Route path="report-history" element={<ReportHistory/>} />
+        <Route path="report-history-detail" element={<ReportHistoryDetail/>} />
         <Route path="/forgot-password" element={ <ForgotPassword />} />
         <Route path="/about-us" element={ <AboutUs />} />
         <Route path="/signIn"   element={ <SignIn />} />

@@ -1,0 +1,72 @@
+
+.camera_header {
+    border-top: 1px solid #3333;
+}
+.sideBar {
+    text-align: center;
+    border-right: 1px solid #4444;
+    height: 1000px;
+    padding: 0;
+}
+
+.sideBar__home {
+    justify-content: start;
+    align-items: center;
+    padding: 15px 0 15px 60px;
+    width: 100%;
+    transition: 0.5s;
+}
+
+.sideBar__home:hover {
+    background: #0075FF;
+    cursor: pointer;
+}
+
+ .sideBar__home:hover p {
+    color: white;
+    opacity: 1;
+ }
+
+.sideBar__home p {
+    color: #0075FF;
+    padding-left: 15px;
+}
+
+.reportHistory {
+    background: #F7FAFC;
+}
+
+.reportHistoryItem {
+    width: 80%;
+    border-radius: 5px;
+    background: #D2C9C9;
+    padding: 10px 25px;
+    margin: 15px auto;
+    justify-content: space-between;
+}
+
+.reportHistoryLeft {
+    display: grid;
+    vertical-align: middle;
+}
+
+.reportHistoryLeft h3 {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.reportHistoryLeft p {
+    font-size: 12px;
+    padding: 5px 15px;
+    font-weight: bold;
+    background: #C8C2EB;
+    text-align: center;
+    border-radius: 30px;
+}
+
+.reportHistoryMiddle p {
+    font-size: 12px;
+    padding-top: 40px;
+}
+

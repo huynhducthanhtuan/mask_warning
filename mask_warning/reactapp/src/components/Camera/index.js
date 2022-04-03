@@ -7,7 +7,7 @@ const Camera = () => {
         <section className={`container_fluid ${styles.camera}`}>
             <Header />
             <div className={styles.activeCamera}>
-                <img src={'/video_feed/'} alt="logo" />
+                <img className={styles.activeCamraImage} src={'/video_feed/'} alt="logo" />
                 <div className={styles.speaker}>
                     <img src="./icons/speaker.png"></img>
                     <p>Notification</p>

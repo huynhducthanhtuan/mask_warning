@@ -1,5 +1,5 @@
 import React from "react"
-import styles from "./Report.module.css"
+import styles from "./ReportHistory.module.css"
 import Header from "../Header"
 import { Link } from "react-router-dom"
 const Camera = () => {
@@ -21,16 +21,22 @@ const Camera = () => {
                             <p>Report history</p>
                         </div>
                     </Link>
-
                 </div>
-                <div className="col-9">
-                    <div className={`col-4 ${styles.chooseImage}`}>
-                        <h5>Choose image</h5>
-                        <img src="./img/imageDefault.jpg"></img>
-                        <input type="file" />
-                    </div>
-                    <div className="col-4"></div>
-                    <div className="col-4"></div>
+                <div className={`col-9 ${styles.reportHistory}`}>
+                    <Link to="/report-history-detail">
+                        <div className={`row ${styles.reportHistoryItem}`}>
+                            <div className={`col-4 ${styles.reportHistoryLeft}`}>
+                                <h3>Report #1</h3>
+                                <p>Speaker error</p>
+                            </div>
+                            <div className={`col-5 ${styles.reportHistoryMiddle}`}>
+                                <p>The notify of speaker is wrong. That person ...</p>
+                            </div>
+                            <div className={`co-3 ${styles.reportHistoryRight}`} >
+                                <p>22:12 10/01/2022</p>
+                            </div>
+                        </div>
+                    </Link>
                 </div>
             </div>
         </section>
