@@ -11,8 +11,8 @@ import AboutUs from "../components/AboutUs"
 import SignIn from "../components/Signin"
 import Footer from "../components/Footer"
 
-import SignInAdmin from "../components/Signin(Admin)"
-import HomeAdmin from "../components/Home(Admin)"
+import SignInAdmin from "../components/AdminSignin"
+import HomeAdmin from "../components/AdminHome"
 
 
 const ScreensRoot  = () => {

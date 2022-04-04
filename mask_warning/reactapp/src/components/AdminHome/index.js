@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import styles from "./Home.module.css"
 import { Link } from "react-router-dom";
 
+
 const HomeAdmin = () => {
 
     const [toggle, setToggle] = useState("home")
@@ -41,6 +42,11 @@ const HomeAdmin = () => {
             </div>
 
             <div className={styles.homeTabContents}>
+                <div className={toggle === "home" ? `${styles.homeTabContent} ${styles.active}` : `${styles.homeTabContent}`}>
+
+                </div>
+
+                
 
             </div>
         </section>
