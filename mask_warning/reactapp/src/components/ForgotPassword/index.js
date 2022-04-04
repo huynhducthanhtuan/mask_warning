@@ -1,18 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ForgotPassword.module.css";
+import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
 import { toast } from "react-toastify";
+import { codes } from "../../constants";
+import { checkEmailExistApi } from "../../apis";
 import Header from "../Header";
 import validator from "validator";
+import emailjs from "emailjs-com";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [emailError, setEmailError] = useState("");
   const emailInputRef = useRef();
+  const [emailError, setEmailError] = useState("");
+  const { code, setCode, email, setEmail } = useContext(ForgotPasswordContext);
 
   const validateEmail = (e) => {
-    var email = e.target.value;
-
+    var email = emailInputRef.current.value;
     if (validator.isEmail(email)) {
       setEmailError("Valid Email :)");
     } else {
@@ -25,9 +29,8 @@ const ForgotPassword = () => {
     emailInputRef.current.value = "";
   };
 
-  const handleSendCode = (e) => {
+  const handleSendCode = async (e) => {
     e.preventDefault();
-
     const emailInputValue = emailInputRef.current.value;
 
     if (emailInputValue.trim() === "") {
@@ -36,7 +39,28 @@ const ForgotPassword = () => {
       if (!validator.isEmail(emailInputValue)) {
         toast.error("Please enter an valid email !!!".toLocaleUpperCase());
       } else {
-        navigate("/forgot-password-enter-code");
+        // Kiểm tra email mà client nhập có tồn tạo trong DB ko
+        const data = await checkEmailExistApi({ email: emailInputValue });
+
+        if (data.isExistEmail) {
+          toast.info("Please check your email !!!".toLocaleUpperCase());
+          setEmail(emailInputValue);
+
+          const codeWillSend = codes[Math.floor(Math.random() * codes.length)];
+          setCode(codeWillSend);
+          alert("Your code: " + codeWillSend);
+
+          // Gửi mail
+          emailjs.init("EQyEVCbF1iQKVRFmH");
+          emailjs.send("service_wsbq7tf", "template_jom02bx", {
+            message: codeWillSend,
+            user_email: emailInputValue,
+          });
+
+          navigate("/forgot-password-enter-code");
+        } else {
+          toast.error("Email is not exist !!!".toLocaleUpperCase());
+        }
       }
     }
   };
@@ -46,7 +70,7 @@ const ForgotPassword = () => {
       <Header />
       <h1 className={`${styles.headerString} d-flex`}>Forgot Password</h1>
 
-      <form className={styles.form}>
+      <form className={styles.form} id="contact-form">
         <h3 className={styles.formHeader}>Reset your password</h3>
         <img src="./icons/Line.png" className={styles.line}></img>
         <div>
@@ -55,6 +79,7 @@ const ForgotPassword = () => {
           </label>
           <input
             type="email"
+            name="user_email"
             className={styles.formControl}
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
@@ -74,7 +99,7 @@ const ForgotPassword = () => {
           </button>
           <button
             className={styles.buttonSend}
-            type="send-code"
+            type="submit"
             onClick={(e) => handleSendCode(e)}
           >
             Send code

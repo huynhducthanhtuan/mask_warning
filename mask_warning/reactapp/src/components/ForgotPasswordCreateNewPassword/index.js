@@ -1,29 +1,47 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import styles from "./ForgotPasswordCreateNewPassword.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { createNewPasswordApi } from "../../apis";
 import Header from "../Header";
 
 const ForgotPasswordCreateNewPassword = () => {
   const navigate = useNavigate();
   const newPasswordInputRef = useRef();
   const confirmNewPasswordInputRef = useRef();
+  const { email, setEmail } = useContext(ForgotPasswordContext);
 
-  const handleConfirmPasswords = (e) => {
+  const handleConfirmPasswords = async (e) => {
     e.preventDefault();
+    const newPassword = newPasswordInputRef.current.value.trim();
+    const confirmNewPassword = confirmNewPasswordInputRef.current.value.trim();
 
-    const newPassword = newPasswordInputRef.current.value;
-    const confirmNewPassword = confirmNewPasswordInputRef.current.value;
-
-    if (newPassword.trim() === "" || confirmNewPassword.trim() === "") {
+    if (newPassword === "" || confirmNewPassword === "") {
       toast.error("Please enter all information !!!".toLocaleUpperCase());
     } else {
-      if (newPassword !== confirmNewPassword) {
-        toast.error("Passwords do not match !!!".toLocaleUpperCase());
+      if (newPassword.length < 8 || confirmNewPassword.length < 8) {
+        toast.error(
+          "Please enter passwords has more 8 characters !!!".toLocaleUpperCase()
+        );
       } else {
-        toast.success("Create new password sucess !!!".toLocaleUpperCase());
-        // request gửi userId và newPassword lên API BE
-        navigate("/signin");
+        if (newPassword !== confirmNewPassword) {
+          toast.error("Passwords do not match !!!".toLocaleUpperCase());
+        } else {
+          try {
+            const data = await createNewPasswordApi({ email, newPassword });
+            if (data.message == "success") {
+              toast.success(
+                "Create new password success !!!".toLocaleUpperCase()
+              );
+              navigate("/signin");
+            } else {
+              toast.error("Create new password failed !!!".toLocaleUpperCase());
+            }
+          } catch (e) {
+            toast.error(e.toLocaleUpperCase());
+          }
+        }
       }
     }
   };

@@ -1,23 +1,34 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import styles from "./ForgotPasswordEnterCode.module.css";
 import { Link, useNavigate } from "react-router-dom";
+import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
+import { codes } from "../../constants";
 import { toast } from "react-toastify";
+import emailjs from "emailjs-com";
 import Header from "../Header";
 
 const ForgotPasswordEnterCode = () => {
   const navigate = useNavigate();
   const enterCodeInputRef = useRef();
+  const { code, setCode, email, setEmail } = useContext(ForgotPasswordContext);
 
   const handleReSendCode = (e) => {
     e.preventDefault();
+    toast.info("Please check your email !!!".toLocaleUpperCase());
 
-    toast.info("Re-enter code after 20 secs !!!".toLocaleUpperCase());
+    const codeWillSend = codes[Math.floor(Math.random() * codes.length)];
+    setCode(codeWillSend);
+    alert("Your code: " + codeWillSend);
+
+    emailjs.init("EQyEVCbF1iQKVRFmH");
+    emailjs.send("service_wsbq7tf", "template_jom02bx", {
+      message: codeWillSend,
+      user_email: email,
+    });
   };
 
   const handleSubmitCode = (e) => {
     e.preventDefault();
-
-    const code = "123";
     const enterCodeInputValue = enterCodeInputRef.current.value;
 
     if (enterCodeInputValue.trim() === "") {

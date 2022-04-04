@@ -3,11 +3,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from google.cloud.firestore_v1.field_path import FieldPath
-import firebase_admin, json, os, jwt, datetime
+import firebase_admin, json, os, jwt, datetime, smtplib
+from email.mime.text import MIMEText
 from firebase_admin import credentials, firestore
 
-
-# init app use a service account
+# init app
 cred = credentials.Certificate(fr"{os.getcwd()}\mask_warning\mask-warning-787c4c69708d.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -17,7 +17,6 @@ def Home(request):
     return JsonResponse({"page": "home"})
 
 
-# --> OK
 @require_http_methods(["POST"])
 @csrf_exempt
 def Signin(request):
@@ -36,7 +35,7 @@ def Signin(request):
             _id = doc.id
             fullName = doc.to_dict().get("fullName")
 
-        # Neu userName ko ton tai
+        # Nếu userName ko tồn tại
         if (_id == ""):
             return JsonResponse({"error": "User not found."})
         else:
@@ -57,15 +56,6 @@ def Signin(request):
                 )
                 token = "Bearer " + token
 
-                # # Cookie: Ko làm
-                # response = HttpResponse()
-                # time = datetime.datetime.utcnow() + datetime.timedelta(days=1)
-                # expires = time.strftime("%a, %d %b %Y %H:%M:%S GMT")
-                # response.set_cookie('t', token, max_age=None, expires=expires)
-                # # return response: lưu cookie
-                # return response
-                # logic này chưa thể done vì nó cần làm 2 tác vụ 1 lúc (lưu cookie và trả về json)
-
                 return JsonResponse({
                     "token": token,
                     "user": {
@@ -76,17 +66,10 @@ def Signin(request):
                 })
 
 
-# --> OK
 def Signout(request):
-    # Cookie: Ko làm
-    # response = HttpResponse()
-    # if request.COOKIES.get('t'):
-    #     response.delete_cookie("t")
-    # return response
     return JsonResponse({"message": "Sign out success !!"})
 
 
-# --> OK
 def Profile(request, userId):
     filter = [db.document(f'users/{userId}')]
     docs = db.collection(f"users").where(FieldPath.document_id(), u'in', filter).get()
@@ -94,7 +77,6 @@ def Profile(request, userId):
     for doc in docs:
         result = doc.to_dict()
     return JsonResponse(result)
-
 
 
 def Notifications(request, quantity=0):
@@ -109,34 +91,42 @@ def Notifications(request, quantity=0):
     })
 
 
-# (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
-# [ADD] data
-# arr = [
-#     { "date": [2021,12,31], "totalGuest": 100000000000, "totalUnmaskGuest": 37, "onlineHours": 10, "userId": "9ijj7GXUcyKia6uc1UOq" },
-#     # { "date": [2021,12,31], "totalGuest": 98, "totalUnmaskGuest": 43, "onlineHours": 12, "userId": "Lndoc3FNFjimEfMPDjiS" },
-# ]
-# for i in arr:
-#     randomString = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
-#     date = datetime.datetime(i.get("date")[0], i.get("date")[1], i.get("date")[2], 0, 0)
-#     date = pytz.timezone('Asia/Ho_Chi_Minh').localize(date)
-    # doc_ref = db.collection('userStatistics').document(str(randomString))
-    # doc_ref.set({
-    #     'date': date,
-    #     'onlineHours': i.get("onlineHours"),
-    #     'totalGuest': i.get("totalGuest"),
-    #     'totalUnmaskGuest': i.get("totalUnmaskGuest"),
-    #     'userId': i.get("userId")
-    # })
-    # doc_ref.set({'fullName': 'Tran Huyen My', 'address': '187 an hai, lien chieu, da nang', 'phoneNumber': '0900986450', 'createdDate': DatetimeWithNanoseconds(2021, 12, 31, 17, 0, tzinfo=datetime.timezone.utc), 'userName': 'huyenmytran', 'password': 'User120039873%', 'email': 'huyenmytran@gmail.com', 'storeName': 'Little Devil Shop'})
+def ForgotPasswordCreateNewPassword(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên (email, newPassword)
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        email = body_data["email"]
+        newPassword = body_data["newPassword"]
+
+        # Lấy ra mảng chứa document đó theo email
+        docs = db.collection('users').where(u"email", u"==", f"{email}").stream()
+        docId = ""
+        for doc in docs: 
+            docId = doc.id
+
+        # Lấy ra đích thị document đó theo document id và cập nhật password
+        if docId != "":
+            db.collection('users').document(docId).update({'password': newPassword})
+            return JsonResponse({"message": "success"})
+        else:
+            return JsonResponse({"message": "fail"})
 
 
-# [UPDATE] data (one or many fields)
-# doc_ref = db.collection('userStatistics').document("ElCG5VEfomHom5IJGbTF")
-# doc_ref.update({
-#     'date': date,
-#     'totalUnmaskGuest': 37,
-# })
+def CheckEmailExist(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên (email, newPassword)
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        email = body_data["email"]
 
+        # Lấy ra mảng chứa document đó theo email
+        docs = db.collection('users').where(u"email", u"==", f"{email}").stream()
+        check = False
 
-# [DELETE] data
-# db.collection("userStatistics").document("4gdu7aK7eVwi3dBqKqCj").delete()
+        # Nếu có document đó thì check = True   
+        for doc in docs: 
+            check = True
+
+        return JsonResponse({"isExistEmail": check})
+
