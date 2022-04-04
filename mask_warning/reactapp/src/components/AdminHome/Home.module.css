@@ -24,6 +24,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start ;
+    cursor: pointer;
 }
 .homeTabItem.active{
     padding: 18px 14px 18px;
@@ -73,7 +74,52 @@
 }
 
 
+.homeTopRightControl{
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    width: 200px;
+    display: flex;
+    justify-content: space-around;
+}
+.homeTopRightControl p{
+    font-weight: 800;
+}
+.homeTopRightControl img{
+    width: 25px;
+    height: 28px;
+}
+
 .homeTabContents{
-    /* height: 100%; */
     background-color: #F0F7FD;
+}
+.homeTabContent{display: none;}
+.homeTabContent.active{
+    display: block;
+}
+.homeStatisticButtonGroup{
+    margin: 33px 28px;
+    width: 320px;
+    display: flex;
+    justify-content: space-between;
+}
+.homeStatisticButton{
+    display: flex;
+    align-items: center;
+    font-weight: 530;
+}
+.homeStatisticButton p{
+    cursor: pointer;
+    margin-left: 5px;
+    opacity: 0.4;
+    
+}
+.homeStatisticButton.active{
+    font-weight: 700;   
+}
+.homeStatisticCards{
+    width: 500px;
+    display: flex;
+    justify-content: space-around;
+
 }
