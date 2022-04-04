@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import styles from "./Signin.module.css";
 import Header from "../Header";
 import { toast } from "react-toastify";
@@ -12,32 +12,35 @@ const SignIn = () => {
   const userNameInputRef = useRef();
   const passwordInputRef = useRef();
   const { state, dispatch } = useContext(UserContext);
-  const [redirect, setRedirect] = useState(false);
 
   const submitForm = (event, user) => {
     event.preventDefault();
 
-    signInAPI(user).then((data) => {
-      if (data.error) {
-        toast.error(data.error.toUpperCase(), { pauseOnHover: true });
-      } else {
-        toast.success("Login Success !!!".toLocaleUpperCase());
+    if (user.userName.trim() === "" || user.password.trim() === "") {
+      toast.error("Please enter all information !!!".toLocaleUpperCase());
+    } else {
+      signInAPI(user).then((data) => {
+        if (data.error) {
+          toast.error(data.error.toUpperCase(), { pauseOnHover: true });
+        } else {
+          toast.success("Login Success !!!".toLocaleUpperCase());
 
-        authenticate(data, () => {
-          dispatch({ type: "USER", payload: data.user });
-          setRedirect(true);
-        });
-      }
-    });
+          authenticate(data, () => {
+            dispatch({ type: "USER", payload: data.user });
+            window.scrollTo(0, 0);
+            navigate("/");
+          });
+        }
+      });
+    }
   };
 
-  const redirectToHome = () => {
-    if (redirect) return navigate("/");
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
-      {redirectToHome()}
       <Header />
       <div className={styles.main}>
         <form className={styles.form} id="form-1">

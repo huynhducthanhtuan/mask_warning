@@ -1,12 +1,13 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 html {
-    color: #333;
-    font-size: 62.5%;
-    font-family: "Open Sans", sans-serif;
+  color: #333;
+  font-size: 62.5%;
+  font-family: "Open Sans", sans-serif;
+  scroll-behavior: smooth;
 }
 
 .container {

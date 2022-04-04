@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Home.module.css";
 import { Link } from "react-router-dom";
 import StatisticCard from "../AdminStatisticCard";
@@ -7,7 +7,6 @@ import ReportsManagerAdmin from "../AdminReportsManager";
 
 const HomeAdmin = () => {
   const [toggle, setToggle] = useState("home");
-
   const [statisticToggle, setStatisticToggle] = useState("week");
 
   const dataUsersStatistic = {
@@ -21,6 +20,10 @@ const HomeAdmin = () => {
     month: 22,
     year: 20,
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <section className={styles.homeMain}>

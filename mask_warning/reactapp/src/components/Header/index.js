@@ -20,7 +20,7 @@ const Header = () => {
   const signOutACtion = () => {
     localStorage.removeItem("jwt");
     dispatch({ type: "CLEAR" });
-    toast.success("Sign Out Success");
+    toast.success("Sign Out Success".toLocaleUpperCase());
     navigate("/signin");
   };
 

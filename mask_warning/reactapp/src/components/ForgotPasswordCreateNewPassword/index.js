@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useEffect } from "react";
 import styles from "./ForgotPasswordCreateNewPassword.module.css";
 import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
 import { useNavigate } from "react-router-dom";
@@ -45,6 +45,10 @@ const ForgotPasswordCreateNewPassword = () => {
       }
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <section>

@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./GuideReportDefect.module.css";
 import Header from "../Header";
 import { Link } from "react-router-dom";
 
 const GuideReportDefect = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <section>
       <Header />

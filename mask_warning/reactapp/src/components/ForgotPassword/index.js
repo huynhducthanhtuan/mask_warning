@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ForgotPassword.module.css";
 import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
@@ -64,6 +64,10 @@ const ForgotPassword = () => {
       }
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <section>

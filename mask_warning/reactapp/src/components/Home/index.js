@@ -18,6 +18,10 @@ const Home = () => {
     slidesToScroll: 1,
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <body>
       <section className={`container_fluid ${styles.home}`}>

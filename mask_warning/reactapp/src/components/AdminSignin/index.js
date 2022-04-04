@@ -1,8 +1,12 @@
-import React, { useRef } from "react";
+import React, { useEffect } from "react";
 import styles from "./Signin.module.css";
 import { Link } from "react-router-dom";
 
 const SignInAdmin = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className={styles.main}>
       <form className={styles.form} id="form-1">

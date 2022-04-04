@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./Camera.module.css";
 import Header from "../Header";
 
 const Camera = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />
