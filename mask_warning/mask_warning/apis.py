@@ -89,6 +89,7 @@ def Notifications(request, quantity=0):
         'notifications': notifications[:quantity] if quantity else notifications
     })
 
+
 # (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
 # [ADD] data
 # arr = [

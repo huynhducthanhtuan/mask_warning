@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.core.mail import EmailMessage
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse
+from playsound import playsound
 
 # detect part import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -89,12 +90,14 @@ pts = np.array([[15,15], [625, 15],
 pts = pts.reshape((-1, 1, 2))
 
 # Frame time when red corner off
-redCornerOffTime = [7,8,9]
+redCornerOffFrame = [7,8,9]
 
 def stream():
 	cap = cv2.VideoCapture(0) 
 	frame_count = 0
 
+	limitCallSound = 80
+	lastFrameCallSound = 0
 	while True:
 		frame_count += 1
 		ret, frame = cap.read()
@@ -121,13 +124,16 @@ def stream():
 
 				isOnRedcorner = True
 
-				for time_off in redCornerOffTime:
+				for time_off in redCornerOffFrame:
 					if frame_count % time_off == 0:
 						isOnRedcorner = False
 						break
 
 				if isOnRedcorner:
 					frame = cv2.polylines(frame, [pts], isClosed=True, color=color, thickness=30)
+
+				if lastFrameCallSound == 0 or frame_count - lastFrameCallSound >= limitCallSound:
+					playsound('../unMask_Sound.m4a')
 
 
 			# include the probability in the label
