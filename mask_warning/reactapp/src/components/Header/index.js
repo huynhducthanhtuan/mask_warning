@@ -2,8 +2,9 @@ import React, { useContext, useState } from "react";
 import styles from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { isAuthenticated } from "../Auth";
 import { UserContext } from "../../App";
+import { isAuthenticated } from "../Auth";
+import { signOutApi } from "../../apis";
 import Modal from "../Modal";
 
 const Header = () => {
@@ -17,11 +18,15 @@ const Header = () => {
     }
   };
 
-  const signOutACtion = () => {
-    localStorage.removeItem("jwt");
-    dispatch({ type: "CLEAR" });
-    toast.success("Sign Out Success".toLocaleUpperCase());
-    navigate("/signin");
+  const handleSignout = async () => {
+    const data = await signOutApi();
+
+    if (data.message === "Sign out success !!") {
+      localStorage.removeItem("jwt");
+      dispatch({ type: "CLEAR" });
+      toast.success(data.message.toLocaleUpperCase());
+      navigate("/signin");
+    }
   };
 
   const render = () => {
@@ -40,6 +45,7 @@ const Header = () => {
         </div>
       );
   };
+
   return (
     <header className={`container ${styles.header}`}>
       <div className={styles.headerLogo}>
@@ -95,7 +101,7 @@ const Header = () => {
         <Modal
           body="Are you sure to sign out ??"
           setOpenModal={setModalOpen}
-          action={signOutACtion}
+          action={handleSignout}
         />
       )}
     </header>

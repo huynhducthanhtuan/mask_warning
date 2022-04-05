@@ -1,5 +1,5 @@
 export const signInAPI = (user) => {
-  return fetch("/auth/signin/", {
+  return fetch("auth/signin/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -7,9 +7,13 @@ export const signInAPI = (user) => {
     body: JSON.stringify(user),
   })
     .then((res) => res.json())
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => err);
+};
+
+export const signOutApi = () => {
+  return fetch("auth/signout")
+    .then((res) => res.json())
+    .catch((err) => err);
 };
 
 export const createNewPasswordApi = (data) => {

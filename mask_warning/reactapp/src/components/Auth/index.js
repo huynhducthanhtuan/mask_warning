@@ -18,21 +18,6 @@ export const initialLocalStorageConfig = () => {
   }
 };
 
-export const signOut = () => {
-  localStorage.clear();
-
-  fetch("/auth/signout", {
-    method: "POST",
-    headers: {
-      "Content-type": "Application/json",
-    },
-  })
-    .then((res) => res.json())
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 export const authenticate = (data, next) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("jwt", JSON.stringify(data));

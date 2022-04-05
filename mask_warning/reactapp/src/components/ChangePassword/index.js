@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./ChangePassword.module.css";
 import { toast } from "react-toastify";
 import { changePasswordApi } from "../../apis";
@@ -48,12 +48,12 @@ const ChangePassword = () => {
       case "Please enter correct old password":
         toast.error(data.message.toLocaleUpperCase());
         break;
+      case "Change password failed":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
       case "Change password success":
         toast.success(data.message.toLocaleUpperCase());
         cleanInputText();
-        break;
-      case "Change password failed":
-        toast.error(data.message.toLocaleUpperCase());
         break;
     }
   };

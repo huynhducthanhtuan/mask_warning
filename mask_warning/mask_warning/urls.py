@@ -7,7 +7,7 @@ from .views import video_feed
 urlpatterns = [
     path('', Home),
     path('auth/signin/', Signin),
-    path('signout/', Signout),
+    path('auth/signout/', Signout),
     path('profile/', ViewProfile),
     path('update-profile/', UpdateProfile),
     path('change-password/', HandleChangePassword),
@@ -17,6 +17,8 @@ urlpatterns = [
     path('forgot-password-send-code/', ForgotPasswordSendCode),
     path('forgot-password-create-new-password/', ForgotPasswordCreateNewPassword),
     path('check-email-exist/', CheckEmailExist),
-    path('admin/', admin.site.urls),
+    
+    # Trang admin mặc định của Django, mình ko dùng
+    # path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls'))
 ]
