@@ -15,6 +15,7 @@ import {
   ForgotPassword,
   ForgotPasswordEnterCode,
   ForgotPasswordCreateNewPassword,
+  ChangePassword,
   Footer,
   AdminSignin,
   AdminHome,
@@ -43,6 +44,7 @@ const ScreensRoot = () => {
         path="/forgot-password-create-new-password"
         element={<ForgotPasswordCreateNewPassword />}
       />
+      <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/footer" element={<Footer />} />
 
       <Route path="/admin-signin" element={<AdminSignin />} />

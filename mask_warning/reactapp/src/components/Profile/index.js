@@ -16,7 +16,7 @@ const Profile = () => {
     const data = await viewProfile({ userId });
 
     // Xử lí kết quả trả về từ API
-    if (data.error == "User not found") {
+    if (data.error === "User not found") {
       toast.error("User not found !!!".toLocaleUpperCase());
     } else {
       // data: lưu dữ liệu trả về từ API
@@ -44,7 +44,7 @@ const Profile = () => {
     });
 
     // Xử lí kết quả trả về từ API
-    if (data.status == "fail") {
+    if (data.status === "fail") {
       toast.error("Update failed !!!".toLocaleUpperCase());
     } else {
       toast.success("Update success !!!".toLocaleUpperCase());

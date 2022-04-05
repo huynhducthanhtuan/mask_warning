@@ -49,11 +49,9 @@ def Signin(request):
                 return JsonResponse({"error": "Username and password doesn't match."})
             else:
                 # Token
-                payload_data = {"_id": _id}
-                my_secret = '1asda242efwefwe'
                 token = jwt.encode(
-                    payload=payload_data,
-                    key=my_secret
+                    payload = {"_id": _id},
+                    key = '1asda242efwefwe'
                 )
                 token = "Bearer " + token
 
@@ -77,7 +75,6 @@ def ViewProfile(request):
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userId = body_data["userId"]
-        print(userId)
         
         # Xử lí
         try:
@@ -126,7 +123,7 @@ def UpdateProfile(request):
             return JsonResponse({"status": "fail"})
 
 
-def Notifications(request, quantity=0):
+def Notifications(request, quantity = 0):
     docs = db.collection(f'notifications').order_by(u'createdDate').stream()
     notifications = []
 
@@ -138,6 +135,69 @@ def Notifications(request, quantity=0):
     })
 
 
+def CheckPasswordExist(userId, password):
+    try:
+        # Lấy ra document theo document id
+        doc_ref = db.collection('users').document(userId)
+        doc = doc_ref.get().to_dict()
+
+        # Nếu document này có password trùng với password truyền vào 
+        if doc.get('password') == password:
+            return True
+        else:
+            return False
+    except:
+        return False
+
+
+def UpdateProfile(userId, newPassword):
+    try:
+        doc = db.collection(f"users").document(userId)
+        doc.update({
+            'password': newPassword
+        })
+        return True
+    except:
+        return False
+
+
+def HandleChangePassword(request): 
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        oldPassword = body_data["oldPassword"].strip()
+        newPassword = body_data["newPassword"].strip()
+        newPasswordConfirm = body_data["newPasswordConfirm"].strip()
+
+        # Kiểm tra user có tồn tại thông qua userId
+        if CheckUserIdExist(userId):
+            # Nếu người dùng ko nhập gì cả
+            if oldPassword == "" or newPassword == "" or newPasswordConfirm == "":
+                return JsonResponse({"message": "Please enter all information"})
+            else:
+                # Nếu độ dài 1 trong 3 mật khẩu < 8
+                if len(oldPassword) < 8 or len(newPassword) < 8 or len(newPasswordConfirm) < 8:
+                    return JsonResponse({"message": "Please enter passwords has more 8 characters"})
+                else:
+                    # Nếu mật khẩu mới và xác nhận mật khẩu mới khác nhau
+                    if newPassword != newPasswordConfirm:
+                        return JsonResponse({"message": "Please enter the same new password and new password confirm"})
+                    else:
+                        # Kiểm tra mật khẩu cũ có đúng ko
+                        if CheckPasswordExist(userId, oldPassword):
+                            # Thực hiện cập nhật profile
+                            if UpdateProfile(userId, newPassword):
+                                return JsonResponse({"message": "Change password success"})
+                            else:
+                                return JsonResponse({"message": "Change password failed"})
+                        else:
+                            return JsonResponse({"message": "Please enter correct old password"})
+        else:
+            return JsonResponse({"message": "User not found"})
+                    
+                  
 def ForgotPasswordCreateNewPassword(request):
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên (email, newPassword)
@@ -158,6 +218,20 @@ def ForgotPasswordCreateNewPassword(request):
             return JsonResponse({"message": "success"})
         else:
             return JsonResponse({"message": "fail"})
+
+
+def CheckUserIdExist(userId):
+    try: 
+        # Lấy ra document đó theo document id
+        doc_ref = db.collection(f"users").document(userId)
+
+        # Nếu có document đó thì return True, ngược lại: False   
+        if doc_ref.get().to_dict():
+            return True
+        else:
+            return False
+    except:
+        return False
 
 
 def CheckEmailExist(request):

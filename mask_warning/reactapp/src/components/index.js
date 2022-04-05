@@ -17,6 +17,7 @@ export { default as ReportHistory } from "./ReportHistory";
 export { default as ReportHistoryDetail } from "./ReportHistoryDetail";
 export { default as Signin } from "./Signin";
 export { default as Profile } from "./Profile";
+export { default as ChangePassword } from "./ChangePassword";
 
 // ROLE ADMIN
 export { default as AdminHome } from "./AdminHome";
