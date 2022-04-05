@@ -11,6 +11,7 @@ import {
   ReportHistoryDetail,
   AboutUs,
   Signin,
+  Profile,
   ForgotPassword,
   ForgotPasswordEnterCode,
   ForgotPasswordCreateNewPassword,
@@ -32,6 +33,7 @@ const ScreensRoot = () => {
       <Route path="/report-history-detail" element={<ReportHistoryDetail />} />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/signin" element={<Signin />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route
         path="/forgot-password-enter-code"

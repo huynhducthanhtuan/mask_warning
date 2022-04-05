@@ -35,3 +35,39 @@ export const checkEmailExistApi = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
+export const sendCodeViaEmail = (data) => {
+  return fetch("forgot-password-send-code/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const viewProfile = (data) => {
+  return fetch("profile/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const updateProfile = (data) => {
+  return fetch("update-profile/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};

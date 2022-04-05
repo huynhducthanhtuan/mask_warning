@@ -8,6 +8,7 @@ const Report = () => {
     window.scrollTo(0, 0);
   }, []);
 
+
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />

@@ -3,7 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from google.cloud.firestore_v1.field_path import FieldPath
-import firebase_admin, json, os, jwt, datetime, smtplib
+import firebase_admin, json, os, jwt, datetime, smtplib, socket
+from socket import gaierror
 from email.mime.text import MIMEText
 from firebase_admin import credentials, firestore
 
@@ -60,8 +61,8 @@ def Signin(request):
                     "token": token,
                     "user": {
                         "_id": _id,
-                        "userName": userName,
-                        "fullName": fullName
+                        # "userName": userName,
+                        # "fullName": fullName
                     }
                 })
 
@@ -70,13 +71,59 @@ def Signout(request):
     return JsonResponse({"message": "Sign out success !!"})
 
 
-def Profile(request, userId):
-    filter = [db.document(f'users/{userId}')]
-    docs = db.collection(f"users").where(FieldPath.document_id(), u'in', filter).get()
-    result = {}
-    for doc in docs:
-        result = doc.to_dict()
-    return JsonResponse(result)
+def ViewProfile(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        print(userId)
+        
+        # Xử lí
+        try:
+            doc_ref = db.collection(f"users").document(userId)
+            doc = doc_ref.get().to_dict()
+
+            result = {
+                "storeName": doc.get("storeName"),
+                "fullName": doc.get("fullName"),
+                "email": doc.get("email"),
+                "gender": doc.get("gender"),
+                "address": doc.get("address").split(",")[0].strip(),
+                "district": doc.get("address").split(",")[1].strip(),
+                "hometown": doc.get("address").split(",")[2].strip(),
+                "phoneNumber": doc.get("phoneNumber"),
+            }
+            return JsonResponse(result)
+        except:
+            return JsonResponse({"error": "User not found"})
+
+
+def UpdateProfile(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        hometown = body_data["hometown"]
+        district = body_data["district"]
+        address = body_data["address"]
+        storeName = body_data["storeName"]
+        phoneNumber = body_data["phoneNumber"]
+        gender = body_data["gender"]
+        
+        # Xử lí
+        try:
+            doc = db.collection(f"users").document(userId)
+            doc.update({
+                'address': f'{address}, {district}, {hometown}',
+                'phoneNumber': phoneNumber,
+                'storeName': storeName,
+                'gender': gender
+            })
+            return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "fail"})
 
 
 def Notifications(request, quantity=0):
@@ -129,4 +176,72 @@ def CheckEmailExist(request):
             check = True
 
         return JsonResponse({"isExistEmail": check})
+
+
+def ForgotPasswordSendCode(request): 
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên (email, newPassword)
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        email = body_data["email"]
+
+        sender = "thanhtuanhuynh0011@gmail.com"
+        receivers = [email]
+        message = f"""From: From Person <{sender}>
+        To: To Person <{receivers[0]}>
+        Subject: Verify code to create new password - Mask Warning
+
+        123456
+        """
+        print(message)
+
+        try:
+            # smtplib.SMTP_PORT
+            # 116.110.250.42: Timeout
+            # 127.0.0.1: Refused
+            # localhost: Refused
+            smtpObj = smtplib.SMTP('127.0.0.1', 5000, socket.getfqdn())
+            smtpObj.sendmail(sender, receivers, message)         
+            print("Successfully sent email")
+            return JsonResponse({"status": "success"})
+
+        except smtplib.SMTPException:
+            print("Error: unable to send email")
+            return JsonResponse({"status": "fail"})
+
+        # Define the SMTP server
+        # port = 2525
+        # smtp_server = "smtp.mailtrap.io"
+        # login = "c5a6b7264acd23"
+        # password = "c69400ef5d34f7"
+
+        # # specify the sender and receiver
+        # sender = "thanhtuanhuynh0011@gmail.com"
+        # receiver = email
+
+        # message = f"""\
+        # Subject: Verify code to create new password - Mask Warning
+        # To: {receiver}
+        # From: {sender}
+
+        # Hi you, your code is: 123456"""
+
+        # try:
+        #     #send your message with credentials specified above
+        #     server = smtplib.SMTP(smtp_server, port)
+        #     server.login(login, password)
+        #     server.sendmail(sender, receiver, message)
+            
+        #     # sent success
+        #     print('Sent')
+        #     return JsonResponse({"status": "success"})
+        # except (gaierror, ConnectionRefusedError):
+        #     print('Failed to connect to the server. Bad connection settings?')
+        #     return JsonResponse({"status": "fail"})
+        # except smtplib.SMTPServerDisconnected:
+        #     print('Failed to connect to the server. Wrong user/password?')
+        #     return JsonResponse({"status": "fail"})
+        # except smtplib.SMTPException as e:
+        #     print('SMTP error occurred: ' + str(e))
+        #     return JsonResponse({"status": "fail"})
 

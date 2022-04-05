@@ -20,11 +20,11 @@ const ForgotPasswordEnterCode = () => {
     setCode(codeWillSend);
     alert("Your code: " + codeWillSend);
 
-    emailjs.init("EQyEVCbF1iQKVRFmH");
-    emailjs.send("service_wsbq7tf", "template_jom02bx", {
-      message: codeWillSend,
-      user_email: email,
-    });
+    // emailjs.init("EQyEVCbF1iQKVRFmH");
+    // emailjs.send("service_wsbq7tf", "template_jom02bx", {
+    //   message: codeWillSend,
+    //   user_email: email,
+    // });
   };
 
   const handleSubmitCode = (e) => {
