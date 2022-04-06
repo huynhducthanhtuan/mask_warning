@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import styles from '../AdminHome/Home.module.css'
 import NotifyCard from '../AdminNotifyCard'
-import { Bell } from "../../ExportImages";
+import { BellIcon, ReportUserImage, LogOutIcon } from "../../../assets/ExportImages";
+
 
 const ShowBox = () => {
     const [showBox, setShowBox] = useState(false)
 
     const exampleUser = {
-        avatar: "./img/report_user.png",
+        avatar: ReportUserImage,
         name: "Huynh Ngoc Hieu",
       };
       const exampleReport = {
@@ -25,7 +26,7 @@ const ShowBox = () => {
           className={styles.homeNotify}
           onClick={() => setShowBox(!showBox)}
         >
-          <img className={styles.homeIconTopRight} src={Bell} />
+          <img className={styles.homeIconTopRight} src={BellIcon} />
           <sup className={styles.homeNotifyContent}>
             <small className={styles.cartBadge}>3</small>
           </sup>
@@ -48,7 +49,7 @@ const ShowBox = () => {
         </div>
         <img
           className={styles.homeIconTopRight}
-          src="./icons/dashicons-migrate.png"
+          src={LogOutIcon}
         />
       </div>
     )

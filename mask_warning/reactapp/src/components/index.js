@@ -19,9 +19,4 @@ export { default as Signin } from "./Signin";
 export { default as Profile } from "./Profile";
 export { default as ChangePassword } from "./ChangePassword";
 
-// // ROLE ADMIN
-// export { default as AdminHome } from "./AdminHome";
-// export { default as AdminReportsManager } from "./AdminReportsManager";
-// export { default as AdminSignin } from "./AdminSignin";
-// export { default as AdminStatisticCard } from "./AdminStatisticCard";
-// export { default as AdminUsersManager } from "./AdminUsersManager";
+

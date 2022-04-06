@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styles from "./LeftControl.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { VerticalLogo } from "../../ExportImages";
+import { VerticalLogo } from "../../../assets/ExportImages";
 
 
 const LeftControl = ({ toggle = "home" }) => {
@@ -19,7 +19,7 @@ const LeftControl = ({ toggle = "home" }) => {
               ? `${styles.homeTabItem} ${styles.active}`
               : `${styles.homeTabItem}`
           }
-          onClick={() => navigate("/homeAdmin")}
+          onClick={() => navigate("/admin/home")}
         >
           <img src="./icons/home.png" />
           <p>Home</p>
@@ -31,7 +31,7 @@ const LeftControl = ({ toggle = "home" }) => {
               ? `${styles.homeTabItem} ${styles.active}`
               : `${styles.homeTabItem}`
           }
-          onClick={() => navigate("/usersManager")}
+          onClick={() => navigate("/admin/users-manager")}
         >
           <img src="./icons/users_manager.png" />
           <p >Users Manager</p>
@@ -43,7 +43,7 @@ const LeftControl = ({ toggle = "home" }) => {
               ? `${styles.homeTabItem} ${styles.active}`
               : `${styles.homeTabItem}`
           }
-          onClick={() => navigate("/reportsManager")}
+          onClick={() => navigate("/admin/reports-manager")}
         >
           <img src="./icons/reports_manager.png" />
           <p >Reports Manager</p>
