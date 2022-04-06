@@ -1,0 +1,41 @@
+.cardMain{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 104px;
+    background-color: white;
+    cursor: pointer;
+}
+.cardMain.solved{
+    background-color: #66BB6A;
+}
+.cardMain p:nth-child(1){
+    margin-left: 20px;
+    font-weight: 700;
+    font-size: 18px;
+    color: #6160DC;
+}
+.cardMain p:nth-child(2){
+    margin-left: 20px;
+    font-weight: 700;
+    font-size: 18px;
+}
+.cardMain p:nth-child(3){
+    position: absolute;
+    left: 700px;
+    font-family: 'Inter';
+    font-style: italic;
+    font-weight: 100;
+    font-size: 24px;
+}
+.cardMain :nth-child(4){
+    width: 144px;
+    height: 37px;
+    position: absolute;
+    right: 30px;
+    background: #6160DC;
+    border: #6160DC;
+    color: white;
+    border-radius: 20px;
+    font-size: 16px;
+}

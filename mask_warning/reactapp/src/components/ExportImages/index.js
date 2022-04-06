@@ -1,0 +1,1 @@
+export {default as Bell} from "../../assets/icons/bell.png"

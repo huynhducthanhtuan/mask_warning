@@ -13,6 +13,8 @@ import Footer from "../components/Footer"
 
 import SignInAdmin from "../components/AdminSignin"
 import HomeAdmin from "../components/AdminHome"
+import ReportDetailAdmin from "../components/AdminReportDetail"
+
 
 
 const ScreensRoot  = () => {
@@ -31,6 +33,8 @@ const ScreensRoot  = () => {
 
         <Route path="/signinAdmin"   element={ <SignInAdmin />} />
         <Route path="/homeAdmin"   element={ <HomeAdmin />} />
+        <Route path="/reportDetail"   element={ <ReportDetailAdmin />} />
+
 
       </Routes>
     )

@@ -1,13 +1,12 @@
 import React, { useRef, useState } from "react";
-import styles from "./Home.module.css"
+import styles from "./ReportDetail.module.css"
 import { Link } from "react-router-dom";
 import StatisticCard from "../AdminStatisticCard"
 import UsersManagerAdmin from "../AdminUsersManager"
 import ReportsManagerAdmin from "../AdminReportsManager"
 import NotifyCard from "../AdminNotifyCard";
-import { Bell } from "../ExportImages";
 
-const HomeAdmin = () => {
+const ReportDetailAdmin = () => {
 
     const [toggle, setToggle] = useState("home")
 
@@ -77,7 +76,7 @@ const HomeAdmin = () => {
                 <div className={styles.homeTopRightControl}>
                     <p>Admin</p>
                     <div className={styles.homeNotify} onClick={() => setShowBox(!showBox)}>
-                        <img className={styles.homeIconTopRight} src={Bell} />
+                        <img className={styles.homeIconTopRight} src="./icons/bell.png" />
                         <sup className={styles.homeNotifyContent}><small className={styles.cartBadge}>3</small></sup>
                     </div>
                     <div className={showBox ? `${styles.homeNotifyBox} d-block` : styles.homeNotifyBox} >
@@ -131,4 +130,4 @@ const HomeAdmin = () => {
         </section >
     )
 }
-export default HomeAdmin;
+export default ReportDetailAdmin;
