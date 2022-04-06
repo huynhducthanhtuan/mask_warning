@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styles from "./Home.module.css";
 import Header from "../Header";
 import Footer from "../Footer";
-import { Link } from "react-router-dom";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
 import "./sliderDot.css";
 import { UserContext } from "../../App";
 import { AboutUsIcon } from "../ExportImages";
@@ -23,6 +23,10 @@ const Home = () => {
         slidesToShow: 1,
         slidesToScroll: 1
     };
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+  
     const notify = () => {
         if(!state) {
             toast.info("YOU MUST SIGN IN !")
@@ -169,6 +173,7 @@ const Home = () => {
             <Footer />
         </body>
     )
-}
+ 
+};
 
-export default Home
+export default Home;

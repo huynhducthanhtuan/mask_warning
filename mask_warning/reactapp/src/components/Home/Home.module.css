@@ -1,211 +1,215 @@
 .homeSlider {
-    position: relative;
-    z-index: 1;
-  }
+  position: relative;
+  z-index: 1;
+}
 
-  .homeSliderGettingStarted {
-    transition: 0.5s;
-  }
+.homeSliderGettingStarted {
+  transition: 0.5s;
+}
 
-  .homeSliderGettingStarted:hover {
-    opacity: 0.6;
-    background: #5D5FEF;
-  }
-  
-  .homeSlider img {
-    border-top: 1px solid rgba(135, 130, 113, 0.4);
-    width: 100%;
-  }
-  
-  .homeSliderGettingStarted {
-    position: absolute;
-    z-index: 2;
-    bottom: 15%;
-    right: 35%;
-    transform: translate(-50%, -50%);
-    padding: 25px 60px;
-    background-color: #1c4079;
-    border-radius: 20px;
-    text-decoration: none;
-  }
-  
-  .homeSliderGettingStarted p {
-    font-style: normal;
-    font-weight: 800;
-    font-size: 20px;
-    line-height: 19px;
-    color: #ffffff !important;
-  }
-  
-  .homeSlider .slick-dots {
-    display: none;
-  }
-  
-  .homeSliderArrowBot {
-    position: absolute;
-    z-index: 2;
-    bottom: -14px;
-    right: 44%;
-    transform: translate(-50%, 0);
-  }
-  
-  .homeText {
-    position: relative;
-  }
-  
-  .homeText h2 {
-    text-align: center;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 36px;
-    line-height: 56px;
-    color: #4754a2;
-    padding: 70px 0 45px 0;
-  }
-  
-  .homeText img {
-    position: absolute;
-    left: 50%;
-    bottom: 30%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    width: 280px;
-  }
-  
-  .homeText span {
-    font-style: normal;
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #1f1534;
-    margin-bottom: 50px;
-  }
-  
-  .homeOurServiceListItems {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .homeOurServiceItem {
-    padding: 53px 30px;
-    border: 1px;
-    width: calc(1028px / 2);
-    box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
-      0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
-      transition: 0.4s;
-  }
+.homeSliderGettingStarted:hover {
+  opacity: 0.6;
+  background: #5d5fef;
+}
+
+.homeSlider img {
+  border-top: 1px solid rgba(135, 130, 113, 0.4);
+  width: 100%;
+}
+
+.homeSliderGettingStarted {
+  position: absolute;
+  z-index: 2;
+  bottom: 15%;
+  right: calc(100% / 2 - 271px);
+  transform: translate(-50%, -50%);
+  padding: 25px 60px;
+  background-color: #1c4079;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+.homeSliderGettingStarted p {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 19px;
+  color: #ffffff !important;
+}
+
+.homeSlider .slick-dots {
+  bottom: 50px;
+  left: calc(100% / 2 - 10px);
+  transform: translate(-50%, 0px);
+}
+
+.homeSliderArrowBot {
+  position: absolute;
+  z-index: 2;
+  bottom: -14px;
+  right: calc(100% / 2 - 100px);
+  transform: translate(-50%, 0);
+}
+
+.homeText {
+  position: relative;
+}
+
+.homeText h2 {
+  text-align: center;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 56px;
+  color: #4754a2;
+  padding: 70px 0 45px 0;
+}
+
+.homeText img {
+  position: absolute;
+  left: 50%;
+  bottom: 30%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 280px;
+}
+
+.homeText span {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1f1534;
+  margin-bottom: 50px;
+}
+
+.homeOurServiceListItems {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeOurServiceItem {
+  padding: 53px 30px;
+  border: 1px;
+  width: calc(1028px / 2);
+  box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+  transition: 0.4s;
+}
 
 .homeOurServiceItem:hover {
-    opacity: 0.6;
-    background-color: #5D5FEF;
-    color: white;
+  opacity: 0.6;
+  background-color: #5d5fef;
+  color: white;
 }
- 
-  .homeOurServiceItem img {
-    height: 95px;
-    object-fit: contain;
-    padding-bottom: 20px;
-  }
-  
-  .homeOurServiceItem h3 {
-    padding-bottom: 13px;
-  }
-  
-  .homeOurServiceItem p {
-    color: #7d7987;
-  }
-  
-  .homeGuideImage img {
-    width: 100%;
-    object-fit: contain;
-  }
-  
-  .homeButton {
-    text-align: center;
-    width: 220px;
-    margin: 0 auto;
-    padding-top: 20px;
-  }
-  
-  .homeButton p {
-    color: white;
-    background-color: #1c4079;
-    border-radius: 20px;
-    font-style: normal;
-    font-weight: 800;
-    font-size: 16px;
-    line-height: 19px;
-    text-decoration: none;
-    min-width: 227px;
-    padding: 20px 40px;
-    transition: 0.5s;
-  }
-  
-  .homeButton p:hover {
-    opacity: 0.6;
-    background-color: #5D5FEF;
-    color: white;
-    text-decoration: none;
-  }
 
-  .honeAboutUs {
-    padding-bottom: 80px;
-  }
-  
-  .homeAboutUsListItems {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  .homeAboutUsListItems img {
-    width: 200px;
-    height: 200px;
-  }
-  
-  .homeAboutUsListItems p {
-    text-align: center;
-    padding-top: 20px;
-    font-size: 23px;
-  }
-  
-  .homeReport {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 110px;
-  }
-  
-  .homeReportRight {
-    padding: 255px 0 0 80px;
-  }
-  
-  .homeReportRight h2 {
-    padding-bottom: 36px;
-    font-weight: bold;
-    font-size: 36px;
-    line-height: 56px;
-    color: #4754a2;
-  }
-  
-  .homeReportRight img {
-    padding-bottom: 36px;
-    width: 145px;
-  }
-  
-  .homeReportText {
-    padding-bottom: 30px;
-  }
-  .homeReportText p {
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 30px;
-    color: #7d7987;
-  }
-  
-  .homeReportRight .homeButton {
-    margin: 0;
-  }
+.homeOurServiceItem img {
+  height: 95px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  padding-bottom: 20px;
+}
+
+.homeOurServiceItem h3 {
+  padding-bottom: 13px;
+}
+
+.homeOurServiceItem p {
+  color: #7d7987;
+}
+
+.homeGuideImage img {
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.homeButton {
+  text-align: center;
+  width: 220px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.homeButton p {
+  color: white;
+  background-color: #1c4079;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 19px;
+  text-decoration: none;
+  min-width: 227px;
+  padding: 20px 40px;
+  transition: 0.5s;
+}
+
+.homeButton p:hover {
+  opacity: 0.6;
+  background-color: #5d5fef;
+  color: white;
+  text-decoration: none;
+}
+
+.honeAboutUs {
+  padding-bottom: 80px;
+}
+
+.homeAboutUsListItems {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.homeAboutUsListItems img {
+  width: 200px;
+  height: 200px;
+}
+
+.homeAboutUsListItems p {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 23px;
+}
+
+.homeReport {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 110px;
+}
+
+.homeReportRight {
+  padding: 255px 0 0 80px;
+}
+
+.homeReportRight h2 {
+  padding-bottom: 36px;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 56px;
+  color: #4754a2;
+}
+
+.homeReportRight img {
+  padding-bottom: 36px;
+  width: 145px;
+}
+
+.homeReportText {
+  padding-bottom: 30px;
+}
+.homeReportText p {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 30px;
+  color: #7d7987;
+}
+
+.homeReportRight .homeButton {
+  margin: 0;
+}

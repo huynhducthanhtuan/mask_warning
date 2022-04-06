@@ -5,4 +5,4 @@ function GlobalStyle ({children}) {
         children
     )
 }
-export default GlobalStyle
+export default GlobalStyle;

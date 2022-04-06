@@ -1,6 +1,6 @@
 
-.camera_header {
-    border-top: 1px solid #3333;
+.camera__header {
+    max-width: 1500px;
 }
 .sideBar {
     text-align: center;
@@ -33,7 +33,7 @@
 }
 
 .chooseImage {
-    margin: 15px 20px;
+    margin-top: 15px;
 }
 
 .chooseImage img {
@@ -53,4 +53,47 @@
 
 .chooseImage input {
     text-align: center;
+}
+
+.reportRight {
+    display: flex;
+    padding: 0;
+}
+
+.textInstruction {
+    font-size: 14px;
+}
+
+.selectionBug {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+}
+
+.selectionBug select {
+    display: block;
+    width: 200px;
+    background: #4444;
+}
+
+.selectionBug p {
+    font-weight: bold;
+}
+
+.reportDescription {
+    margin-top: 15px;
+}
+
+.reportDescription h5 {
+    font-size: 20px;
+}
+
+.reportDescription input {
+    width: 95% !important;
+    height: 200px !important;
+    background: ghostwhite !important;
+    border-radius: 5px!important;
+    border: 1px solid #4444 !important;
 }

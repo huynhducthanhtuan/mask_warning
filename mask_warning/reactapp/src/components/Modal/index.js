@@ -1,5 +1,6 @@
 import React from "react";
-import styles from './Modal.module.css'
+import styles from "./Modal.module.css";
+
 function Modal({ setOpenModal, title, body = "Body", action }) {
   return (
     <div className={styles.modalBackground}>
@@ -20,6 +21,9 @@ function Modal({ setOpenModal, title, body = "Body", action }) {
           <p>{body}</p>
         </div>
         <div className={styles.footer}>
+         <button
+            onClick={action}
+          >Oke</button>
           <button
             onClick={() => {
               setOpenModal(false);
@@ -28,9 +32,7 @@ function Modal({ setOpenModal, title, body = "Body", action }) {
           >
             Cancel
           </button>
-          <button
-            onClick={action}
-          >Oke</button>
+         
         </div>
       </div>
     </div>

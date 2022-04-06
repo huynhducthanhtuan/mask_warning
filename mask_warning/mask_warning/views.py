@@ -22,7 +22,6 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 	# pass the blob through the network and obtain the face detections
 	faceNet.setInput(blob)
 	detections = faceNet.forward()
-	print(detections.shape)
 
 	# initialize our list of faces, their corresponding locations,
 	# and the list of predictions from our face mask network
@@ -83,80 +82,21 @@ maskNet = load_model(fr"{os.getcwd()}\mask_detector.model")
 # maskNet = load_model("keras_model.h5")
 # initialize the video stream
 
+# Create red corner
+pts = np.array([[15,15], [625, 15], 
+	[625, 465], [15, 465]],
+	np.int32)
+pts = pts.reshape((-1, 1, 2))
 
-# Create your views here.
-def example_view(request):
-    # my_app/templates/my_app/example.html
-    my_var = {'fullname':'Nguyen Hong Lich', 'mylist':[1,2,3,4]}
-    return render(request,'my_app/example.html', context=my_var)
-
-def variable_view(request):
-    
-    return render(request,'my_app/variable.html')
-
-def webcam(request):
-    return render(request, 'my_app/app1.html')
-@gzip.gzip_page
-def Home(request):
-    try:
-        cam = VideoCamera()
-        return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
-    except:
-        pass
-    return render(request, 'my_app/app1.html')
-
-#to capture video class
-class VideoCamera(object):
-    def __init__(self):
-        self.video = cv2.VideoCapture(0)
-        (self.grabbed, self.frame) = self.video.read()
-        threading.Thread(target=self.update, args=()).start()
-
-    def __del__(self):
-        self.video.release()
-
-    def get_frame(self):
-        image = self.frame
-        _, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
-
-    def update(self):
-        while True:
-            (self.grabbed, self.frame) = self.video.read()
-
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        # (locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
-
-        # # loop over the detected face locations and their corresponding
-        # # locations
-        # for (box, pred) in zip(locs, preds):
-        #     # unpack the bounding box and predictions
-        #     (startX, startY, endX, endY) = box
-        #     (mask, withoutMask) = pred
-
-        #     # determine the class label and color we'll use to draw
-        #     # the bounding box and text
-        #     label = "Mask" if mask > withoutMask else "No Mask"
-        #     color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
-
-        #     # include the probability in the label
-        #     label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
-
-        #     # display the label and bounding box rectangle on the output
-        #     # frame
-        #     cv2.putText(frame, label, (startX, startY - 10),
-        #         cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-        #     cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
+# Frame time when red corner off
+redCornerOffTime = [7,8,9]
 
 def stream():
 	cap = cv2.VideoCapture(0) 
+	frame_count = 0
 
 	while True:
+		frame_count += 1
 		ret, frame = cap.read()
 		(locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
 
@@ -169,11 +109,32 @@ def stream():
 
 			# determine the class label and color we'll use to draw
 			# the bounding box and text
-			label = "Mask" if mask > withoutMask else "No Mask"
-			color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+			# and put red corner if need
+			if mask > withoutMask:
+				label = 'Mask'
+				color = (0, 255, 0)
+				frame_count = 0
+
+			else:
+				label = 'No Mask'
+				color = (0, 0, 255)
+
+				isOnRedcorner = True
+
+				for time_off in redCornerOffTime:
+					if frame_count % time_off == 0:
+						isOnRedcorner = False
+						break
+
+				if isOnRedcorner:
+					frame = cv2.polylines(frame, [pts], isClosed=True, color=color, thickness=30)
+
 
 			# include the probability in the label
 			label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
+
+			
+
 
 			# display the label and bounding box rectangle on the output
 			# frame

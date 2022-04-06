@@ -5,6 +5,8 @@ import ScreensRoot from "./screens/root";
 import GlobalStyle from "./components/GlobalStyle";
 import { ToastContainer, toast } from "react-toastify";
 import { reducer, initialState } from "./reducers/userReducer";
+import { initialLocalStorageConfig } from "./components/Auth";
+import { ForgotPasswordContextProvider } from "./contexts/ForgotPasswordContext";
 
 export const UserContext = createContext();
 
@@ -14,9 +16,12 @@ function App() {
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       <GlobalStyle>
+        {initialLocalStorageConfig()}
         <ToastContainer position="top-center" autoClose={1000} type="default" />
         <BrowserRouter>
-          <ScreensRoot />
+          <ForgotPasswordContextProvider>
+            <ScreensRoot />
+          </ForgotPasswordContextProvider>
         </BrowserRouter>
       </GlobalStyle>
     </UserContext.Provider>
