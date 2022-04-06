@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import styles from "./ReportsManager.module.css"
 import { Link } from "react-router-dom";
+import LeftControl from "../AdminLeftControl";
 import ReportCard from "../AdminReportCard"
 
 const ReportsManagerAdmin = (onClick) => {
@@ -25,25 +26,28 @@ const ReportsManagerAdmin = (onClick) => {
     }
 
     return (
-        <section className={styles.reportsMain} onClick={onClick}>
-            <h3>Reports List</h3>
-            <div className={styles.reportsTasksTabs}>
-                <p className={toggle === "all" ? `${styles.reportsTasks} ${styles.active}` : styles.reportsTasks}
-                    onClick={() => setToggle("all")}> Show all tasks </p>
-                <p style={{ "cursor": "default" }}>&nbsp;/&nbsp;</p>
-                <p className={toggle === "solved" ? `${styles.reportsTasks} ${styles.active}` : styles.reportsTasks}
-                    onClick={() => setToggle("solved")}> Show task(s) have solved </p>
-                <p style={{ "cursor": "default" }}>&nbsp;/&nbsp;</p>
-                <p className={toggle === "notSolved" ? `${styles.reportsTasks} ${styles.active}` : styles.reportsTasks}
-                    onClick={() => setToggle("notSolved")}> Show task(s) have not solved </p>
-            </div>
+        <section className={styles.reportsMain}>
+            <LeftControl toggle="reports" />
+            <div className={styles.reportsRight}>
+                <h3>Reports List</h3>
+                <div className={styles.reportsTasksTabs}>
+                    <p className={toggle === "all" ? `${styles.reportsTasks} ${styles.active}` : styles.reportsTasks}
+                        onClick={() => setToggle("all")}> Show all tasks </p>
+                    <p style={{ "cursor": "default" }}>&nbsp;/&nbsp;</p>
+                    <p className={toggle === "solved" ? `${styles.reportsTasks} ${styles.active}` : styles.reportsTasks}
+                        onClick={() => setToggle("solved")}> Show task(s) have solved </p>
+                    <p style={{ "cursor": "default" }}>&nbsp;/&nbsp;</p>
+                    <p className={toggle === "notSolved" ? `${styles.reportsTasks} ${styles.active}` : styles.reportsTasks}
+                        onClick={() => setToggle("notSolved")}> Show task(s) have not solved </p>
+                </div>
 
-            <div className={styles.reportsList}>
-                <Link to="/reportDetail">
-                    <ReportCard report={exampleReport} />
-                </Link>
-                <ReportCard report={exampleReport2} />
-                <ReportCard report={exampleReport3} />
+                <div className={styles.reportsList}>
+                    <Link to="/reportDetail">
+                        <ReportCard report={exampleReport} />
+                    </Link>
+                    <ReportCard report={exampleReport2} />
+                    <ReportCard report={exampleReport3} />
+                </div>
             </div>
         </section>
     )

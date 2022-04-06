@@ -6,19 +6,6 @@
     flex-basis: 84%;
 }
 
-.homeLeftControl{
-    background-color: rgb(255, 255, 255);
-    flex-basis: 16%;
-}
-.homeLeftControl h2{
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: 600;
-    opacity: 50%;
-    margin-top: 28px;
-    margin-left: 50px;
-    margin-bottom: 28px;
-}
-
 .homeTabItem{
     padding: 18px;
     display: flex;

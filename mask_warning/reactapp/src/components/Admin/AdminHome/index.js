@@ -5,6 +5,7 @@ import StatisticCard from "../AdminStatisticCard"
 import UsersManagerAdmin from "../AdminUsersManager"
 import ReportsManagerAdmin from "../AdminReportsManager"
 import NotifyCard from "../AdminNotifyCard";
+import LeftControl from "../AdminLeftControl";
 import { Bell, VerticalLogo } from "../../ExportImages";
 
 const HomeAdmin = () => {
@@ -41,37 +42,8 @@ const HomeAdmin = () => {
 
     return (
         <section className={styles.homeMain}>
-            <div className={styles.homeLeftControl} onClick={() => setShowBox(false)}>
-                <img src={VerticalLogo} />
-                <h2>MANAGEMENTS</h2>
-
-                <div className={styles.homeTabs}>
-                    <div className={toggle === "home" ? `${styles.homeTabItem} ${styles.active}` : `${styles.homeTabItem}`}
-                        onClick={() => setToggle("home")}>
-                        <img src="./icons/home.png" />
-                        <p>Home</p>
-                    </div>
-
-                    <div className={toggle === "users" ? `${styles.homeTabItem} ${styles.active}` : `${styles.homeTabItem}`}
-                        onClick={() => setToggle("users")}>
-                        <img src="./icons/users_manager.png" />
-                        <p>Users Manager</p>
-                    </div>
-
-                    <div className={toggle === "reports" ? `${styles.homeTabItem} ${styles.active}` : `${styles.homeTabItem}`}
-                        onClick={() => setToggle("reports")}>
-                        <img src="./icons/reports_manager.png" />
-                        <p>Reports Manager</p>
-                    </div>
-                </div>
-
-                <div className={styles.homeDecs}>
-                    <img src="./icons/line.png" />
-                    <h3>Mask Warning Admin Website</h3>
-                    <p>Mask Warning Admin Website is a system help store notify customer wearing mask</p>
-                </div>
-
-            </div>
+            
+            <LeftControl/>
 
             <div className={styles.homeTabContents}>
                 <div className={styles.homeTopRightControl}>
@@ -117,14 +89,6 @@ const HomeAdmin = () => {
                         <StatisticCard cardName={"Average hour(s) per day"} data={dataAvarageHoursStatistic[statisticToggle]}
                             dataType={" hour(s) per day"} iconLink={"./icons/average_hours.png"} />
                     </div>
-                </div>
-
-                <div className={toggle === "users" ? `${styles.homeTabContent} ${styles.active}` : `${styles.homeTabContent}`}>
-                    <UsersManagerAdmin  onClick={() => setShowBox(false)}/>
-                </div>
-
-                <div className={toggle === "reports" ? `${styles.homeTabContent} ${styles.active}` : `${styles.homeTabContent}`}>
-                    <ReportsManagerAdmin  />
                 </div>
 
             </div>
