@@ -11,6 +11,11 @@ import AboutUs from "../components/AboutUs"
 import SignIn from "../components/Signin"
 import Footer from "../components/Footer"
 
+import SignInAdmin from "../components/AdminSignin"
+import HomeAdmin from "../components/AdminHome"
+import ReportDetailAdmin from "../components/AdminReportDetail"
+
+
 
 const ScreensRoot  = () => {
     return (
@@ -25,6 +30,12 @@ const ScreensRoot  = () => {
         <Route path="/about-us" element={ <AboutUs />} />
         <Route path="/signIn"   element={ <SignIn />} />
         <Route path="/footer"   element={ <Footer />} />
+
+        <Route path="/signinAdmin"   element={ <SignInAdmin />} />
+        <Route path="/homeAdmin"   element={ <HomeAdmin />} />
+        <Route path="/reportDetail"   element={ <ReportDetailAdmin />} />
+
+
       </Routes>
     )
 }

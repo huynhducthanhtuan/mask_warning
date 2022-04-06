@@ -1,0 +1,21 @@
+.cardMain{
+    width: 200px;
+    height: 220px;
+    background-color: white;
+    border-radius: 5%;
+    cursor: default;
+}
+.cardMain img {
+    margin: 12px;
+}
+.cardMain p:nth-child(2){
+    margin: 12px;
+    font-weight: 650;
+    font-size: 14px;
+    color: #5A5881;
+}
+.cardMain p:last-child{
+    margin: 12px;
+    font-weight: 700;
+    font-size: 18px;
+}

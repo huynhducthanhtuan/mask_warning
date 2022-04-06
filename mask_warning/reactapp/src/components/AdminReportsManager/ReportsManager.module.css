@@ -1,0 +1,32 @@
+.reportsMain{
+    background-color: transparent;
+}
+.reportsMain h3{
+    font-size: 30px;
+    margin: 20px;
+    font-weight: 700;
+}
+.reportsMain div p{
+    font-size: 15px;
+}
+
+
+.reportsTasksTabs{
+    display: flex;
+    position: absolute;
+    right: 50px;
+}
+.reportsTasks{
+    cursor: pointer;
+    color: #6160DC;
+}
+.reportsTasks.active{
+    cursor: pointer;
+    color: #6160DC;
+    font-weight: 600;
+}
+
+
+.reportsList{
+    margin-top: 60px;
+}
