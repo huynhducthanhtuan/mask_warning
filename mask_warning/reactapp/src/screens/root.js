@@ -11,9 +11,10 @@ import AboutUs from "../components/AboutUs"
 import SignIn from "../components/Signin"
 import Footer from "../components/Footer"
 
-import SignInAdmin from "../components/AdminSignin"
-import HomeAdmin from "../components/AdminHome"
-import ReportDetailAdmin from "../components/AdminReportDetail"
+import SignInAdmin from "../components/Admin/AdminSignin"
+import HomeAdmin from "../components/Admin/AdminHome"
+import ReportsManagerAdmin from "../components/Admin/AdminReportsManager"
+import ReportDetailAdmin from "../components/Admin/AdminReportDetail"
 
 
 
@@ -33,6 +34,8 @@ const ScreensRoot  = () => {
 
         <Route path="/signinAdmin"   element={ <SignInAdmin />} />
         <Route path="/homeAdmin"   element={ <HomeAdmin />} />
+        <Route path="/reportsManager"   element={ <ReportsManagerAdmin />} />
+
         <Route path="/reportDetail"   element={ <ReportDetailAdmin />} />
 
 

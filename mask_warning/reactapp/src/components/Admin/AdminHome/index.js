@@ -5,7 +5,7 @@ import StatisticCard from "../AdminStatisticCard"
 import UsersManagerAdmin from "../AdminUsersManager"
 import ReportsManagerAdmin from "../AdminReportsManager"
 import NotifyCard from "../AdminNotifyCard";
-import { Bell } from "../ExportImages";
+import { Bell, VerticalLogo } from "../../ExportImages";
 
 const HomeAdmin = () => {
 
@@ -42,7 +42,7 @@ const HomeAdmin = () => {
     return (
         <section className={styles.homeMain}>
             <div className={styles.homeLeftControl} onClick={() => setShowBox(false)}>
-                <img src="../icons/logo.png" />
+                <img src={VerticalLogo} />
                 <h2>MANAGEMENTS</h2>
 
                 <div className={styles.homeTabs}>
