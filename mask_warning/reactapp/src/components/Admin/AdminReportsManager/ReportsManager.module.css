@@ -1,5 +1,8 @@
 .reportsMain{
-    background-color: transparent;
+    display: flex;
+}
+.reportsRight{
+    flex-basis: 84%;
 }
 .reportsMain h3{
     font-size: 30px;

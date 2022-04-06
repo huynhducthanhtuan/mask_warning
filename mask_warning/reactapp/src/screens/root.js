@@ -15,6 +15,7 @@ import SignInAdmin from "../components/Admin/AdminSignin"
 import HomeAdmin from "../components/Admin/AdminHome"
 import ReportsManagerAdmin from "../components/Admin/AdminReportsManager"
 import ReportDetailAdmin from "../components/Admin/AdminReportDetail"
+import UsersManagerAdmin from "../components/Admin/AdminUsersManager"
 
 
 
@@ -35,6 +36,7 @@ const ScreensRoot  = () => {
         <Route path="/signinAdmin"   element={ <SignInAdmin />} />
         <Route path="/homeAdmin"   element={ <HomeAdmin />} />
         <Route path="/reportsManager"   element={ <ReportsManagerAdmin />} />
+        <Route path="/usersManager"   element={ <UsersManagerAdmin />} />
 
         <Route path="/reportDetail"   element={ <ReportDetailAdmin />} />
 

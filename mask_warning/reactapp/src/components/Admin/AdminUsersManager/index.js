@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
 import styles from "./UsersManager.module.css"
 import { Link } from "react-router-dom";
+import LeftControl from "../AdminLeftControl";
 
 const UsersManagerAdmin = () => {
 
-    const [toggle, setToggle] = useState("home")
-
     return (
+        
         <section className={styles.homeMain}>
+            <LeftControl toggle="users"/>
             <div>Users</div>
         </section>
     )
