@@ -89,7 +89,30 @@ def Notifications(request, quantity=0):
         'notifications': notifications[:quantity] if quantity else notifications
     })
 
+def ListOfUsers(request, pages):
 
+    usersList = []
+    nUserInPage = 2
+    startIndex = (pages-1)*nUserInPage
+    endIndex = startIndex + nUserInPage
+
+    docs = db.collection(u'users').limit(endIndex+1).stream()
+
+    for doc in docs:
+        usersList.append({
+            'fullName': doc.to_dict()['fullName'],
+            'storeName': doc.to_dict()['storeName'],
+            'createdDate': doc.to_dict()['createdDate']
+        })
+
+    if startIndex >= len(usersList) or startIndex < 0:
+        return JsonResponse({
+            "error": "Index out of bound."
+        })
+
+    return JsonResponse({
+        'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+    })
 # (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
 # [ADD] data
 # arr = [
