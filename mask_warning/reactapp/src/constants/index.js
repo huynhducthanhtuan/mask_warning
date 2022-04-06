@@ -1,16 +1,5 @@
-export const codes = [
-  871622,
-  675620,
-  990873,
-  828796,
-  223084,
-  345722,
-  454612,
-  231179,
-  529960,
-  104682,
-  454614,
-  231176,
-  529962,
-  103682,
-];
+export const THUAN_DEP_TRAI = true;
+export const HIEU_TINH_TE = true;
+export const LICH_THONG_MINH = true;
+export const HIEU_WI_BU = undefined;
+export const TUAN_NY_QUYNH = undefined;

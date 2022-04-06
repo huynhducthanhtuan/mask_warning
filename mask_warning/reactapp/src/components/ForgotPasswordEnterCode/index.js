@@ -46,13 +46,11 @@ const ForgotPasswordEnterCode = () => {
     const data = await resendCodeApi({ email });
 
     // Xử lí kết quả trả về từ API
-    console.log(data);
-    console.log(data.message);
     switch (data.message) {
       case "Failed to re-send code":
         toast.error(data.message.toLocaleUpperCase());
         break;
-      case "Please check your email":
+      case "Re-send code success. Please check your email":
         toast.success(data.message.toLocaleUpperCase());
         break;
     }

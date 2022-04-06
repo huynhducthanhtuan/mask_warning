@@ -352,7 +352,7 @@ def HandleSubmitEmail(request):
                     if SendCode(email) == False:
                         return JsonResponse({"message": "Send code failed"})
                     else:
-                        return JsonResponse({"message": "Send code success"})
+                        return JsonResponse({"message": "Send code success. Please check your email"})
 
 
 def SubmitCode(email, code):
@@ -404,7 +404,7 @@ def HandleReSendCode(request):
         if SendCode(email) == False:
             return JsonResponse({"message": "Failed to re-send code"})
         else:
-            return JsonResponse({"message": "Please check your email"})
+            return JsonResponse({"message": "Re-send code success. Please check your email"})
 
 
 def CreateNewPassword(email, newPassword):
