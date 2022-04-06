@@ -2,43 +2,59 @@ import React, { useRef, useContext, useEffect } from "react";
 import styles from "./ForgotPasswordEnterCode.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
-import { codes } from "../../constants";
+import { resendCodeApi, submitCodeApi } from "../../apis";
 import { toast } from "react-toastify";
-import emailjs from "emailjs-com";
 import Header from "../Header";
 
 const ForgotPasswordEnterCode = () => {
   const navigate = useNavigate();
-  const enterCodeInputRef = useRef();
+  const codeInputRef = useRef();
   const { code, setCode, email, setEmail } = useContext(ForgotPasswordContext);
 
-  const handleReSendCode = (e) => {
-    e.preventDefault();
-    toast.info("Please check your email !!!".toLocaleUpperCase());
-
-    const codeWillSend = codes[Math.floor(Math.random() * codes.length)];
-    setCode(codeWillSend);
-    alert("Your code: " + codeWillSend);
-
-    // emailjs.init("EQyEVCbF1iQKVRFmH");
-    // emailjs.send("service_wsbq7tf", "template_jom02bx", {
-    //   message: codeWillSend,
-    //   user_email: email,
-    // });
+  const cleanInputText = () => {
+    codeInputRef.current.value = "";
   };
 
-  const handleSubmitCode = (e) => {
+  const handleSubmitCode = async (e) => {
     e.preventDefault();
-    const enterCodeInputValue = enterCodeInputRef.current.value;
 
-    if (enterCodeInputValue.trim() === "") {
-      toast.error("Please enter code !!!".toLocaleUpperCase());
-    } else {
-      if (enterCodeInputValue.trim() !== code) {
-        toast.error("You were enter wrong code !!!".toLocaleUpperCase());
-      } else {
+    // Call API
+    const data = await submitCodeApi({
+      email: email,
+      code: codeInputRef.current.value,
+    });
+
+    // Xử lí kết quả trả về từ API
+    switch (data.message) {
+      case "Please enter code":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "You were enter wrong code":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Correct code":
+        toast.success(data.message.toLocaleUpperCase());
         navigate("/forgot-password-create-new-password");
-      }
+        break;
+    }
+  };
+
+  const handleReSendCode = async (e) => {
+    e.preventDefault();
+
+    // Call API
+    const data = await resendCodeApi({ email });
+
+    // Xử lí kết quả trả về từ API
+    console.log(data);
+    console.log(data.message);
+    switch (data.message) {
+      case "Failed to re-send code":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Please check your email":
+        toast.success(data.message.toLocaleUpperCase());
+        break;
     }
   };
 
@@ -60,7 +76,7 @@ const ForgotPasswordEnterCode = () => {
             className={styles.formControl}
             id="inputCode"
             placeholder="Enter code"
-            ref={enterCodeInputRef}
+            ref={codeInputRef}
           />
         </div>
 

@@ -9,40 +9,46 @@ import Header from "../Header";
 const ForgotPasswordCreateNewPassword = () => {
   const navigate = useNavigate();
   const newPasswordInputRef = useRef();
-  const confirmNewPasswordInputRef = useRef();
+  const newPasswordConfirmInputRef = useRef();
   const { email, setEmail } = useContext(ForgotPasswordContext);
+
+  const cleanInputText = () => {
+    newPasswordInputRef.current.value = "";
+    newPasswordConfirmInputRef.current.value = "";
+  };
 
   const handleConfirmPasswords = async (e) => {
     e.preventDefault();
-    const newPassword = newPasswordInputRef.current.value.trim();
-    const confirmNewPassword = confirmNewPasswordInputRef.current.value.trim();
 
-    if (newPassword === "" || confirmNewPassword === "") {
-      toast.error("Please enter all information !!!".toLocaleUpperCase());
-    } else {
-      if (newPassword.length < 8 || confirmNewPassword.length < 8) {
-        toast.error(
-          "Please enter passwords has more 8 characters !!!".toLocaleUpperCase()
-        );
-      } else {
-        if (newPassword !== confirmNewPassword) {
-          toast.error("Passwords do not match !!!".toLocaleUpperCase());
-        } else {
-          try {
-            const data = await createNewPasswordApi({ email, newPassword });
-            if (data.message == "success") {
-              toast.success(
-                "Create new password success !!!".toLocaleUpperCase()
-              );
-              navigate("/signin");
-            } else {
-              toast.error("Create new password failed !!!".toLocaleUpperCase());
-            }
-          } catch (e) {
-            toast.error(e.toLocaleUpperCase());
-          }
-        }
-      }
+    // Call API
+    const data = await createNewPasswordApi({
+      email: email,
+      newPassword: newPasswordInputRef.current.value,
+      newPasswordConfirm: newPasswordConfirmInputRef.current.value,
+    });
+
+    // Xử lí kết quả trả về từ API
+    switch (data.message) {
+      case "User not found":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Please enter all information":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Please enter passwords has more 8 characters":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Please enter the same new password and new password confirm":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Create new password failed":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Create new password success":
+        toast.success(data.message.toLocaleUpperCase());
+        cleanInputText();
+        navigate("/signin");
+        break;
     }
   };
 
@@ -69,7 +75,7 @@ const ForgotPasswordCreateNewPassword = () => {
             className={styles.formControl}
             id="confirm-new-password-input"
             placeholder="Confirm new password"
-            ref={confirmNewPasswordInputRef}
+            ref={newPasswordConfirmInputRef}
           />
         </div>
 

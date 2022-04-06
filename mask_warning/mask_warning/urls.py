@@ -1,12 +1,11 @@
 from django.urls import include, path
 from django.contrib import admin
-from .apis import Home, Signin, Signout, ViewProfile, UpdateProfile, Notifications, HandleChangePassword
-from .apis import ForgotPasswordSendCode, ForgotPasswordCreateNewPassword, CheckEmailExist
+from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, Notifications, HandleChangePassword
+from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword
 from .views import video_feed
 
 urlpatterns = [
-    path('', Home),
-    path('auth/signin/', Signin),
+    path('auth/signin/', HandleSignin),
     path('auth/signout/', Signout),
     path('profile/', ViewProfile),
     path('update-profile/', UpdateProfile),
@@ -14,9 +13,10 @@ urlpatterns = [
     path('video_feed/', video_feed),
     path('notifications/<int:quantity>', Notifications),
     path('notifications/', Notifications),
-    path('forgot-password-send-code/', ForgotPasswordSendCode),
-    path('forgot-password-create-new-password/', ForgotPasswordCreateNewPassword),
-    path('check-email-exist/', CheckEmailExist),
+    path('forgot-password-submit-email/', HandleSubmitEmail),
+    path('forgot-password-submit-code/', HandleSubmitCode),
+    path('forgot-password-resend-code/', HandleReSendCode),
+    path('forgot-password-create-new-password/', HandleCreateNewPassword),
     
     # Trang admin mặc định của Django, mình ko dùng
     # path('admin/', admin.site.urls),

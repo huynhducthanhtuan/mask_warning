@@ -1,10 +1,10 @@
-export const signInAPI = (user) => {
+export const signInAPI = (data) => {
   return fetch("auth/signin/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(user),
+    body: JSON.stringify(data),
   })
     .then((res) => res.json())
     .catch((err) => err);
@@ -12,18 +12,6 @@ export const signInAPI = (user) => {
 
 export const signOutApi = () => {
   return fetch("auth/signout")
-    .then((res) => res.json())
-    .catch((err) => err);
-};
-
-export const createNewPasswordApi = (data) => {
-  return fetch("forgot-password-create-new-password/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
     .then((res) => res.json())
     .catch((err) => err);
 };
@@ -40,8 +28,8 @@ export const changePasswordApi = (data) => {
     .catch((err) => err);
 };
 
-export const checkEmailExistApi = (data) => {
-  return fetch("check-email-exist/", {
+export const submitEmailApi = (data) => {
+  return fetch("forgot-password-submit-email/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -52,8 +40,30 @@ export const checkEmailExistApi = (data) => {
     .catch((err) => err);
 };
 
-export const sendCodeViaEmail = (data) => {
-  return fetch("forgot-password-send-code/", {
+export const submitCodeApi = (data) => {
+  return fetch("forgot-password-submit-code/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const resendCodeApi = (data) => {
+  return fetch("forgot-password-resend-code/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+export const createNewPasswordApi = (data) => {
+  return fetch("forgot-password-create-new-password/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -3,26 +3,13 @@ import { useNavigate } from "react-router-dom";
 import styles from "./ForgotPassword.module.css";
 import { ForgotPasswordContext } from "../../contexts/ForgotPasswordContext";
 import { toast } from "react-toastify";
-import { codes } from "../../constants";
-import { checkEmailExistApi, sendCodeViaEmail } from "../../apis";
+import { submitEmailApi } from "../../apis";
 import Header from "../Header";
-import validator from "validator";
-import emailjs from "emailjs-com";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const emailInputRef = useRef();
-  const [emailError, setEmailError] = useState("");
   const { code, setCode, email, setEmail } = useContext(ForgotPasswordContext);
-
-  const validateEmail = (e) => {
-    var email = emailInputRef.current.value;
-    if (validator.isEmail(email)) {
-      setEmailError("Valid Email :)");
-    } else {
-      setEmailError("Enter valid Email!");
-    }
-  };
 
   const handleCancel = (e) => {
     e.preventDefault();
@@ -31,44 +18,32 @@ const ForgotPassword = () => {
 
   const handleSendCode = async (e) => {
     e.preventDefault();
-    const emailInputValue = emailInputRef.current.value;
 
-    if (emailInputValue.trim() === "") {
-      toast.error("Please enter your email !!!".toLocaleUpperCase());
-    } else {
-      if (!validator.isEmail(emailInputValue)) {
-        toast.error("Please enter an valid email !!!".toLocaleUpperCase());
-      } else {
-        // Kiểm tra email mà client nhập có tồn tạo trong DB ko
-        const data = await checkEmailExistApi({ email: emailInputValue });
+    // Call API
+    const data = await submitEmailApi({
+      email: emailInputRef.current.value,
+    });
 
-        if (data.isExistEmail) {
-          setEmail(emailInputValue);
-
-          const codeWillSend = codes[Math.floor(Math.random() * codes.length)];
-          setCode(codeWillSend);
-          alert("Your code: " + codeWillSend);
-
-          // Gửi mail ở FE - dùng EmailJS (không thành công)
-          // emailjs.init("EQyEVCbF1iQKVRFmH");
-          // emailjs.send("service_wsbq7tf", "template_jom02bx", {
-          //   message: codeWillSend,
-          //   user_email: emailInputValue,
-          // });
-
-          // Request lên BE - BE gởi mail bằng smtplib (chưa thành công)
-          const datas = await sendCodeViaEmail({ email: emailInputValue });
-          if (data.status === "success") {
-            toast.info("Please check your email !!!".toLocaleUpperCase());
-          } else {
-            toast.error("Errorrrr !!!".toLocaleUpperCase());
-          }
-
-          navigate("/forgot-password-enter-code");
-        } else {
-          toast.error("Email is not exist !!!".toLocaleUpperCase());
-        }
-      }
+    // Xử lí kết quả trả về từ API
+    switch (data.message) {
+      case "Please enter your email":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Please enter an valid format email":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Email not found":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Send code failed":
+        setEmail(emailInputRef.current.value);
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Send code success":
+        setEmail(emailInputRef.current.value);
+        toast.success(data.message.toLocaleUpperCase());
+        navigate("/forgot-password-enter-code");
+        break;
     }
   };
 
@@ -96,7 +71,6 @@ const ForgotPassword = () => {
             aria-describedby="emailHelp"
             placeholder="Enter email"
             ref={emailInputRef}
-            onChange={(e) => validateEmail(e)}
           />
         </div>
 

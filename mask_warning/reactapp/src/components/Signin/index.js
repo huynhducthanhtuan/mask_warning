@@ -13,25 +13,32 @@ const SignIn = () => {
   const passwordInputRef = useRef();
   const { state, dispatch } = useContext(UserContext);
 
-  const submitForm = (event, user) => {
-    event.preventDefault();
+  const handleSignin = async (e) => {
+    e.preventDefault();
 
-    if (user.userName.trim() === "" || user.password.trim() === "") {
-      toast.error("Please enter all information !!!".toLocaleUpperCase());
-    } else {
-      signInAPI(user).then((data) => {
-        if (data.error) {
-          toast.error(data.error.toUpperCase(), { pauseOnHover: true });
-        } else {
-          toast.success("Login Success !!!".toLocaleUpperCase());
+    // Call API
+    const data = await signInAPI({
+      userName: userNameInputRef.current.value,
+      password: passwordInputRef.current.value,
+    });
 
-          authenticate(data, () => {
-            dispatch({ type: "USER", payload: data.user });
-            window.scrollTo(0, 0);
-            navigate("/");
-          });
-        }
-      });
+    // Xử lí kết quả trả về từ API
+    switch (data.message) {
+      case "Please enter all information":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Please enter password has more 8 characters":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "User name and password do not match":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Signin success":
+        authenticate(data, () => {
+          dispatch({ type: "USER", payload: data.user });
+          toast.success(data.message.toLocaleUpperCase());
+          navigate("/");
+        });
     }
   };
 
@@ -87,15 +94,7 @@ const SignIn = () => {
           <button
             type="button"
             className={`${styles.formSubmit}`}
-            onClick={(e) => {
-              var userName = userNameInputRef.current.value;
-              var password = passwordInputRef.current.value;
-              const user = {
-                userName: userName,
-                password: password,
-              };
-              submitForm(e, user);
-            }}
+            onClick={(e) => handleSignin(e)}
           >
             Sign in
           </button>
