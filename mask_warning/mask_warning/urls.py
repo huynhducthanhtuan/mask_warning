@@ -1,17 +1,24 @@
 from django.urls import include, path
 from django.contrib import admin
-from .apis import Home, Signin, Profile, Notifications, ListOfUsers
+from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, Notifications, HandleChangePassword
+from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, ListOfUsers
 from .views import video_feed
 
-# specify URL Path for rest_framework
 urlpatterns = [
-    path('', Home),
-    path('auth/signin/', Signin),
-    path('user/profile/<str:userId>/', Profile),
+    path('auth/signin/', HandleSignin),
+    path('auth/signout/', Signout),
+    path('profile/', ViewProfile),
+    path('update-profile/', UpdateProfile),
+    path('change-password/', HandleChangePassword),
     path('video_feed/', video_feed),
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
     path('notifications/<int:quantity>', Notifications),
     path('notifications/', Notifications),
-    path('list/<int:pages>', ListOfUsers)
+    path('forgot-password-submit-email/', HandleSubmitEmail),
+    path('forgot-password-submit-code/', HandleSubmitCode),
+    path('forgot-password-resend-code/', HandleReSendCode),
+    path('forgot-password-create-new-password/', HandleCreateNewPassword),
+    path('list', ListOfUsers),
+    # Trang admin mặc định của Django, mình ko dùng
+    # path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls'))
 ]

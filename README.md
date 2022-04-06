@@ -9,7 +9,8 @@
 #### 3. Gõ lệnh "pip install -r requirements.txt"
 
 #### hoặc lệnh "pip install tensorflow keras imutils numpy opencv-python matplotlib scipy
-#### firebase_admin gcloud django django-rest_framework django-cors-headers"
+
+#### firebase_admin gcloud django django-rest_framework django-cors-headers pyjwt[crypto]"
 
 #### 4. Gõ lệnh "python manage.py makemigrations"
 

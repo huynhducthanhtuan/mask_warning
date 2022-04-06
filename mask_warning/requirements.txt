@@ -11,3 +11,4 @@ gcloud
 django-rest_framework
 django-cors-headers
 playsound
+pyjwt[crypto]
