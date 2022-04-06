@@ -7,6 +7,7 @@ import signOut from '../../assets/icons/signout.png'
 import { ToastContainer, toast } from 'react-toastify';
 import { UserContext } from '../../App'
 import Modal from '../Modal';
+import { AboutUsIcon, HomeIcon, GuideIcon, CameraIcon, StatisticIcon, ReportIcon, LogoImage, SigninIcon } from "../ExportImages";
 const Header = () => {
     const {state, dispatch} = useContext(UserContext)
     const navigate = useNavigate()
@@ -35,7 +36,7 @@ const Header = () => {
         else 
             return(
                 <div className={styles.headerLogin} onClick={() => navigate('/signin')}>
-                    <img src="./icons/signin.png" atl="" />
+                    <img src={SigninIcon} atl="" />
                     <p>Sign In</p>
                 </div>
             )
@@ -56,31 +57,31 @@ const Header = () => {
                     </li>
                     <li>
                         <Link to={state? '/guide':'/signin'} onClick={notify}>
-                            <img alt="" src="./icons/guide.png" />
+                            <img alt="" src={GuideIcon} />
                             <p>Guide</p>
                         </Link>
                     </li>
                     <li>
                         <Link to={state? '/camera':'/signin'} onClick={notify}>
-                            <img alt="" src="./icons/camera.png" />
+                            <img alt="" src={CameraIcon} />
                             <p>Camera</p>
                         </Link>
                     </li>
                     <li>
                         <Link to={state? '/#!':'/signin'} onClick={notify}>
-                            <img alt="" src="./icons/statistic.png" />
+                            <img alt="" src={StatisticIcon} />
                             <p>Statistic</p>
                         </Link>
                     </li>
                     <li>
                         <Link to={state? '/report':'/signin'} onClick={notify}>
-                            <img alt="" src="./icons/report.png" />
+                            <img alt="" src={ReportIcon} />
                             <p>Report</p>
                         </Link>
                     </li>
                     <li>
                         <Link to="/about-us">
-                            <img src="./icons/aboutus.png" alt="" />
+                            <img src={AboutUsIcon} alt="" />
                             <p>About us</p>
                         </Link>
                     </li>

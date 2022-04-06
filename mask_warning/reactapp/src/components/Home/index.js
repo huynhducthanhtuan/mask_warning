@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./Home.module.css";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -7,8 +7,14 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import "./sliderDot.css";
+import { UserContext } from "../../App";
+import { AboutUsIcon } from "../ExportImages";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Home = () => {
+
+    const {state, payload} = useContext(UserContext)
+    console.log(state, payload);
     var settings = {
         dots: true,
         infinite: true,
@@ -16,6 +22,11 @@ const Home = () => {
         autoplay: false,
         slidesToShow: 1,
         slidesToScroll: 1
+    };
+    const notify = () => {
+        if(!state) {
+            toast.info("YOU MUST SIGN IN !")
+        }
     };
     return (
         <body>
@@ -97,8 +108,8 @@ const Home = () => {
                 <div className={styles.homeGuideImage}>
                     <img src="./icons/outline.png"></img>
                 </div>
-                <Link to="/guide">
-                    <div className={styles.homeButton}>
+                <Link to={state? "/guide": '/signin'} onClick={notify}>
+                    <div className={styles.homeButton} >
                         <p>View more</p>
                     </div>
                 </Link>
@@ -151,7 +162,7 @@ const Home = () => {
                         <p>In this page. In the progress, If you have any problem. Please contact with developer team. Click View more to report this defect what you met.</p>
                     </div>
                     <div className={styles.homeButton}>
-                        <Link to="/about-us"><p>View more</p></Link>
+                        <Link to={state? "/about-us": '/signin'} onClick={notify}><p>View more</p></Link>
                     </div>
                 </div>
             </section>
