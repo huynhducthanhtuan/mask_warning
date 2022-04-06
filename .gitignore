@@ -3,3 +3,4 @@ mask-warning-787c4c69708d.json
 test.py
 venv/
 *.jpg
+test_thread.py

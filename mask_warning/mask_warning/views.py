@@ -3,7 +3,11 @@ from django.http import HttpResponse
 from django.core.mail import EmailMessage
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse
+
+# Sound Area
+import vlc
 from playsound import playsound
+import threading
 
 # detect part import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -92,12 +96,22 @@ pts = pts.reshape((-1, 1, 2))
 # Frame time when red corner off
 redCornerOffFrame = [7,8,9]
 
+def playUnmaskSound(urlSound):
+	# using play sound
+	playsound(urlSound)
+
+	# using vlc
+	# p = vlc.MediaPlayer(urlSound)
+	# p.play()
+	# time.sleep(4)
+	# p.stop()
 def stream():
 	cap = cv2.VideoCapture(0) 
 	frame_count = 0
 
-	limitCallSound = 80
+	limitCallSound = 50;
 	lastFrameCallSound = 0
+	urlSound = fr"{os.getcwd()}\vuilongdeokhautrang.mp3"
 	while True:
 		frame_count += 1
 		ret, frame = cap.read()
@@ -124,16 +138,28 @@ def stream():
 
 				isOnRedcorner = True
 
-				for time_off in redCornerOffFrame:
-					if frame_count % time_off == 0:
-						isOnRedcorner = False
-						break
+			for time_off in redCornerOffFrame:
+				if frame_count % time_off == 0:
+					isOnRedcorner = False
+					break
 
-				if isOnRedcorner:
-					frame = cv2.polylines(frame, [pts], isClosed=True, color=color, thickness=30)
+			if isOnRedcorner:
+				frame = cv2.polylines(frame, [pts], isClosed=True, color=color, thickness=30)
 
-				if lastFrameCallSound == 0 or frame_count - lastFrameCallSound >= limitCallSound:
-					playsound('../unMask_Sound.m4a')
+			if label == 'No Mask' and lastFrameCallSound == 0 or frame_count - lastFrameCallSound >= limitCallSound:
+				lastFrameCallSound = frame_count
+
+				# using play sound
+				# playsound(urlSound)
+
+				# using vlc
+				# p = vlc.Me
+				# diaPlayer(urlSound)
+				# p.play()
+				# time.sleep(3)
+				# p.stop()
+				t2 = threading.Thread(target=playUnmaskSound, args=(urlSound,))
+				t2.start()
 
 
 			# include the probability in the label
