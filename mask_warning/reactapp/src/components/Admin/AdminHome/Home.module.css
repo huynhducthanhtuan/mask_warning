@@ -113,8 +113,11 @@
 }
 
 .homeTabContents{
+    height: 100%;
     background-color: #F0F7FD;
+    padding: 10px;
 }
+
 .homeTabContent{display: none;}
 .homeTabContent.active{
     display: block;

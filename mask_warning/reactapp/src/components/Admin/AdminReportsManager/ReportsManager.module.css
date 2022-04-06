@@ -4,16 +4,6 @@
 .reportsRight{
     flex-basis: 84%;
 }
-.reportsMain h3{
-    font-size: 30px;
-    margin: 20px;
-    font-weight: 700;
-}
-.reportsMain div p{
-    font-size: 15px;
-}
-
-
 .reportsTasksTabs{
     display: flex;
     position: absolute;
