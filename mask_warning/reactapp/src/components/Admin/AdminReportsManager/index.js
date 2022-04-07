@@ -13,17 +13,20 @@ const ReportsManagerAdmin = (onClick) => {
     const exampleReport = {
         "id": "100000000",
         "createdDate": "15/01/2022",
-        "isSolved": true
+        "isSolved": true,
+        "userId": "1231434"
     }
     const exampleReport2 = {
         "id": "100000001",
         "createdDate": "17/01/2022",
-        "isSolved": false
+        "isSolved": false,
+        "userId": "12334566"
     }
     const exampleReport3 = {
         "id": "100000002",
         "createdDate": "20/01/2022",
-        "isSolved": false
+        "isSolved": false,
+        "userId": "12764866"
     }
 
     const arrayRp = [exampleReport, exampleReport2, exampleReport3]

@@ -42,6 +42,12 @@
     padding: 10px;
     margin-left: 50px;
 }
+.detailUserInformation :nth-child(3){
+    width: 144px;
+    height: 37px;
+    margin-left: 114vh; 
+    cursor: pointer;
+}
 .detailUserInformation button{
     width: 144px;
     height: 37px;
@@ -50,7 +56,8 @@
     color: white;
     border-radius: 20px;
     font-size: 16px;
-    margin-left: 114vh;
+    cursor: pointer;
+    
 }
 
 

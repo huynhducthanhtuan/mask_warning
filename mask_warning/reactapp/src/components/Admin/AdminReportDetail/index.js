@@ -8,13 +8,13 @@ const ReportDetailAdmin = () => {
 
     const { reportId } = useParams()
     const exampleReport = {
-        "id": reportId,
-        "description": "Không chọn ảnh để report được.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/mask-warning.appspot.com/o/report-images%2Fcannot-chooseimage.png?alt=media&token=37558a69-afc8-4dc6-95be-ea19d41d6081",
-        "createdDate": "15/01/2022",
-        "title": "Report error",
-        "isSolved": true,
-        "userId": "1231434"
+        id: reportId,
+        description: "Không chọn ảnh để report được.",
+        image: "https://firebasestorage.googleapis.com/v0/b/mask-warning.appspot.com/o/report-images%2Fcannot-chooseimage.png?alt=media&token=37558a69-afc8-4dc6-95be-ea19d41d6081",
+        createdDate: "15/01/2022",
+        title: "Report error",
+        isSolved: reportId === "100000000" ? true : false,
+        userId: "1231434"
     }
 
     const solved = () => {
@@ -42,7 +42,9 @@ const ReportDetailAdmin = () => {
                 <div className={styles.detailUserInformation}>
                     <p>User ID:</p>
                     <h4>{exampleReport.userId}</h4>
-                    <button>Detail user</button>
+                    <Link to={`/admin/reports-manager/user-detail/${exampleReport.userId}`}>
+                        <button>Detail user</button>
+                    </Link>
                 </div>
                 <div className={styles.detailImageAndTitle}>
                     <img src={exampleReport.image} />

@@ -1,5 +1,6 @@
 export {default as VerticalLogo} from "../../assets/icons/logo.png"
 export {default as HorizontalLogo} from "../../assets/icons/logo_horizontal.png"
+export {default as TabLogo} from "../../assets/icons/logo.ico"
 
 
 //header
@@ -19,3 +20,6 @@ export {default as LogOutIcon} from "../../assets/icons/dashicons-migrate.png"
 
 //report detail
 export {default as CompleteIcon} from "../../assets/icons/complete.png"
+
+//report user detail
+export {default as BackButton} from "../icons/arrow.png"

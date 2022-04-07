@@ -31,11 +31,16 @@
 .cardMain :nth-child(4){
     width: 144px;
     height: 37px;
-    position: absolute;
-    right: 30px;
+    margin-left: 850px ;
+    cursor: pointer;
+}
+.cardButton{
+    width: 144px;
+    height: 37px;
     background: #6160DC;
     border: #6160DC;
     color: white;
     border-radius: 20px;
     font-size: 16px;
+    cursor: pointer;
 }
