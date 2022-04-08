@@ -223,7 +223,13 @@ def validatePassword(password):
             'message': 'Password should contain at least one numeric value'
         }
 
-    
+    special_characters = "\"!@#$%^&*()-+?_=,<>\'"
+    if(not any(c in special_characters for c in password)):
+        return{
+            'isValid': False,
+            'message': 'Password should contain at least one special character'
+        }
+
     return{
         'isValid': True,
         'message': 'Password is Valid'
@@ -249,6 +255,7 @@ def validateNewUser(newUser):
     if(not validPassword_Response['isValid']):
         return validPassword_Response
 
+    # Check if already have user with same username
     users_ref = db.collection(u'users')
     query_ref = users_ref.where(u'userName',u'==',newUser['userName']).get()
     if(len(query_ref) > 0):
@@ -300,11 +307,14 @@ def addUser(request):
             # Validate new user
             validUser_Response = validateNewUser(newUser)
             if(validUser_Response['isValid']):
-                del newUser['confirm_password']
 
+                del newUser['confirm_password']
                 user_ref = db.collection('users')
+
                 user_ref.add(newUser)
-                validUser_Response['newUser'] = newUser 
+                
+                validUser_Response['newUser'] = newUser
+
                 return JsonResponse(
                     validUser_Response
                 )
