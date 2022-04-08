@@ -1,12 +1,14 @@
+from tkinter.tix import Tree
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from google.cloud.firestore_v1.field_path import FieldPath
-import firebase_admin, json, os, jwt, re, datetime, smtplib, socket, math, random
+import firebase_admin, json, os, jwt, re, datetime, smtplib, socket, math, random, datetime
 from socket import gaierror
 from email.mime.text import MIMEText
 from firebase_admin import credentials, firestore
+from numpy import true_divide
 
 # Init app
 cred = credentials.Certificate(fr"{os.getcwd()}\mask_warning\mask-warning-787c4c69708d.json")
@@ -187,6 +189,133 @@ def ListOfUsers(request):
             'pageSize': pageSize,
             'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
         })
+
+def validatePassword(password):
+    
+    passwordLength = len(password)
+    if(passwordLength < 8 or passwordLength > 15):
+        return{
+            'isValid': False,
+            'message': 'Password should not be less than 8 characters or greater than 15 characters'
+        }
+
+    if(password.count(' ') > 0):
+        return{
+            'isValid': False,
+            'message': 'Password should not contain whitespace characters'
+        }
+
+    if(password.islower()):
+        return{
+            'isValid': False,
+            'message': 'Password should contain At least one upper case letter'
+        }
+
+    if(password.isupper()):
+        return{
+            'isValid': False,
+            'message': 'Password should contain At least one lower case letter'
+        }
+
+    if(not any(char.isdigit() for char in password)):
+        return{
+            'isValid': False,
+            'message': 'Password should contain at least one numeric value'
+        }
+
+    
+    return{
+        'isValid': True,
+        'message': 'Password is Valid'
+    }
+
+def validateNewUser(newUser):
+
+    if(not CheckValidFormatEmail(newUser['email'])):
+        return{
+            'isValid': False,
+            'message': 'Please Enter right email format!'
+        }
+
+   
+    if(newUser['password'] != newUser['confirm_password']):
+        return{
+            'isValid': False,
+            'message': 'Please enter the same password'
+        }
+
+
+    validPassword_Response = validatePassword(newUser['password'])
+    if(not validPassword_Response['isValid']):
+        return validPassword_Response
+
+    users_ref = db.collection(u'users')
+    query_ref = users_ref.where(u'userName',u'==',newUser['userName']).get()
+    if(len(query_ref) > 0):
+        return {
+            'isValid': False,
+            'message': 'Username existed'
+        }
+
+    return {
+            'isValid': True,
+            'message': 'New User Valid'
+    }
+def addUser(request):
+
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        firstName = body_data['firstName']
+        lastName = body_data['lastName']
+        phoneNumber = body_data['phoneNumber']
+        storeName = body_data['storeName']
+        email = body_data['email']
+        dateOfBirth = body_data['dateOfBirth'] 
+        gender = body_data['gender'] 
+        address = body_data['address'] 
+        province = body_data['province'] 
+        district = body_data['district'] 
+        userName = body_data['userName'] 
+        password = body_data['password'] 
+        confirm_password = body_data['re_password']
+
+        try:
+            newUser = {
+                'address': f'{address}, {district}, {province}',
+                'createdDate': datetime.datetime.now(tz=datetime.timezone.utc),
+                'email': email,
+                'fullName': f'{firstName} {lastName}',
+                'gender': gender,
+                'password': password,
+                'confirm_password': confirm_password,
+                'phoneNumber': phoneNumber,
+                'storeName': storeName,
+                'userName': userName,
+                'dateOfBirth': dateOfBirth
+            }
+
+
+            # Validate new user
+            validUser_Response = validateNewUser(newUser)
+            if(validUser_Response['isValid']):
+                del newUser['confirm_password']
+
+                user_ref = db.collection('users')
+                user_ref.add(newUser)
+                validUser_Response['newUser'] = newUser 
+                return JsonResponse(
+                    validUser_Response
+                )
+
+            
+            return JsonResponse(validUser_Response)
+        except:
+            return JsonResponse({
+                'error': 'error'
+            }) 
+        
 
     
 # (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
