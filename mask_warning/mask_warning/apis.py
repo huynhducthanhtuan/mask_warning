@@ -1,3 +1,4 @@
+from tabnanny import check
 from tkinter.tix import Tree
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -256,18 +257,30 @@ def validateNewUser(newUser):
         return validPassword_Response
 
     # Check if already have user with same username
-    users_ref = db.collection(u'users')
-    query_ref = users_ref.where(u'userName',u'==',newUser['userName']).get()
-    if(len(query_ref) > 0):
+    if(checkExistAttributeValue('users', 'userName', newUser['userName'])):
         return {
             'isValid': False,
             'message': 'Username existed'
+        }
+
+    # Check if already have user with same email
+    if(checkExistAttributeValue('users', 'email', newUser['email'])):
+        return {
+            'isValid': False,
+            'message': 'Email existed'
         }
 
     return {
             'isValid': True,
             'message': 'New User Valid'
     }
+
+def checkExistAttributeValue(collection, attribute, value):
+    collection_ref = db.collection(collection)
+    query_ref = collection_ref.where(attribute,u'==',value).get()
+
+    return len(query_ref) > 0
+
 def addUser(request):
 
     if request.method == "POST":
@@ -345,7 +358,7 @@ def searchUsers(request):
         attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
         for user in users_ref:
             for atb in attributeFind:
-                if query in user.to_dict()[atb]:
+                if query in user.to_dict()[atb].lower():
                     usersList.append({
                     'fullName': user.to_dict()['fullName'],
                     'storeName': user.to_dict()['storeName'],
@@ -366,6 +379,7 @@ def searchUsers(request):
             })
         
         return JsonResponse({
+            'message' : 'Search succesfully'
             'pageIndex': pageIndex,
             'pageSize': pageSize,
             'startIndex': startIndex,
