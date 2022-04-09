@@ -327,7 +327,51 @@ def addUser(request):
             }) 
         
 
-    
+def searchUsers(request):
+
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        pageSize = body_data['pageSize']
+        pageIndex = body_data['pageIndex']
+        query = body_data['query']
+
+        users_ref = db.collection(u'users').get()
+        usersList = []
+        startIndex = (pageIndex-1)*pageSize
+        endIndex = startIndex + pageSize
+
+        attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
+        for user in users_ref:
+            for atb in attributeFind:
+                if query in user.to_dict()[atb]:
+                    usersList.append({
+                    'fullName': user.to_dict()['fullName'],
+                    'storeName': user.to_dict()['storeName'],
+                    'createdDate': user.to_dict()['createdDate']
+                    })
+                    break
+                
+                
+        if usersList == []:
+            return JsonResponse({
+            'message' : 'There is no user match you query!',
+            'usersList': usersList
+            })
+
+        if startIndex >= len(usersList) or startIndex < 0:
+            return JsonResponse({
+                "error": "Index out of bound."
+            })
+        
+        return JsonResponse({
+            'pageIndex': pageIndex,
+            'pageSize': pageSize,
+            'startIndex': startIndex,
+            'endIndex' : endIndex,
+            'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+        })
 # (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
 # [ADD] data
 # arr = [
