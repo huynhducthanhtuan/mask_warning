@@ -10,7 +10,6 @@ const ChangePassword = () => {
   const oldPasswordInputRef = useRef();
   const newPasswordConfirmInputRef = useRef();
 
-  // Khi change password thành công sẽ gọi hàm này để xóa text trong các ô input
   const cleanInputText = () => {
     oldPasswordInputRef.current.value = "";
     newPasswordInputRef.current.value = "";

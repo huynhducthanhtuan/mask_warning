@@ -92,7 +92,9 @@ pts = pts.reshape((-1, 1, 2))
 redCornerOffTime = [7,8,9]
 
 def stream():
-	cap = cv2.VideoCapture(0) 
+	cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:80/onvif13") 
+	# cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:8080/onvif13") 
+	# cap = cv2.VideoCapture(0) 
 	frame_count = 0
 
 	while True:
