@@ -390,13 +390,13 @@ def searchUsers(request):
         })
 
 
-def getRevenueIn1Day(day):
-    query_ref = db.collection(f"users").get()
+def getRevenueIn1Day(day, users):
     
     newUser = 0
-    for query in query_ref:
-        if query.to_dict()['createdDate'].date() == day:
+    for user in users:
+        if user.to_dict()['createdDate'].date() == day:
             newUser += 1
+
     return 500000*newUser
 import random
 def getRevenueByDay():
@@ -404,12 +404,56 @@ def getRevenueByDay():
     # currentDay = date(2022,1,1)
     revenueByDay = {}
 
-    for i in range(-7,0):
+    for i in range(-6,1):
         iDayAgo = currentDay + timedelta(days=i)
-        revenueByDay[iDayAgo.strftime('%a')] = getRevenueIn1Day(iDayAgo)
+        revenueByDay[iDayAgo.strftime('%a')] = getRevenueIn1Day(iDayAgo, db.collection(f"users").get())
 
     return revenueByDay
 
+def leap_year(year):
+    if year % 400 == 0:
+        return True
+    if year % 100 == 0:
+        return False
+    if year % 4 == 0:
+        return True
+    return False
+
+def days_in_month(month, year):
+    if month in {1, 3, 5, 7, 8, 10, 12}:
+        return 31
+    if month == 2:
+        if leap_year(year):
+            return 29
+        return 28
+    return 30
+
+def getRevenueIn1Month(startTime, endTime, users):
+    
+    newUser = 0
+    for user in users:
+        if startTime <= user.to_dict()['createdDate'].date() and user.to_dict()['createdDate'].date() <= endTime:
+            newUser += 1
+            
+    return 500000*newUser
+
+
+def getRevenueByMonth():
+    currentDay = date.today()
+    middleDay = date(currentDay.year, currentDay.month, 15)
+    # currentDay = date(2022,1,1)
+    revenueByDay = {}
+
+    for i in range(-12,1):
+        i4TimesDayAgo = middleDay + timedelta(weeks=4*i)
+        pastYears = i4TimesDayAgo.year
+        pastMonth = i4TimesDayAgo.month
+        revenueByDay[i4TimesDayAgo.strftime('%b')] = getRevenueIn1Month(
+            date(pastYears, pastMonth, 1),
+            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears)),
+            db.collection(f"users").get())
+
+    return revenueByDay
 
 def getRevenue(request):
     if request.method == "POST":
@@ -421,6 +465,9 @@ def getRevenue(request):
         revenue = {}
         if formatType == 'd':
             revenue = getRevenueByDay()
+
+        if formatType == 'm':
+            revenue = getRevenueByMonth()
 
         
         return JsonResponse({
