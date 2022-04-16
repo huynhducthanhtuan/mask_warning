@@ -5,11 +5,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from google.cloud.firestore_v1.field_path import FieldPath
-import firebase_admin, json, os, jwt, re, datetime, smtplib, socket, math, random, datetime
+import firebase_admin, json, os, jwt, re, datetime, smtplib, socket, math, random
 from socket import gaierror
 from email.mime.text import MIMEText
 from firebase_admin import credentials, firestore
 from numpy import true_divide
+from datetime import datetime, timedelta, date
 
 # Init app
 cred = credentials.Certificate(fr"{os.getcwd()}\mask_warning\mask-warning-787c4c69708d.json")
@@ -179,7 +180,7 @@ def ListOfUsers(request):
                 'storeName': doc.to_dict()['storeName'],
                 'createdDate': doc.to_dict()['createdDate']
             })
-
+        
         if startIndex >= len(usersList) or startIndex < 0:
             return JsonResponse({
                 "error": "Index out of bound."
@@ -355,6 +356,7 @@ def searchUsers(request):
         startIndex = (pageIndex-1)*pageSize
         endIndex = startIndex + pageSize
 
+        # find user match in through phone, full name, store and username
         attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
         for user in users_ref:
             for atb in attributeFind:
@@ -379,13 +381,56 @@ def searchUsers(request):
             })
         
         return JsonResponse({
-            'message' : 'Search succesfully'
+            'message' : 'Search succesfully',
             'pageIndex': pageIndex,
             'pageSize': pageSize,
             'startIndex': startIndex,
             'endIndex' : endIndex,
             'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
         })
+
+
+def getRevenueIn1Day(day):
+    query_ref = db.collection(f"users").get()
+    
+    newUser = 0
+    for query in query_ref:
+        if query.to_dict()['createdDate'].date() == day:
+            newUser += 1
+    return 500000*newUser
+import random
+def getRevenueByDay():
+    currentDay = date.today()
+    # currentDay = date(2022,1,1)
+    revenueByDay = {}
+
+    for i in range(-7,0):
+        iDayAgo = currentDay + timedelta(days=i)
+        revenueByDay[iDayAgo.strftime('%a')] = getRevenueIn1Day(iDayAgo)
+
+    return revenueByDay
+
+
+def getRevenue(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        formatType = body_data['formatType']
+
+        revenue = {}
+        if formatType == 'd':
+            revenue = getRevenueByDay()
+
+        
+        return JsonResponse({
+            'message' : 'Succesfully',
+            'revenue' :  revenue,
+            'formatType' : formatType
+        })
+
+
+
 # (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
 # [ADD] data
 # arr = [

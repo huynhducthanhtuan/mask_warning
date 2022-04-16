@@ -2,7 +2,7 @@ from django.urls import include, path
 from django.contrib import admin
 from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, Notifications, HandleChangePassword
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, ListOfUsers
-from .apis import addUser, searchUsers
+from .apis import addUser, searchUsers, getRevenue
 from .views import video_feed
 
 urlpatterns = [
@@ -21,6 +21,7 @@ urlpatterns = [
     path('list/', ListOfUsers),
     path('addUser/', addUser),
     path('searchUsers/', searchUsers),
+    path('revenue', getRevenue),
     # Trang admin mặc định của Django, mình ko dùng
     # path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls'))
