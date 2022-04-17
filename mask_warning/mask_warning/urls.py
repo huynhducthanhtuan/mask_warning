@@ -17,8 +17,5 @@ urlpatterns = [
     path('forgot-password-submit-code/', HandleSubmitCode),
     path('forgot-password-resend-code/', HandleReSendCode),
     path('forgot-password-create-new-password/', HandleCreateNewPassword),
-    
-    # Trang admin mặc định của Django, mình ko dùng
-    # path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls'))
 ]

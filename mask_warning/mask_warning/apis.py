@@ -3,8 +3,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from google.cloud.firestore_v1.field_path import FieldPath
-import firebase_admin, json, os, jwt, re, datetime, smtplib, socket, math, random
-from socket import gaierror
+import firebase_admin, json, os, jwt, re, datetime, smtplib, socket, math, random, smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from firebase_admin import credentials, firestore
 
@@ -244,73 +245,8 @@ def RandomCode():
     return random_str
 
 
-# Hàm gửi mail, chưa thành công
-def SendCode(email):
-    #region Code gửi mail, đang lỗi 
-    #region Cách 1
-    # sender = "thanhtuanhuynh0011@gmail.com"
-    # receivers = [email]
-    # message = f"""From: From Person <{sender}>
-    # To: To Person <{receivers[0]}>
-    # Subject: Verify code to create new password - Mask Warning
-
-    # 123456
-    # """
-
-    # try:
-    #     # smtplib.SMTP_PORT
-    #     # 116.110.250.42: Timeout
-    #     # 127.0.0.1: Refused
-    #     # localhost: Refused
-    #     smtpObj = smtplib.SMTP('127.0.0.1', 5000, socket.getfqdn())
-    #     smtpObj.sendmail(sender, receivers, message)         
-    #     print("Successfully sent email")
-    #     return JsonResponse({"status": "success"})
-
-    # except smtplib.SMTPException:
-    #     print("Error: unable to send email")
-    #     return JsonResponse({"status": "fail"})
-    #endregion
-
-    #region Cách 2
-    # Define the SMTP server
-    # port = 2525
-    # smtp_server = "smtp.mailtrap.io"
-    # login = "c5a6b7264acd23"
-    # password = "c69400ef5d34f7"
-
-    # # specify the sender and receiver
-    # sender = "thanhtuanhuynh0011@gmail.com"
-    # receiver = email
-
-    # message = f"""\
-    # Subject: Verify code to create new password - Mask Warning
-    # To: {receiver}
-    # From: {sender}
-
-    # Hi you, your code is: 123456"""
-
-    # try:
-    #     #send your message with credentials specified above
-    #     server = smtplib.SMTP(smtp_server, port)
-    #     server.login(login, password)
-    #     server.sendmail(sender, receiver, message)
-        
-    #     # sent success
-    #     print('Sent')
-    #     return JsonResponse({"status": "success"})
-    # except (gaierror, ConnectionRefusedError):
-    #     print('Failed to connect to the server. Bad connection settings?')
-    #     return JsonResponse({"status": "fail"})
-    # except smtplib.SMTPServerDisconnected:
-    #     print('Failed to connect to the server. Wrong user/password?')
-    #     return JsonResponse({"status": "fail"})
-    # except smtplib.SMTPException as e:
-    #     print('SMTP error occurred: ' + str(e))
-    #     return JsonResponse({"status": "fail"})
-    #endregion
-    #endregion
-
+def UpdateCodeInDB(email, code): 
+    print(email, code)
     try:
         # Lấy ra mảng các document theo email
         docs = db.collection('users').where(u"email", u"==", f"{email}").stream()
@@ -323,12 +259,44 @@ def SendCode(email):
         # Lấy ra chính document đó theo document id lấy được ở trên và cập nhật nó
         if userId != "":
             doc_ref = db.collection('users').document(userId)
-            doc_ref.update({'code': RandomCode()})
+            doc_ref.update({'code': code})
             return True
-        else:
-            return False
     except:
-        return False 
+        return False
+
+
+def SendCode(email):
+    sender_email = "baop38391@gmail.com"
+    receiver_email = email
+    password = ",,s,ffine-m..a.r.t.::ds-=/ / //5V y"
+
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "Verify code to create new password - Mask Warning"
+    message["From"] = sender_email
+    message["To"] = receiver_email
+
+    # Create the plain-text of your message
+    code = RandomCode()
+    text = f"Hi, your code is: {code}"
+
+    # Turn these into plain MIMEText objects
+    part = MIMEText(text, "plain")
+    message.attach(part)
+
+    # Create secure connection with server and send email
+    context = ssl.create_default_context()
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(
+                sender_email, receiver_email, message.as_string()
+            )
+            if UpdateCodeInDB(email, code): 
+                return True
+            else: 
+                return False
+    except:
+        return False
 
 
 def HandleSubmitEmail(request): 
@@ -338,7 +306,7 @@ def HandleSubmitEmail(request):
         body_data = json.loads(body_unicode)
         email = body_data["email"].strip()
 
-        # NNếu người dùng không nhập gì cả
+        # Nếu người dùng không nhập gì cả
         if email == "":
             return JsonResponse({"message": "Please enter your email"})
         else:
