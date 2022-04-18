@@ -1,12 +1,11 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from google.cloud.firestore_v1.field_path import FieldPath
-import firebase_admin, json, os, jwt, re, datetime, smtplib, socket, math, random, smtplib, ssl
+import firebase_admin, json, os, jwt, re, datetime, smtplib, math, random, smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from firebase_admin import credentials, firestore
 
 # Init app
@@ -427,3 +426,15 @@ def HandleCreateNewPassword(request):
         else:
             return JsonResponse({"message": "User not found"})
   
+
+def ViewReportPage(request):
+    try:
+        doc_ref = db.collection(f"reports").stream()
+
+        result = []
+        for doc in doc_ref:
+            result.append(doc.to_dict())
+            
+        return JsonResponse({"result": result})
+    except:
+        return JsonResponse({"error": "Failed to get data"})

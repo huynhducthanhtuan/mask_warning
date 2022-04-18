@@ -2,6 +2,7 @@ from django.urls import include, path
 from django.contrib import admin
 from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, Notifications, HandleChangePassword
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword
+from .apis import ViewReportPage
 from .views import video_feed
 
 urlpatterns = [
@@ -17,5 +18,6 @@ urlpatterns = [
     path('forgot-password-submit-code/', HandleSubmitCode),
     path('forgot-password-resend-code/', HandleReSendCode),
     path('forgot-password-create-new-password/', HandleCreateNewPassword),
+    path('admin/report/', ViewReportPage),
     path('api-auth/', include('rest_framework.urls'))
 ]
