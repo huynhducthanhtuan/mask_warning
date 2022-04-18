@@ -139,8 +139,21 @@ export const viewDetailUser = (userId) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
 export const viewUserList = () => {
   return fetch("/admin/users-manager//")
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const signInAdminAPI = (data) => {
+  return fetch("auth/admin/signin/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
     .then((res) => res.json())
     .catch((err) => err);
 };

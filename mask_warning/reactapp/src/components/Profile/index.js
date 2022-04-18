@@ -60,21 +60,6 @@ const Profile = () => {
   return (
     <section>
       <Header />
-      {/* <form className={styles.form}>
-        <h3 className={styles.formHeader}>Update Profile</h3>
-        <button
-          className={styles.buttonSend}
-          onClick={(e) => handleViewProfile(e)}
-        >
-          View Profile
-        </button>
-        <button
-          className={styles.buttonSend}
-          onClick={(e) => handleUpdateProfile(e)}
-        >
-          Update Profile
-        </button>
-      </form> */}
       <div className="d-flex">
         <ProfileSidebar />
         <section className="col-9">

@@ -1,51 +1,93 @@
-import React, { useRef } from "react";
-import styles from "./Signin.module.css"
-import { Link } from "react-router-dom";
+import React, { useRef, useEffect } from "react";
+import styles from "./Signin.module.css";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { signInAdminAPI } from "../../../apis";
 
 const SignInAdmin = () => {
-    return (
+  const navigate = useNavigate();
+  const userNameInputRef = useRef();
+  const passwordInputRef = useRef();
 
-        <div className={styles.main}>
-            <form className={styles.form} id="form-1">
-                <img src="../icons/logo_Horizontal.png" className={styles.logo}></img>
-                <h2 className={styles.headingSignIn}>Sign In</h2>
-                <p className={styles.desc}>For admin control</p>
+  const handleSignin = async (e) => {
+    e.preventDefault();
 
-                <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Email</label>
-                    <input
-                        className={styles.formControl}
-                        type="email"
-                        placeholder="Enter email"
-                    />
-                </div>
+    // Call API
+    const data = await signInAdminAPI({
+      userName: userNameInputRef.current.value,
+      password: passwordInputRef.current.value,
+    });
 
-                <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Password</label>
-                    <input
-                        className={styles.formControl}
-                        type="password"
-                        placeholder="Enter password"
-                    />
-                </div>
+    // Xử lí kết quả trả về từ API
+    switch (data.message) {
+      case "Please enter all information":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Please enter password has more 8 characters":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "User name and password do not match":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Signin failed":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
+      case "Signin success":
+        toast.success(data.message.toLocaleUpperCase());
+        localStorage.setItem("isAdminLoggedIn", true);
+        navigate("/");
+        break;
+      // authenticate(data, () => {
+      //   toast.success(data.message.toLocaleUpperCase());
+      // });
+    }
+  };
 
-                <div className={styles.formRemind}>
-                    <div className={styles.formRemember}>
-                    </div>
-                </div>
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-                <button
-                    type="button"
-                    className={`${styles.formSubmit}`}
+  return (
+    <div className={styles.main}>
+      <form className={styles.form} id="form-1">
+        <img src="../icons/logo_Horizontal.png" className={styles.logo}></img>
+        <h2 className={styles.headingSignIn}>Sign In</h2>
+        <p className={styles.desc}>For admin control</p>
 
-                >
-                    Sign in
-                </button>
-            </form>
+        <div className={styles.formGroup}>
+          <label className={styles.formLabel}>Username</label>
+          <input
+            className={styles.formControl}
+            type="username"
+            placeholder="Enter username"
+            ref={userNameInputRef}
+          />
         </div>
 
+        <div className={styles.formGroup}>
+          <label className={styles.formLabel}>Password</label>
+          <input
+            className={styles.formControl}
+            type="password"
+            placeholder="Enter password"
+            ref={passwordInputRef}
+          />
+        </div>
 
-    )
-}
+        <div className={styles.formRemind}>
+          <div className={styles.formRemember}></div>
+        </div>
+
+        <button
+          type="button"
+          className={`${styles.formSubmit}`}
+          onClick={(e) => handleSignin(e)}
+        >
+          Sign in
+        </button>
+      </form>
+    </div>
+  );
+};
+
 export default SignInAdmin;
-

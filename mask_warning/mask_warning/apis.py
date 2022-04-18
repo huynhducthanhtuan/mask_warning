@@ -598,3 +598,38 @@ def SendReport(request):
         except:
             return JsonResponse({"status": "fail"})
 
+
+def HandleSigninAdmin(request): 
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userName = body_data["userName"].strip()
+        password = body_data["password"].strip()
+
+        # Nếu người dùng ko nhập gì cả
+        if userName == "" or password == "":
+            return JsonResponse({"message": "Please enter all information"})
+        else:
+            # Nếu độ dài mật khẩu < 8
+            if len(password) < 8:
+                return JsonResponse({"message": "Please enter password has more 8 characters"})
+            else:
+                try:
+                    # Thực hiện đăng nhập
+                    docs = db.collection(f"admins").where(u"userName", u"==", f"{userName}").where(u"password", u"==", f"{password}").stream()
+
+                    check = False
+                    for doc in docs:
+                        if doc.to_dict().get("userName") == userName and doc.to_dict().get("password") == password:
+                            check = True
+                            
+                    if check:
+                        return JsonResponse({"message": "Signin success"})
+                    else:
+                        return JsonResponse({"message": "User name and password do not match"})
+                except:
+                    return JsonResponse({"message": "Signin failed"})
+
+
+ 
