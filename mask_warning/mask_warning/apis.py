@@ -438,3 +438,40 @@ def ViewReportPage(request):
         return JsonResponse({"result": result})
     except:
         return JsonResponse({"error": "Failed to get data"})
+
+
+def ViewReportDetailUser(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        index = body_data["index"]
+        
+        # Xử lí
+        try:
+            # Lấy tất cả reports bỏ vào 1 mảng
+            doc_ref = db.collection(f"reports").stream()
+            result = []
+            for doc in doc_ref:
+                result.append(doc.to_dict())
+                
+            # Lấy ra document report theo index, tiếp tục lấy ra userId của document đó
+            userId = result[index].get("userId")
+
+            # Trả về thông tin user gửi report dựa vào userId ở trên
+            doc_ref = db.collection(f"users").document(userId)
+            doc = doc_ref.get().to_dict()
+
+            result = {
+                "storeName": doc.get("storeName"),
+                "fullName": doc.get("fullName"),
+                "email": doc.get("email"),
+                "gender": doc.get("gender"),
+                "address": doc.get("address").split(",")[0].strip(),
+                "district": doc.get("address").split(",")[1].strip(),
+                "hometown": doc.get("address").split(",")[2].strip(),
+                "phoneNumber": doc.get("phoneNumber"),
+            }
+            return JsonResponse(result)
+        except:
+            return JsonResponse({"error": "Failed to get data"})
