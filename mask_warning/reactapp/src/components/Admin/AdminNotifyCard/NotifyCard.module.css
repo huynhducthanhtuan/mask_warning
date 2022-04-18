@@ -1,30 +1,31 @@
-.cardMain{ 
-    width: 100%;
-    height: 104px;
-    background-color: white;
-    cursor: pointer;
+.cardMain {
+  width: 100%;
+  height: 104px;
+  background-color: white;
+  cursor: pointer;
 }
-.cardBox{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.cardBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.cardBox img{
-    width: 56px;
-    height: 56px;
-    margin: 8px;
-    opacity: 1;
+.cardBox img {
+  width: 56px;
+  height: 56px;
+  margin: 8px;
+  opacity: 1;
+  border-radius: 180px;
 }
-.cardContent p:first-child{
-    font-size: 18px;
+.cardContent p:first-child {
+  font-size: 18px;
 }
-.cardContent p:nth-child(2){
-    font-size: 16px;
-    font-weight: 400;
+.cardContent p:nth-child(2) {
+  font-size: 16px;
+  font-weight: 400;
 }
-.cardContent p:last-child{
-    font-size: 14px;
-    font-weight: 400;
-    margin-left: 10px;
-    color: #2D9CDB;
+.cardContent p:last-child {
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 10px;
+  color: #2d9cdb;
 }

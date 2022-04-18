@@ -3,6 +3,12 @@
 }
 .reportsRight{
     flex-basis: 84%;
+    margin-top: 50px;
+}
+.reportsTitle{
+    font-size: 20px;
+    font-weight: 700;
+    margin-left: 20px;
 }
 .reportsTasksTabs{
     display: flex;

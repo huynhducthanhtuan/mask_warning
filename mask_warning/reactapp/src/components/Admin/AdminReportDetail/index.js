@@ -1,104 +1,90 @@
-import React, { useRef, useState } from "react";
-import styles from "./ReportDetail.module.css"
-import { Link } from "react-router-dom";
-import StatisticCard from "../AdminStatisticCard"
-import UsersManagerAdmin from "../AdminUsersManager"
-import ReportsManagerAdmin from "../AdminReportsManager"
-import NotifyCard from "../AdminNotifyCard";
+import React, { useRef, useState, useEffect } from "react";
+import styles from "./ReportDetail.module.css";
+import { Link, useParams } from "react-router-dom";
 import LeftControl from "../AdminLeftControl";
+import { CompleteIcon } from "../../../assets/ExportImages";
+import { viewReportDetail } from "../../../apis";
+import Loading from "../../Helper/Loading";
+import Modal from "../../Helper/Modal";
 
 const ReportDetailAdmin = () => {
+  const { reportId } = useParams();
+  const [report, setReport] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
 
-    const [toggle, setToggle] = useState("home")
+  const loadReportDetail = async () => {
+    await viewReportDetail({ reportId }).then((data) => {
+      setReport(data);
+      setLoading(false);
+    });
+  };
 
-    const [statisticToggle, setStatisticToggle] = useState("week")
+  useEffect(() => {
+    loadReportDetail();
+  }, []);
 
-    const [showBox, setShowBox] = useState(false)
+  const solved = () => {
+    if (!report.isSolved)
+      return (
+        <button
+          className={`mt-4 ${styles.detailComplete}`}
+          onClick={() => setOpenModal(!openModal)}
+        >
+          <img src={CompleteIcon} /> Complete
+        </button>
+      );
+  };
 
-    const dataUsersStatistic = {
-        "week": 6,
-        "month": 23,
-        "year": 153
-    }
-
-    const dataAvarageHoursStatistic = {
-        "week": 15,
-        "month": 22,
-        "year": 20
-    }
-
-
-    const exampleUser = {
-        avatar: "./img/report_user.png",
-        name: "Huynh Ngoc Hieu"
-    }
-    const exampleReport = {
-        "id": "100000000",
-        "createdDate": "15/01/2022",
-        "description": "Website thông báo sai username và password mặc dù tôi đã nhập đúng",
-        "isSolved": true
-    }
-
-    return (
-        <section className={styles.homeMain}>
-           
-            <LeftControl />
-            <div className={styles.homeTabContents}>
-                <div className={styles.homeTopRightControl}>
-                    <p>Admin</p>
-                    <div className={styles.homeNotify} onClick={() => setShowBox(!showBox)}>
-                        <img className={styles.homeIconTopRight} src="./icons/bell.png" />
-                        <sup className={styles.homeNotifyContent}><small className={styles.cartBadge}>3</small></sup>
-                    </div>
-                    <div className={showBox ? `${styles.homeNotifyBox} d-block` : styles.homeNotifyBox} >
-                        <p className={styles.homeNotifyText}>News</p>
-                        <NotifyCard report={exampleReport} user={exampleUser}/>
-                        <NotifyCard report={exampleReport} user={exampleUser}/>
-                        <img className="d-line" src="./icons/line.png" />
-                        <p className={styles.homeNotifyText}>Old</p>
-                        <NotifyCard report={exampleReport} user={exampleUser}/>
-                        <NotifyCard report={exampleReport} user={exampleUser}/>
-                        <NotifyCard report={exampleReport} user={exampleUser}/>
-                    </div>
-                    <img className={styles.homeIconTopRight} src="./icons/dashicons-migrate.png" />
-                </div>
-                <div className={toggle === "home" ? `${styles.homeTabContent} ${styles.active}` : `${styles.homeTabContent}`}>
-
-                    <div className={styles.homeStatisticButtonGroup}>
-                        <div className={statisticToggle === "week" ? `${styles.homeStatisticButton} ${styles.active}` :
-                            styles.homeStatisticButton} onClick={() => setStatisticToggle("week")}>
-                            <img src="./icons/ellipse.png" />
-                            <p>Week</p>
-                        </div>
-                        <div className={statisticToggle === "month" ? `${styles.homeStatisticButton} ${styles.active}` :
-                            styles.homeStatisticButton} onClick={() => setStatisticToggle("month")}>
-                            <img src="./icons/ellipse.png" />
-                            <p>Month</p>
-                        </div>
-                        <div className={statisticToggle === "year" ? `${styles.homeStatisticButton} ${styles.active}` :
-                            styles.homeStatisticButton} onClick={() => setStatisticToggle("year")}>
-                            <img src="./icons/ellipse.png" />
-                            <p>Year</p>
-                        </div>
-                    </div>
-                    <div className={styles.homeStatisticCards}>
-                        <StatisticCard cardName={"User(s)"} data={dataUsersStatistic[statisticToggle]}
-                            dataType={" new user(s)"} iconLink={"./icons/new_users.png"} />
-                        <StatisticCard cardName={"Average hour(s) per day"} data={dataAvarageHoursStatistic[statisticToggle]}
-                            dataType={" hour(s) per day"} iconLink={"./icons/average_hours.png"} />
-                    </div>
-                </div>
-
-                <div className={toggle === "users" ? `${styles.homeTabContent} ${styles.active}` : `${styles.homeTabContent}`}>
-                    <UsersManagerAdmin  onClick={() => setShowBox(false)}/>
-                </div>
-
-                <div className={toggle === "reports" ? `${styles.homeTabContent} ${styles.active}` : `${styles.homeTabContent}`}>
-                    <ReportsManagerAdmin  />
-                </div>
-
+  return (
+    <section className={styles.homeMain}>
+      {openModal && (
+        <Modal
+          setOpenModal={setOpenModal}
+          Dialog="Question?"
+          body="Are you sure this problem has been solved?
+          (You can’t not change back)"
+        />
+      )}
+      <LeftControl toggle="reports" />
+      {loading ? (
+        <Loading />
+      ) : (
+        <div
+          className={
+            report.isSolved
+              ? `${styles.detailRightContent} ${styles.active}`
+              : styles.detailRightContent
+          }
+        >
+          <div className={styles.detailTopInformation}>
+            <h3 className={styles.detailId}>ID#{reportId}</h3>
+            <p>{report.createdDate.split("T1")[0]}</p>
+          </div>
+          <div className={styles.detailUserInformation}>
+            <p>User ID:</p>
+            <h4>{report.userId}</h4>
+            <Link to={`/admin/reports-manager/user-detail/${report.userId}`}>
+              <button>Detail user</button>
+            </Link>
+          </div>
+          <div className={styles.detailImageAndTitle}>
+            <img src={report.image} />
+            <div>
+              <h2 className={report.isSolved ? "d-block" : "d-none"}>
+                You have done this task
+              </h2>
+              <h5>{report.title}</h5>
             </div>
-        </section >
-    )
-}
+          </div>
+          <div className={styles.detailReport}>
+            <p>{report.description}</p>
+          </div>
+          {solved()}
+        </div>
+      )}
+    </section>
+  );
+};
+
 export default ReportDetailAdmin;
