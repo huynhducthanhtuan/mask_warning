@@ -84,10 +84,11 @@ def ViewProfile(request):
         
         # Xử lí
         try:
-            doc_ref = db.collection(f"users").document(userId)
-            doc = doc_ref.get().to_dict()
+            user_ref = db.collection(f"users").document(userId)
+            doc = user_ref.get().to_dict()
 
             result = {
+                "userId": user_ref.get().id,
                 "storeName": doc.get("storeName"),
                 "fullName": doc.get("fullName"),
                 "email": doc.get("email"),
@@ -496,7 +497,7 @@ def ViewReportHistory(request):
             return JsonResponse({"error": "Failed to get data"})
 
 
-def ViewReportHistoryDetail(request):
+def ViewReportDetail(request):
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
@@ -512,3 +513,18 @@ def ViewReportHistoryDetail(request):
             return JsonResponse(report)
         except:
             return JsonResponse({"error": "Failed to get data"})
+
+
+def ViewUserList(request):
+    try:
+        docs = db.collection(f"users").stream()
+
+        result = []
+        for doc in docs:
+            user = doc.to_dict()
+            user["userId"] = doc.id
+            result.append(user)
+            
+        return JsonResponse({"result": result})
+    except:
+        return JsonResponse({"error": "Failed to get data"})
