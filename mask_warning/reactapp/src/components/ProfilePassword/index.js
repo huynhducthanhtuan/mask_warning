@@ -31,7 +31,7 @@ const ProfilePassword = () => {
               </li>
             </ul>
             <div
-              className={` d-flex justify-content-center ${styles.btnChangePassword}`}
+              className={` d-flex justify-content-start ${styles.btnChangePassword}`}
             >
               <button>Update</button>
               <button>Cancel</button>

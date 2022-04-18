@@ -43,12 +43,55 @@ const ProfileChangeInformation = () => {
                 <option>Female</option>
                 <option>Other</option>
               </select>
+              <p className={styles.warning}>*</p>
             </li>
             <li className={`d-flex ${styles.item}`}>
-              <label>Email: </label>
-              <p>huynhn****@gmail.com</p>
+              <label>Store name: </label>
+              <input name="text" />
+              <p className={styles.warning}>*</p>
             </li>
           </ul>
+          <div className={styles.fillText}>
+            <span>Contract Information</span>
+          </div>
+          <ul className={styles.boxInformation}>
+            <li className={`d-flex ${styles.item}`}>
+              <label>Province/City: </label>
+              <select>
+                <option>Đà Nẵng</option>
+                <option>TP.Hồ Chí Minh</option>
+                <option>Huế</option>
+                <option>Hà Nội</option>
+              </select>
+              <p className={styles.warning}>*</p>
+            </li>
+            <li className={`d-flex ${styles.item}`}>
+              <label>District: </label>
+              <select>
+                <option>Hải Châu</option>
+                <option>Liên Chiểu</option>
+                <option>Hoà Khánh</option>
+                <option>Sơn Trà</option>
+              </select>
+              <p className={styles.warning}>*</p>
+            </li>
+            <li className={`d-flex ${styles.item}`}>
+              <label>Address: </label>
+              <input name="text" />
+              <p className={styles.warning}>*</p>
+            </li>
+            <li className={`d-flex ${styles.item}`}>
+              <label>Tel: </label>
+              <input name="text" />
+              <p className={styles.warning}>*</p>
+            </li>
+          </ul>
+          <div
+            className={` d-flex justify-content-center ${styles.btnChangePassword}`}
+          >
+            <button>Update</button>
+            <button>Cancel</button>
+          </div>
         </section>
       </div>
     </section>
