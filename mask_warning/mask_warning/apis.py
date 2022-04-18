@@ -272,12 +272,12 @@ def SendCode(email):
 
     message = MIMEMultipart("alternative")
     message["Subject"] = "Verify code to create new password - Mask Warning"
-    message["From"] = sender_email
+    message["From"] = "Mask Warning's support team"
     message["To"] = receiver_email
 
     # Create the plain-text of your message
     code = RandomCode()
-    text = f"Hi, your code is: {code}"
+    text = f"Hi, your verification code is: {code}"
 
     # Turn these into plain MIMEText objects
     part = MIMEText(text, "plain")
