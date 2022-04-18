@@ -5,22 +5,23 @@ import { toast } from "react-toastify";
 import { UserContext } from "../../App";
 import { isAuthenticated } from "../Auth";
 import { signOutApi } from "../../apis";
-import Modal from "../Modal";
+import { UserAvatar } from "../../assets/ExportImages";
+import Modal from "../Helper/Modal";
 
 const Header = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const { token } = isAuthenticated();
   const notify = () => {
-    if (!state) {
+    if (notify) {
       toast.info("PLEASE SIGNIN FIRST !!");
     }
   };
 
   const handleSignout = async () => {
     const data = await signOutApi();
-  
+
     if (data.message === "Sign out success !!") {
       localStorage.removeItem("jwt");
       dispatch({ type: "CLEAR" });
@@ -32,15 +33,26 @@ const Header = () => {
   const render = () => {
     if (isAuthenticated()) {
       return (
-        <div className={styles.headerLogin} onClick={() => setModalOpen(true)}>
-          <img src="./icons/signout.png" atl="" />
-          <p>Sign Out</p>
-        </div>
+        <>
+          <Link to="/profile">
+            <div className={styles.headerLogin}>
+              <img src={UserAvatar} alt="" />
+              <p>Profile</p>
+            </div>
+          </Link>
+          <div
+            className={styles.headerLogin}
+            onClick={() => setModalOpen(true)}
+          >
+            <img src="./icons/signout.png" alt="" />
+            <p>Sign Out</p>
+          </div>
+        </>
       );
     } else
       return (
         <div className={styles.headerLogin} onClick={() => navigate("/signin")}>
-          <img src="./icons/signin.png" atl="" />
+          <img src="./icons/signin.png" alt="" />
           <p>Sign In</p>
         </div>
       );
@@ -53,8 +65,8 @@ const Header = () => {
           <img alt="" src="./icons/logo.png" />
         </Link>
       </div>
-      <nav className={styles.headerNavigation}>
-        <ul>
+      <nav className={`${styles.headerNavigation}`}>
+        <ul className=" d-flex">
           <li>
             <Link to="/">
               <img src="./icons/home.png" alt="" />
@@ -62,28 +74,28 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link to={state ? "/guide" : "/signin"} onClick={!state && notify}>
+            <Link to={token ? "/guide" : "/signin"} onClick={!token && notify}>
               <img alt="" src="./icons/guide.png" />
               <p>Guide</p>
             </Link>
           </li>
           <li>
-            <Link to={state ? "/camera" : "/signin"} onClick={!state && notify}>
+            <Link to={token ? "/camera" : "/signin"} onClick={!token && notify}>
               <img alt="" src="./icons/camera.png" />
               <p>Camera</p>
             </Link>
           </li>
           <li>
             <Link
-              to={state ? "/statistic" : "/signin"}
-              onClick={!state && notify}
+              to={token ? "/statistic" : "/signin"}
+              onClick={!token && notify}
             >
               <img alt="" src="./icons/statistic.png" />
               <p>Statistic</p>
             </Link>
           </li>
           <li>
-            <Link to={state ? "/report" : "/signin"} onClick={!state && notify}>
+            <Link to={token ? "/report" : "/signin"} onClick={!token && notify}>
               <img alt="" src="./icons/report.png" />
               <p>Report</p>
             </Link>
@@ -102,6 +114,7 @@ const Header = () => {
           body="Are you sure to sign out ??"
           setOpenModal={setModalOpen}
           action={handleSignout}
+          isCss={true}
         />
       )}
     </header>

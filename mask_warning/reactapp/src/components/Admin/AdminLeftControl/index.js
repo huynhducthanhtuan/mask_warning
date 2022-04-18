@@ -1,17 +1,21 @@
 import React, { useRef, useState } from "react";
 import styles from "./LeftControl.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { VerticalLogo } from "../../../assets/ExportImages";
-
+import {
+  VerticalLogo,
+  HomeIcon,
+  useManager,
+  reportManager,
+  Line,
+} from "../../../assets/ExportImages";
 
 const LeftControl = ({ toggle = "home" }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="col-2">
+    <div className={`col-2 ${styles.homeMain}`}>
       <img src={VerticalLogo} />
       <h2 className={styles.reportTitle}>MANAGEMENTS</h2>
-
       <div className={styles.homeTabs}>
         <div
           className={
@@ -21,7 +25,7 @@ const LeftControl = ({ toggle = "home" }) => {
           }
           onClick={() => navigate("/admin/home")}
         >
-          <img src="./icons/home.png" />
+          <img src={HomeIcon} />
           <p>Home</p>
         </div>
 
@@ -33,8 +37,8 @@ const LeftControl = ({ toggle = "home" }) => {
           }
           onClick={() => navigate("/admin/users-manager")}
         >
-          <img src="./icons/users_manager.png" />
-          <p >Users Manager</p>
+          <img src={useManager} />
+          <p>Users Manager</p>
         </div>
 
         <div
@@ -45,16 +49,16 @@ const LeftControl = ({ toggle = "home" }) => {
           }
           onClick={() => navigate("/admin/reports-manager")}
         >
-          <img src="./icons/reports_manager.png" />
-          <p >Reports Manager</p>
+          <img src={reportManager} />
+          <p>Reports Manager</p>
         </div>
       </div>
 
       <div className={styles.homeDecs}>
-        <img src="./icons/line.png" />
+        <img src={Line} />
         <h3 className={styles.titleHome}>Mask Warning. 2022</h3>
         <p className={styles.desHome}>
-        Mask Warning is a system help store notify customer wearing mask
+          Mask Warning is a system help store notify customer wearing mask
         </p>
       </div>
     </div>

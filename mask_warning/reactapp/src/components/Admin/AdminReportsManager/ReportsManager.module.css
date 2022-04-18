@@ -1,8 +1,7 @@
-.reportsMain{
-    display: flex;
-}
+
 .reportsRight{
-    flex-basis: 84%;
+    width: 78.5vw;
+    margin-left: 18vw;
     margin-top: 50px;
 }
 .reportsTitle{

@@ -1,9 +1,8 @@
-.homeMain{
-    display: flex;
-}
+
 
 .homeTabContents{
-    flex-basis: 84%;
+    width: 82.8vw;
+    margin-left: 17vw;
 }
 
 .homeTabItem{
@@ -63,7 +62,7 @@
 
 .homeTopRightControl{
     position: absolute;
-    right: 10px;
+    right: 0;
     top: 15px;
     width: 200px;
     display: flex;
@@ -113,7 +112,7 @@
 }
 
 .homeTabContents{
-    height: 100%;
+    height: 100vh;
     background-color: #F0F7FD;
     padding: 10px;
 }
@@ -146,5 +145,4 @@
     width: 500px;
     display: flex;
     justify-content: space-around;
-
 }

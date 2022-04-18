@@ -39,7 +39,7 @@ const ForgotPassword = () => {
         setEmail(emailInputRef.current.value);
         toast.error(data.message.toLocaleUpperCase());
         break;
-      case "Send code success":
+      case "Send code success. Please check your email":
         setEmail(emailInputRef.current.value);
         toast.success(data.message.toLocaleUpperCase());
         navigate("/forgot-password-enter-code");
