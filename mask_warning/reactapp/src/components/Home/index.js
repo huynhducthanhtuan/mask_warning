@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import styles from "./Home.module.css";
 import Header from "../Header";
 import Footer from "../Footer";
-import styles from "./Home.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./sliderDot.css";
+import { UserContext } from "../../App";
+import { AboutUsIcon } from "../../assets/ExportImages";
+import { ToastContainer, toast } from "react-toastify";
 
 const Home = () => {
+  const { state, payload } = useContext(UserContext);
+  console.log(state, payload);
   var settings = {
     dots: true,
     infinite: true,
@@ -17,11 +22,15 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const notify = () => {
+    if (!state) {
+      toast.info("YOU MUST SIGN IN !");
+    }
+  };
   return (
     <body>
       <section className={`container_fluid ${styles.home}`}>
@@ -109,7 +118,7 @@ const Home = () => {
         <div className={styles.homeGuideImage}>
           <img src="./icons/outline.png"></img>
         </div>
-        <Link to="/guide">
+        <Link to={state ? "/guide" : "/signin"} onClick={notify}>
           <div className={styles.homeButton}>
             <p>View more</p>
           </div>
@@ -166,7 +175,7 @@ const Home = () => {
             </p>
           </div>
           <div className={styles.homeButton}>
-            <Link to="/about-us">
+            <Link to={state ? "/about-us" : "/signin"} onClick={notify}>
               <p>View more</p>
             </Link>
           </div>

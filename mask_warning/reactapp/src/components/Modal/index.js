@@ -14,16 +14,16 @@ function Modal({ setOpenModal, title, body = "Body", action }) {
             X
           </button>
         </div>
-        {title && (
-          <div className={styles.title}>
-            <h1>{title}</h1>
-          </div>
-        )}
+        {title && <div className={styles.title}>
+          <h1>{title}</h1>
+        </div> }
         <div className={styles.body}>
           <p>{body}</p>
         </div>
         <div className={styles.footer}>
-          <button onClick={action}>OK</button>
+         <button
+            onClick={action}
+          >Oke</button>
           <button
             onClick={() => {
               setOpenModal(false);

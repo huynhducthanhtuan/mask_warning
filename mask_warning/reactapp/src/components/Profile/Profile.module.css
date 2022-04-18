@@ -29,6 +29,7 @@
   color: #3751fe;
   font-weight: 700;
 }
+
 /* .headerString {
   padding: 10px;
   color: #3c3b93;
@@ -48,12 +49,14 @@
   font-weight: 700;
   font-size: 30px;
 }
+
 .formButton {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   padding-top: 25px;
 }
+
 .buttonSend {
   padding: 8px 39px;
   color: #ffffff;
@@ -61,6 +64,7 @@
   border: 1px solid;
   font-size: 18px;
 }
+
 .buttonCancel {
   padding: 8px 39px;
   color: #000000;
@@ -69,6 +73,7 @@
   font-size: 18px;
   margin-right: 20px;
 }
+
 .form {
   margin: 0 auto;
   width: 700px;
@@ -107,4 +112,51 @@
   top: 400px;
   -o-object-fit: inherit;
   object-fit: inherit;
+}
+
+.personalInformation {
+  display: flex;
+  font-size: 24px;
+  font-weight: 700;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.boxInformation {
+  background: #f7fafc;
+  padding: 30px 30px !important;
+  margin: 20px 0;
+}
+
+.item {
+  color: #3333;
+  padding: 10px;
+  border-top: 1px solid #d9d9d9;
+}
+
+.item:last-child {
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.item p:first-child {
+  width: 200px;
+}
+
+.item p:last-child {
+  font-weight: 500;
+}
+
+.btnUpdate {
+  font-size: 18px;
+  margin-left: calc((100% - 170px) / 2);
+  padding: 8px 50px;
+  border-radius: 50px;
+  background: #7877b9;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.btnUpdate:hover {
+  opacity: 0.7;
 }

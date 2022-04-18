@@ -17,9 +17,19 @@ import {
   ForgotPasswordCreateNewPassword,
   ChangePassword,
   Footer,
+  Statistic,
+  ProfileChangeInformation,
+  ProfilePassword,
+} from "../components";
+
+import {
   AdminSignin,
   AdminHome,
-} from "../components";
+  AdminReportsManager,
+  AdminUsersManager,
+  UserDetail,
+} from "../components/Admin";
+import Frame from "../components/Admin/Frame";
 
 const ScreensRoot = () => {
   return (
@@ -35,6 +45,14 @@ const ScreensRoot = () => {
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/signin" element={<Signin />} />
       <Route path="/profile" element={<Profile />} />
+      <Route
+        path="/profile-change-information"
+        element={<ProfileChangeInformation />}
+      />
+      <Route path="/profile-password" element={<ProfilePassword />} />
+      <Route path="/admin-signin" element={<AdminSignin />} />
+      <Route path="/admin-home" element={<AdminHome />} />
+      <Route path="/statistic" element={<Statistic />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route
         path="/forgot-password-enter-code"
@@ -47,8 +65,12 @@ const ScreensRoot = () => {
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/footer" element={<Footer />} />
 
-      <Route path="/admin-signin" element={<AdminSignin />} />
-      <Route path="/admin-home" element={<AdminHome />} />
+      <Route path="/admin/signin" element={<AdminSignin />} />
+      <Route path="/home/admin" element={<AdminHome />} />
+      <Route path="/reports-manager" element={<AdminReportsManager />} />
+      <Route path="/users-manager" element={<AdminUsersManager />} />
+      <Route path="/users-manager/user-detail" element={<UserDetail />} />
+      <Route path="/frame" element={<Frame />} />
     </Routes>
   );
 };
