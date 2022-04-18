@@ -23,7 +23,7 @@ const LeftControl = ({ toggle = "home" }) => {
               ? `${styles.homeTabItem} ${styles.active}`
               : `${styles.homeTabItem}`
           }
-          onClick={() => navigate("/home/admin")}
+          onClick={() => navigate("/admin/home")}
         >
           <img src={HomeIcon} />
           <p>Home</p>
@@ -35,7 +35,7 @@ const LeftControl = ({ toggle = "home" }) => {
               ? `${styles.homeTabItem} ${styles.active}`
               : `${styles.homeTabItem}`
           }
-          onClick={() => navigate("/users-manager")}
+          onClick={() => navigate("/admin/users-manager")}
         >
           <img src={useManager} />
           <p>Users Manager</p>
@@ -47,7 +47,7 @@ const LeftControl = ({ toggle = "home" }) => {
               ? `${styles.homeTabItem} ${styles.active}`
               : `${styles.homeTabItem}`
           }
-          onClick={() => navigate("/reports-manager")}
+          onClick={() => navigate("/admin/reports-manager")}
         >
           <img src={reportManager} />
           <p>Reports Manager</p>

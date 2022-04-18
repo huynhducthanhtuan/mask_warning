@@ -1,14 +1,17 @@
 .d-flex {
-    display: flex;
+  display: flex;
 }
-.d-block{
-    display: block;
+.d-block {
+  display: block;
 }
-.d-line{
-    width: 100%;
-    height: 1px;
-    opacity: 0.2;
+.d-line {
+  width: 100%;
+  height: 1px;
+  opacity: 0.2;
 }
 li {
-    list-style: none;
+  list-style: none;
+}
+.d-none {
+  display: none;
 }

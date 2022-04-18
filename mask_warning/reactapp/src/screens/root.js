@@ -25,6 +25,8 @@ import {
   AdminReportsManager,
   AdminUsersManager,
   UserDetail,
+  AdminReportDetail,
+  AdminReportUserDetail,
 } from "../components/Admin";
 import Frame from "../components/Admin/Frame";
 
@@ -55,11 +57,18 @@ const ScreensRoot = () => {
       <Route path="/footer" element={<Footer />} />
 
       <Route path="/admin/signin" element={<AdminSignin />} />
-      <Route path="/home/admin" element={<AdminHome />} />
-      <Route path="/reports-manager" element={<AdminReportsManager />} />
-      <Route path="/users-manager" element={<AdminUsersManager />} />
-      <Route path="/users-manager/user-detail" element={<UserDetail />} />
-      <Route path="/frame" element={<Frame />} />
+      <Route path="/admin/home" element={<AdminHome />} />
+      <Route path="/admin/users-manager" element={<AdminUsersManager />} />
+
+      <Route path="/admin/reports-manager" element={<AdminReportsManager />} />
+      <Route
+        path="/admin/reports-manager/report-detail/:reportId"
+        element={<AdminReportDetail />}
+      />
+      <Route
+        path="/admin/reports-manager/user-detail/:userId"
+        element={<AdminReportUserDetail />}
+      />
     </Routes>
   );
 };

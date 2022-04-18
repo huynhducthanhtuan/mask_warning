@@ -3,6 +3,7 @@ import styles from "./ReportsManager.module.css";
 import { Link } from "react-router-dom";
 import LeftControl from "../AdminLeftControl";
 import ReportCard from "../AdminReportCard";
+import ShowBox from "../ShowBox";
 
 const ReportsManagerAdmin = (onClick) => {
   const [toggle, setToggle] = useState("all");
@@ -12,23 +13,35 @@ const ReportsManagerAdmin = (onClick) => {
     id: "100000000",
     createdDate: "15/01/2022",
     isSolved: true,
+    userId: "1231434",
   };
   const exampleReport2 = {
     id: "100000001",
     createdDate: "17/01/2022",
     isSolved: false,
+    userId: "12334566",
   };
   const exampleReport3 = {
     id: "100000002",
     createdDate: "20/01/2022",
     isSolved: false,
+    userId: "12764866",
   };
 
+  const arrayRp = [exampleReport, exampleReport2, exampleReport3];
+
+  var reportsFilter = arrayRp.filter((report) => {
+    if (toggle === "all") return report;
+    if (toggle === "solved") return report.isSolved;
+    return !report.isSolved;
+  });
+
   return (
-    <div className={styles.reportsMain}>
+    <section className={styles.reportsMain}>
       <LeftControl toggle="reports" />
       <div className={styles.reportsRight}>
-        <h3>Reports List</h3>
+        <ShowBox />
+        <h3 className={styles.reportsTitle}>Reports List</h3>
         <div className={styles.reportsTasksTabs}>
           <p
             className={
@@ -68,14 +81,10 @@ const ReportsManagerAdmin = (onClick) => {
         </div>
 
         <div className={styles.reportsList}>
-          <Link to="/reportDetail">
-            <ReportCard report={exampleReport} />
-          </Link>
-          <ReportCard report={exampleReport2} />
-          <ReportCard report={exampleReport3} />
+          <ReportCard reports={reportsFilter} />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 export default ReportsManagerAdmin;
