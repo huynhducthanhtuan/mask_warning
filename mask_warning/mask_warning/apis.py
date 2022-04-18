@@ -305,7 +305,7 @@ def addUser(request):
         try:
             newUser = {
                 'address': f'{address}, {district}, {province}',
-                'createdDate': datetime.datetime.now(tz=datetime.timezone.utc),
+                'createdDate': datetime.now(tz=datetime),
                 'email': email,
                 'fullName': f'{firstName} {lastName}',
                 'gender': gender,
@@ -390,15 +390,24 @@ def searchUsers(request):
         })
 
 
-def getRevenueInRange(startTime, endTime, users):
-    
+
+def countNewUserInRange(startTime, endTime):
+    users = db.collection(f"users").get()
     newUser = 0
-    newAccountPrice = 500000
+
+    # 12AM -> 00h00 in 24hrs.
+    # 12AM UTC+7 mean 5PM in the previous day
     for user in users:
-        if startTime <= user.to_dict()['createdDate'].date() and user.to_dict()['createdDate'].date() <= endTime:
+        createdDate = user.to_dict()['createdDate'].date()
+        if startTime <= createdDate and createdDate <= endTime:
             newUser += 1
-            
-    return newAccountPrice*newUser
+
+    return newUser
+
+def getRevenueInRange(startTime, endTime):
+    newAccountPrice = 500000  
+
+    return newAccountPrice*countNewUserInRange(startTime, endTime)
 
 
 import random
@@ -408,7 +417,7 @@ def getRevenueByDay():
 
     for i in range(-6,1):
         iDayAgo = currentDay + timedelta(days=i)
-        revenueByDay[iDayAgo.strftime('%a')] = getRevenueInRange(iDayAgo, iDayAgo, db.collection(f"users").get())
+        revenueByDay[iDayAgo.strftime('%a')] = getRevenueInRange(iDayAgo, iDayAgo)
 
     return revenueByDay
 
@@ -441,8 +450,8 @@ def getRevenueByMonth():
         pastMonth = i4TimesDayAgo.month
         revenueByMonth[i4TimesDayAgo.strftime('%b')] = getRevenueInRange(
             date(pastYears, pastMonth, 1),
-            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears)),
-            db.collection(f"users").get())
+            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears))
+            )
 
     return revenueByMonth
     
@@ -455,7 +464,7 @@ def getRevenueByYear():
         revenueByYear[iYearsAgo] = getRevenueInRange(
             date(iYearsAgo, 1, 1),
             date(iYearsAgo, 12, 31),
-            db.collection(f"users").get())
+            )
 
     return revenueByYear
 
@@ -483,6 +492,67 @@ def getRevenue(request):
             'formatType' : formatType
         })
 
+def countNewUserByDay():
+    currentDay = date.today()
+    newUser = 0
+
+    for i in range(-6,1):
+        iDayAgo = currentDay + timedelta(days=i)
+        newUser += countNewUserInRange(iDayAgo, iDayAgo)
+
+    return newUser
+
+def countNewUserByMonth():
+    currentDay = date.today()
+    middleDay = date(currentDay.year, currentDay.month, 15)
+    newUser = 0
+
+    for i in range(-12,1):
+        i4TimesDayAgo = middleDay + timedelta(weeks=4*i)
+        pastYears = i4TimesDayAgo.year
+        pastMonth = i4TimesDayAgo.month
+        newUser += countNewUserInRange(date(pastYears, pastMonth, 1),
+            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears))
+            )
+
+    return newUser
+
+def countNewUserByYear():
+    currentDay = date.today()
+    newUser = 0
+
+    for i in range(-12,1):
+        iYearsAgo = currentDay.year + i
+        newUser += countNewUserInRange(
+            date(iYearsAgo, 1, 1),
+            date(iYearsAgo, 12, 31),
+            )
+
+    return newUser
+    
+def countNewUser(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        formatType = body_data['formatType']
+
+        newUser = 0
+        if formatType == 'd':
+            newUser = countNewUserByDay()
+
+        if formatType == 'm':
+            newUser = countNewUserByMonth()
+
+        if formatType == 'y':
+            newUser = countNewUserByYear()
+
+        
+        return JsonResponse({
+            'message' : 'Succesfully',
+            'newUser' :  newUser,
+            'formatType' : formatType
+        })
 
 
 # (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
