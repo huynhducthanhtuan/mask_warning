@@ -475,3 +475,24 @@ def ViewReportDetailUser(request):
             return JsonResponse(result)
         except:
             return JsonResponse({"error": "Failed to get data"})
+
+
+def ViewReportHistory(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        
+        # Xử lí
+        try:
+            docs = db.collection(f"reports").where(u"userId", u"==", f"{userId}").stream()
+
+            result = []
+            for doc in docs:
+                result.append(doc.to_dict())
+                
+            return JsonResponse({"result": result})
+        except:
+            return JsonResponse({"error": "Failed to get data"})
+
