@@ -4,7 +4,7 @@
 
 .detailRightContent{
     width: 100%;
-    height: m-content;
+    height: 100vh;
     background-color: #F0F7FD;
 }
 .detailRightContent.active{
@@ -64,7 +64,7 @@
 .detailImageAndTitle{
     display: flex;
     align-items: flex-end;
-    margin-left: 30px;
+    margin: 20px 30px 20px;
 }
 .detailImageAndTitle img {
     width: 400px;

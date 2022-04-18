@@ -18,16 +18,11 @@ const ReportDetailAdmin = () => {
     }
 
     const solved = () => {
-        if (exampleReport.isSolved)
+        if (!exampleReport.isSolved)
             return (
-                <div className={styles.detailFitWindow}>
-
-                </div>
+                <button className={styles.detailComplete}>
+                    <img src={CompleteIcon} /> Complete</button>
             )
-        return (
-            <button className={styles.detailComplete}>
-                <img src={CompleteIcon} /> Complete</button>
-        )
     }
 
     return (
