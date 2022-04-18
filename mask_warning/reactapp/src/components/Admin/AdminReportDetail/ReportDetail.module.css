@@ -100,12 +100,12 @@
 
 
 .detailComplete{
-    padding: 6px;
+    padding: 5px    ;
     margin-top: 5px;
     border-radius: 10px;
     font-size: 16px;
     font-weight: 500;
-    margin-left: 1100px;
+    margin-left: 70vw;
     background-color: #4ABC3B;
 }
 
