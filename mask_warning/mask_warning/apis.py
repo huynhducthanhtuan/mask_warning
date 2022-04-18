@@ -3,10 +3,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from google.cloud.firestore_v1.field_path import FieldPath
-import firebase_admin, json, os, jwt, re, datetime, smtplib, math, random, smtplib, ssl
+from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
+import firebase_admin, smtplib, math, random, smtplib, ssl
+import string, pytz, json, os, jwt, re
 
 # Init app
 cred = credentials.Certificate(fr"{os.getcwd()}\mask_warning\mask-warning-787c4c69708d.json")
@@ -565,3 +567,34 @@ def ConfirmSolvedReport(request):
         except:
             return JsonResponse({"status": "fail"})
         
+
+def SendReport(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        image = body_data["image"]
+        title = body_data["title"]
+        description = body_data["description"]
+        
+        # Xử lí
+        try:
+            randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
+            datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
+            createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
+            createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+            new_report = db.collection("reports").document(str(randomString))
+            
+            new_report.set({
+                "userId": userId,
+                "createdDate": createdDate,
+                "image": image,
+                "title": title,
+                "description": description,
+                "isSolved": False,
+            })
+            return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "fail"})
+

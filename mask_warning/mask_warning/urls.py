@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.contrib import admin
 from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, Notifications, HandleChangePassword
-from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser
+from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
 from .views import video_feed
 
@@ -19,6 +19,7 @@ urlpatterns = [
     path('forgot-password-submit-code/', HandleSubmitCode),
     path('forgot-password-resend-code/', HandleReSendCode),
     path('forgot-password-create-new-password/', HandleCreateNewPassword),
+    path('send-report/', SendReport),
     path('report-history/', ViewReportHistory),
     path('report-history-detail/', ViewReportDetail),
 
