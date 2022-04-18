@@ -9,3 +9,6 @@
     height: 1px;
     opacity: 0.2;
 }
+li {
+    list-style: none;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from '../AdminHome/Home.module.css'
 import NotifyCard from '../AdminNotifyCard'
-import { Bell } from "../../ExportImages";
+import { Bell, Dashicons } from "../../../assets/ExportImages";
 
 const ShowBox = () => {
     const [showBox, setShowBox] = useState(false)
@@ -48,7 +48,7 @@ const ShowBox = () => {
         </div>
         <img
           className={styles.homeIconTopRight}
-          src="./icons/dashicons-migrate.png"
+          src={Dashicons}
         />
       </div>
     )

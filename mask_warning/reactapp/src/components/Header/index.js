@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { UserContext } from "../../App";
 import { isAuthenticated } from "../Auth";
 import { signOutApi } from "../../apis";
+import { UserAvatar } from "../../assets/ExportImages";
 import Modal from "../Modal";
 
 const Header = () => {
@@ -20,7 +21,7 @@ const Header = () => {
 
   const handleSignout = async () => {
     const data = await signOutApi();
-  
+
     if (data.message === "Sign out success !!") {
       localStorage.removeItem("jwt");
       dispatch({ type: "CLEAR" });
@@ -32,15 +33,26 @@ const Header = () => {
   const render = () => {
     if (isAuthenticated()) {
       return (
-        <div className={styles.headerLogin} onClick={() => setModalOpen(true)}>
-          <img src="./icons/signout.png" atl="" />
-          <p>Sign Out</p>
-        </div>
+        <>
+          <Link to="/profile">
+            <div className={styles.headerLogin}>
+              <img src={UserAvatar} alt="" />
+              <p>Profile</p>
+            </div>
+          </Link>
+          <div
+            className={styles.headerLogin}
+            onClick={() => setModalOpen(true)}
+          >
+            <img src="./icons/signout.png" alt="" />
+            <p>Sign Out</p>
+          </div>
+        </>
       );
     } else
       return (
         <div className={styles.headerLogin} onClick={() => navigate("/signin")}>
-          <img src="./icons/signin.png" atl="" />
+          <img src="./icons/signin.png" alt="" />
           <p>Sign In</p>
         </div>
       );
@@ -53,8 +65,8 @@ const Header = () => {
           <img alt="" src="./icons/logo.png" />
         </Link>
       </div>
-      <nav className={styles.headerNavigation}>
-        <ul>
+      <nav className={`${styles.headerNavigation}`}>
+        <ul className=" d-flex">
           <li>
             <Link to="/">
               <img src="./icons/home.png" alt="" />

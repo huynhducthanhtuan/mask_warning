@@ -21,8 +21,12 @@ import {
 
 import {
   AdminSignin,
-  AdminHome
+  AdminHome,
+  AdminReportsManager,
+  AdminUsersManager,
+  UserDetail,
 } from "../components/Admin";
+import Frame from "../components/Admin/Frame";
 
 const ScreensRoot = () => {
   return (
@@ -51,7 +55,11 @@ const ScreensRoot = () => {
       <Route path="/footer" element={<Footer />} />
 
       <Route path="/admin/signin" element={<AdminSignin />} />
-      <Route path="/admin/home" element={<AdminHome />} />
+      <Route path="/home/admin" element={<AdminHome />} />
+      <Route path="/reports-manager" element={<AdminReportsManager />} />
+      <Route path="/users-manager" element={<AdminUsersManager />} />
+      <Route path="/users-manager/user-detail" element={<UserDetail />} />
+      <Route path="/frame" element={<Frame />} />
     </Routes>
   );
 };

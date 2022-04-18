@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./sliderDot.css";
 import { UserContext } from "../../App";
-import { AboutUsIcon } from "../ExportImages";
+import { AboutUsIcon } from "../../assets/ExportImages";
 import { ToastContainer, toast } from 'react-toastify';
 
 const Home = () => {

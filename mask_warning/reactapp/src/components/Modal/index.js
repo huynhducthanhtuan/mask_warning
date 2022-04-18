@@ -32,7 +32,6 @@ function Modal({ setOpenModal, title, body = "Body", action }) {
           >
             Cancel
           </button>
-         
         </div>
       </div>
     </div>

@@ -1,8 +1,13 @@
 import React, { useRef, useState } from "react";
 import styles from "./LeftControl.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { VerticalLogo } from "../../ExportImages";
-
+import {
+  VerticalLogo,
+  HomeIcon,
+  useManager,
+  reportManager,
+  Line,
+} from "../../../assets/ExportImages";
 
 const LeftControl = ({ toggle = "home" }) => {
   const navigate = useNavigate();
@@ -11,7 +16,6 @@ const LeftControl = ({ toggle = "home" }) => {
     <div className="col-2">
       <img src={VerticalLogo} />
       <h2 className={styles.reportTitle}>MANAGEMENTS</h2>
-
       <div className={styles.homeTabs}>
         <div
           className={
@@ -19,9 +23,9 @@ const LeftControl = ({ toggle = "home" }) => {
               ? `${styles.homeTabItem} ${styles.active}`
               : `${styles.homeTabItem}`
           }
-          onClick={() => navigate("/homeAdmin")}
+          onClick={() => navigate("/home/admin")}
         >
-          <img src="./icons/home.png" />
+          <img src={HomeIcon} />
           <p>Home</p>
         </div>
 
@@ -31,10 +35,10 @@ const LeftControl = ({ toggle = "home" }) => {
               ? `${styles.homeTabItem} ${styles.active}`
               : `${styles.homeTabItem}`
           }
-          onClick={() => navigate("/usersManager")}
+          onClick={() => navigate("/users-manager")}
         >
-          <img src="./icons/users_manager.png" />
-          <p >Users Manager</p>
+          <img src={useManager} />
+          <p>Users Manager</p>
         </div>
 
         <div
@@ -43,18 +47,18 @@ const LeftControl = ({ toggle = "home" }) => {
               ? `${styles.homeTabItem} ${styles.active}`
               : `${styles.homeTabItem}`
           }
-          onClick={() => navigate("/reportsManager")}
+          onClick={() => navigate("/reports-manager")}
         >
-          <img src="./icons/reports_manager.png" />
-          <p >Reports Manager</p>
+          <img src={reportManager} />
+          <p>Reports Manager</p>
         </div>
       </div>
 
       <div className={styles.homeDecs}>
-        <img src="./icons/line.png" />
+        <img src={Line} />
         <h3 className={styles.titleHome}>Mask Warning. 2022</h3>
         <p className={styles.desHome}>
-        Mask Warning is a system help store notify customer wearing mask
+          Mask Warning is a system help store notify customer wearing mask
         </p>
       </div>
     </div>

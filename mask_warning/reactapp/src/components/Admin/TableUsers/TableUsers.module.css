@@ -1,0 +1,36 @@
+.tableUsers {
+  background-color: #fff;
+}
+.theadUser {
+  height: 42px;
+}
+.nameCol {
+  line-height: 42px;
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #9fa2b4;
+}
+.rowValueUser {
+  height: 70px;
+  line-height: 70px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.avatarUserManager {
+  width: 54px;
+  height: 54px;
+  background-size: cover;
+  object-fit: contain;
+}
+.customerName {
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+}
+.actionDelete {
+  font-size: 14px;
+  width: 84px;
+  height: 30px;
+}

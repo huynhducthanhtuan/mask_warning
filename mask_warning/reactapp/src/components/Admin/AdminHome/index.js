@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import StatisticCard from "../AdminStatisticCard";
 import LeftControl from "../AdminLeftControl";
 import ShowBox from "../ShowBox";
+import { ellipse, averageHours, newUsers} from "../../../assets/ExportImages";
 const HomeAdmin = () => {
   const [toggle, setToggle] = useState("home");
 
@@ -38,7 +39,7 @@ const HomeAdmin = () => {
                     }
                     onClick={() => setStatisticToggle("week")}
                   >
-                    <img src="./icons/ellipse.png" />
+                    <img src={ellipse}/>
                     <p>Week</p>
                   </div>
                   <div
@@ -49,7 +50,7 @@ const HomeAdmin = () => {
                     }
                     onClick={() => setStatisticToggle("month")}
                   >
-                    <img src="./icons/ellipse.png" />
+                    <img src={ellipse}/>
                     <p>Month</p>
                   </div>
                   <div
@@ -60,7 +61,7 @@ const HomeAdmin = () => {
                     }
                     onClick={() => setStatisticToggle("year")}
                   >
-                    <img src="./icons/ellipse.png" />
+                    <img src={ellipse}/>
                     <p>Year</p>
                   </div>
                 </div>
@@ -69,13 +70,13 @@ const HomeAdmin = () => {
                     cardName={"User(s)"}
                     data={dataUsersStatistic[statisticToggle]}
                     dataType={" new user(s)"}
-                    iconLink={"./icons/new_users.png"}
+                    iconLink={newUsers}
                   />
                   <StatisticCard
                     cardName={"Average hour(s) per day"}
                     data={dataAvarageHoursStatistic[statisticToggle]}
                     dataType={" hour(s) per day"}
-                    iconLink={"./icons/average_hours.png"}
+                    iconLink={averageHours}
                   />
                 </div>
               </div>
