@@ -427,13 +427,15 @@ def HandleCreateNewPassword(request):
             return JsonResponse({"message": "User not found"})
   
 
-def ViewReportPage(request):
+def ViewReportList(request):
     try:
-        doc_ref = db.collection(f"reports").stream()
+        docs = db.collection(f"reports").stream()
 
         result = []
-        for doc in doc_ref:
-            result.append(doc.to_dict())
+        for doc in docs:
+            report = doc.to_dict()
+            report["reportId"] = doc.id
+            result.append(report)
             
         return JsonResponse({"result": result})
     except:
@@ -445,24 +447,19 @@ def ViewReportDetailUser(request):
         # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
-        index = body_data["index"]
+        reportId = body_data["reportId"]
         
         # Xử lí
         try:
-            # Lấy tất cả reports bỏ vào 1 mảng
-            doc_ref = db.collection(f"reports").stream()
-            result = []
-            for doc in doc_ref:
-                result.append(doc.to_dict())
-                
-            # Lấy ra document report theo index, tiếp tục lấy ra userId của document đó
-            userId = result[index].get("userId")
+            report = db.collection(f"reports").document(reportId)
+            userId = report.get().to_dict().get("userId")
 
             # Trả về thông tin user gửi report dựa vào userId ở trên
-            doc_ref = db.collection(f"users").document(userId)
-            doc = doc_ref.get().to_dict()
+            user = db.collection(f"users").document(userId)
+            doc = user.get().to_dict()
 
             result = {
+                "userId": user.get().id,
                 "storeName": doc.get("storeName"),
                 "fullName": doc.get("fullName"),
                 "email": doc.get("email"),
@@ -490,9 +487,28 @@ def ViewReportHistory(request):
 
             result = []
             for doc in docs:
-                result.append(doc.to_dict())
+                report = doc.to_dict()
+                report["reportId"] = doc.id
+                result.append(report)
                 
             return JsonResponse({"result": result})
         except:
             return JsonResponse({"error": "Failed to get data"})
 
+
+def ViewReportHistoryDetail(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        reportId = body_data["reportId"]
+        
+        # Xử lí
+        try:
+            report_ref = db.collection(f"reports").document(reportId)
+            report = report_ref.get().to_dict()
+            report["reportId"] = report_ref.get().id
+                
+            return JsonResponse(report)
+        except:
+            return JsonResponse({"error": "Failed to get data"})

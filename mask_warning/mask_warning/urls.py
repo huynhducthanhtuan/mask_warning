@@ -2,7 +2,7 @@ from django.urls import include, path
 from django.contrib import admin
 from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, Notifications, HandleChangePassword
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword
-from .apis import ViewReportPage, ViewReportDetailUser, ViewReportHistory
+from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportHistoryDetail
 from .views import video_feed
 
 urlpatterns = [
@@ -20,11 +20,12 @@ urlpatterns = [
     path('forgot-password-resend-code/', HandleReSendCode),
     path('forgot-password-create-new-password/', HandleCreateNewPassword),
     path('report-history/', ViewReportHistory),
+    path('report-history-detail/', ViewReportHistoryDetail),
 
     # Role Admin
     path('admin/notifications/<int:quantity>', Notifications),
     path('admin/notifications/', Notifications),
-    path('admin/report/', ViewReportPage),
+    path('admin/report/', ViewReportList),
     path('admin/report/detail-user/', ViewReportDetailUser),
     path('api-auth/', include('rest_framework.urls'))
 ]
