@@ -60,7 +60,7 @@
 .detailImageAndTitle {
   display: flex;
   align-items: flex-end;
-  margin: 20px 30px 20px;
+  margin: 20px 12px 20px;
 }
 .detailImageAndTitle img {
   width: 400px;

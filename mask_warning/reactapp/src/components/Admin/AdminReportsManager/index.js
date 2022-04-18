@@ -1,40 +1,51 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styles from "./ReportsManager.module.css";
 import { Link } from "react-router-dom";
+import { viewReportList } from "../../../apis";
 import LeftControl from "../AdminLeftControl";
 import ReportCard from "../AdminReportCard";
 import ShowBox from "../ShowBox";
 
 const ReportsManagerAdmin = (onClick) => {
   const [toggle, setToggle] = useState("all");
+  const [reports, setReports] = useState([]);
+  // //a report
+  // const exampleReport = {
+  //   id: "100000000",
+  //   createdDate: "15/01/2022",
+  //   isSolved: true,
+  //   userId: "1231434",
+  // };
+  // const exampleReport2 = {
+  //   id: "100000001",
+  //   createdDate: "17/01/2022",
+  //   isSolved: false,
+  //   userId: "12334566",
+  // };
+  // const exampleReport3 = {
+  //   id: "100000002",
+  //   createdDate: "20/01/2022",
+  //   isSolved: false,
+  //   userId: "12764866",
+  // };
 
-  //a report
-  const exampleReport = {
-    id: "100000000",
-    createdDate: "15/01/2022",
-    isSolved: true,
-    userId: "1231434",
+  // const arrayRp = [exampleReport, exampleReport2, exampleReport3];
+  const loadViewReportList = async () => {
+    await viewReportList().then((data) => {
+      setReports(data.result);
+    });
   };
-  const exampleReport2 = {
-    id: "100000001",
-    createdDate: "17/01/2022",
-    isSolved: false,
-    userId: "12334566",
-  };
-  const exampleReport3 = {
-    id: "100000002",
-    createdDate: "20/01/2022",
-    isSolved: false,
-    userId: "12764866",
-  };
-
-  const arrayRp = [exampleReport, exampleReport2, exampleReport3];
-
-  var reportsFilter = arrayRp.filter((report) => {
-    if (toggle === "all") return report;
-    if (toggle === "solved") return report.isSolved;
-    return !report.isSolved;
-  });
+  useEffect(() => {
+    loadViewReportList();
+  }, []);
+  console.log("reports  ", reports);
+  var reportsFilter =
+    reports.length > 0 &&
+    reports.filter((report) => {
+      if (toggle === "all") return report;
+      if (toggle === "solved") return report.isSolved;
+      return !report.isSolved;
+    });
 
   return (
     <section className={styles.reportsMain}>
@@ -81,7 +92,7 @@ const ReportsManagerAdmin = (onClick) => {
         </div>
 
         <div className={styles.reportsList}>
-          <ReportCard reports={reportsFilter} />
+          {reports.length > 0 && <ReportCard reports={reportsFilter} />}
         </div>
       </div>
     </section>

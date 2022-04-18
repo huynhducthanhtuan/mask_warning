@@ -5,6 +5,7 @@
   height: 104px;
   background-color: white;
   cursor: pointer;
+  justify-content: space-around;
 }
 .cardMain.solved {
   background-color: #66bb6a;

@@ -1,11 +1,24 @@
 import React from "react";
 import styles from "./Modal.module.css";
 
-function Modal({ setOpenModal, title, body = "Body", action }) {
+function Modal({
+  setOpenModal,
+  Dialog,
+  title,
+  body = "Body",
+  action,
+  isCss = false,
+}) {
   return (
-    <div className={styles.modalBackground}>
+    <div
+      className={styles.modalBackground}
+      style={isCss ? { marginTop: "400px" } : ""}
+    >
       <div className={styles.modalContainer}>
         <div className={styles.titleCloseBtn}>
+          <div className={styles.title}>
+            <h1>{Dialog}</h1>
+          </div>
           <button
             onClick={() => {
               setOpenModal(false);
@@ -14,16 +27,16 @@ function Modal({ setOpenModal, title, body = "Body", action }) {
             X
           </button>
         </div>
-        {title && <div className={styles.title}>
-          <h1>{title}</h1>
-        </div> }
-        <div className={styles.body}>
+        {title && (
+          <div className={styles.title}>
+            <h1>{title}</h1>
+          </div>
+        )}
+        <div className={`${styles.body} mt-4`}>
           <p>{body}</p>
         </div>
         <div className={styles.footer}>
-         <button
-            onClick={action}
-          >Oke</button>
+          <button onClick={action}>Oke</button>
           <button
             onClick={() => {
               setOpenModal(false);

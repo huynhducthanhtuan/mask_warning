@@ -50,7 +50,7 @@ const ForgotPasswordEnterCode = () => {
       case "Failed to re-send code":
         toast.error(data.message.toLocaleUpperCase());
         break;
-      case "Please check your email":
+      case "Re-send code success. Please check your email":
         toast.success(data.message.toLocaleUpperCase());
         break;
     }

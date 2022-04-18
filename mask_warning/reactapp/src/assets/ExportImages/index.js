@@ -34,3 +34,6 @@ export { default as BackButton } from "../icons/arrow.png";
 export { default as AvatarTrungHieu } from "../../assets/icons/trunghieu.png";
 export { default as AvatarNgocHieu } from "../../assets/icons/ngochieu.png";
 export { default as AvatarThanhTuan } from "../../assets/icons/thanhtuan.png";
+
+//gif
+export { default as LoadingReport } from "../../assets/Gif/loadingReport.gif";

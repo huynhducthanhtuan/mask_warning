@@ -11,12 +11,10 @@ export { default as GuideConnectCamera } from "./GuideConnectCamera";
 export { default as GuideReportDefect } from "./GuideReportDefect";
 export { default as Header } from "./Header";
 export { default as Home } from "./Home";
-export { default as Modal } from "./Modal";
+export { default as Modal } from "./Helper/Modal";
 export { default as Report } from "./Report";
 export { default as ReportHistory } from "./ReportHistory";
 export { default as ReportHistoryDetail } from "./ReportHistoryDetail";
 export { default as Signin } from "./Signin";
 export { default as Profile } from "./Profile";
 export { default as ChangePassword } from "./ChangePassword";
-
-

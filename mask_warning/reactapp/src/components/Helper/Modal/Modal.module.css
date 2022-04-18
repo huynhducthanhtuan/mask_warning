@@ -1,12 +1,12 @@
 .modalBackground {
   width: 100vw;
-  height: 100vh;
+  height: 98vh;
   position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2;
-  margin-top: 400px;
+  /* margin-top: 400px; */
 }
 
 .modalContainer {
@@ -27,7 +27,7 @@
 
 .titleCloseBtn {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .titleCloseBtn button {

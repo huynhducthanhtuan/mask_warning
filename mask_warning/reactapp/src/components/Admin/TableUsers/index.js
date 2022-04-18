@@ -9,7 +9,7 @@ import {
 } from "../../../assets/ExportImages";
 import { Link } from "react-router-dom";
 
-const TableUsers = () => {
+const TableUsers = ({ users }) => {
   return (
     <div>
       <table class={`table ${styles.tableUsers}`}>
@@ -22,64 +22,29 @@ const TableUsers = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className={styles.rowValueUser}>
-            <Link to={`/users-manager/user-detail`}>
-              <td className={styles.customerName}>
-                <div
-                  className={styles.avatarUserManager}
-                  style={{ backgroundImage: `url('${AvatarTrungHieu}')` }}
-                ></div>
-                <span className="ml-4">Võ Trung Hiếu</span>
-              </td>
-            </Link>
+          {users.map((user, index) => {
+            return (
+              <tr className={styles.rowValueUser} key={user.userId}>
+                <Link to={`/users-manager/user-detail`}>
+                  <td className={styles.customerName}>
+                    <div
+                      className={styles.avatarUserManager}
+                      style={{ backgroundImage: `url('${AvatarTrungHieu}')` }}
+                    ></div>
+                    <span className="ml-4">{user.fullName}</span>
+                  </td>
+                </Link>
 
-            <td>Shop Highway Menswear</td>
-            <td>May 26, 2021</td>
-            <td>
-              <button className={`btn btn-danger ${styles.actionDelete}`}>
-                Delete
-              </button>
-            </td>
-          </tr>
-          <tr className={styles.rowValueUser}>
-            <Link to={`/users-manager/user-detail`}>
-              {" "}
-              <td className={styles.customerName}>
-                <div
-                  className={styles.avatarUserManager}
-                  style={{ backgroundImage: `url('${AvatarNgocHieu}')` }}
-                ></div>
-                <span className="ml-4">Steve Rogers</span>
-              </td>
-            </Link>
-
-            <td>Vintage Violet</td>
-            <td>May 24, 2021</td>
-            <td>
-              <button className={`btn btn-danger ${styles.actionDelete}`}>
-                Delete
-              </button>
-            </td>
-          </tr>
-          <tr className={styles.rowValueUser}>
-            <Link to={`/users-manager/user-detail`}>
-              <td className={styles.customerName}>
-                <div
-                  className={styles.avatarUserManager}
-                  style={{ backgroundImage: `url('${AvatarThanhTuan}')` }}
-                ></div>
-                <span className="ml-4">Huỳnh Đức Thanh Tuấn</span>
-              </td>
-            </Link>
-
-            <td>Shop Highway Menswear</td>
-            <td>May 24, 2021</td>
-            <td>
-              <button className={`btn btn-danger ${styles.actionDelete}`}>
-                Delete
-              </button>
-            </td>
-          </tr>
+                <td>{user.storeName}</td>
+                <td>{user.createdDate.split("T")[0]}</td>
+                <td>
+                  <button className={`btn btn-danger ${styles.actionDelete}`}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
