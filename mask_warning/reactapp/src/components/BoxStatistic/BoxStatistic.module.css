@@ -1,0 +1,23 @@
+.boxBoard {
+    width: 23%;
+    border: 1px solid #333;
+    border-radius: 4px;
+}
+
+.boxBoard h4 {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.boxBoard p {
+    font-size: 14px;
+    font-weight: 300;
+    padding-right: 7px;
+}
+
+.progress {
+    padding: 4px 5px;
+    background-color: #C3EE83;
+    color: #333;
+}
+

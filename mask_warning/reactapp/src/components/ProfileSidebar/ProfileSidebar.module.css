@@ -1,0 +1,56 @@
+.profileSidebar h2 {
+    font-size: 48px;
+    font-weight: bold;
+    color: #3751FE;
+    margin-bottom: 15px;
+}
+
+.boxSide {
+    background: #F7FAFC;
+    padding: 28px 22px;
+}
+
+.avatarName {
+    width: 100%;
+}
+
+.formUploadImage button {
+    margin-left: calc((100% - 155px) / 2);
+    color: #595D7B;
+    background: #B5BEFB;
+    padding: 5px 40px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.myProfile {
+    color: #333;
+    background: #8A9AE4;
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.boxSide ul li {
+    display: flex;
+    background: #CFD7F3;
+    padding: 4px;
+    margin: 10px 0px;
+    transition: 0.5s;
+}
+
+.boxSide ul li:hover {
+    background: #8A9AE4;
+}
+
+.boxSide li p {
+    font-size: 14px;
+    font-weight: 400;
+    color: #2D3748;
+    align-items: center;
+}
