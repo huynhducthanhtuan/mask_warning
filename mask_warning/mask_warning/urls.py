@@ -1,8 +1,8 @@
 from django.urls import include, path
 from django.contrib import admin
 from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, Notifications, HandleChangePassword
-from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword
-from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList
+from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser
+from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
 from .views import video_feed
 
 urlpatterns = [
@@ -26,8 +26,11 @@ urlpatterns = [
     path('admin/notifications/<int:quantity>', Notifications),
     path('admin/notifications/', Notifications),
     path('admin/users-manager/detail-user/', ViewProfile),
+    path('admin/users-manager/delete-user/', DeleteUser),
     path('admin/users-manager/', ViewUserList),
     path('admin/reports-manager/detail-user/', ViewReportDetailUser),
+    path('admin/reports-manager/detail-report/', ViewReportDetail),
+    path('admin/reports-manager/confirm-solved/', ConfirmSolvedReport),
     path('admin/reports-manager/', ViewReportList),
     path('api-auth/', include('rest_framework.urls'))
 ]

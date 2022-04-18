@@ -528,3 +528,40 @@ def ViewUserList(request):
         return JsonResponse({"result": result})
     except:
         return JsonResponse({"error": "Failed to get data"})
+
+
+def DeleteUser(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        
+        # Xử lí
+        try:
+            if CheckUserIdExist(userId):
+                db.collection(f"users").document(userId).delete()
+                return JsonResponse({"status": "success"})
+            else:
+                return JsonResponse({"status": "fail"})
+        except:
+            return JsonResponse({"status": "fail"})
+
+
+def ConfirmSolvedReport(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        reportId = body_data["reportId"]
+
+        # Xử lí
+        try:
+            doc = db.collection(f"reports").document(reportId)
+            doc.update({
+                'isSolved': True
+            })
+            return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "fail"})
+        
