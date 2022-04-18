@@ -1,12 +1,14 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from google.cloud.firestore_v1.field_path import FieldPath
-import firebase_admin, json, os, jwt, re, datetime, smtplib, socket, math, random
-from socket import gaierror
+from datetime import datetime
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
+import firebase_admin, smtplib, math, random, smtplib, ssl
+import string, pytz, json, os, jwt, re
 
 # Init app
 cred = credentials.Certificate(fr"{os.getcwd()}\mask_warning\mask-warning-787c4c69708d.json")
@@ -84,10 +86,11 @@ def ViewProfile(request):
         
         # Xử lí
         try:
-            doc_ref = db.collection(f"users").document(userId)
-            doc = doc_ref.get().to_dict()
+            user_ref = db.collection(f"users").document(userId)
+            doc = user_ref.get().to_dict()
 
             result = {
+                "userId": user_ref.get().id,
                 "storeName": doc.get("storeName"),
                 "fullName": doc.get("fullName"),
                 "email": doc.get("email"),
@@ -244,73 +247,8 @@ def RandomCode():
     return random_str
 
 
-# Hàm gửi mail, chưa thành công
-def SendCode(email):
-    #region Code gửi mail, đang lỗi 
-    #region Cách 1
-    # sender = "thanhtuanhuynh0011@gmail.com"
-    # receivers = [email]
-    # message = f"""From: From Person <{sender}>
-    # To: To Person <{receivers[0]}>
-    # Subject: Verify code to create new password - Mask Warning
-
-    # 123456
-    # """
-
-    # try:
-    #     # smtplib.SMTP_PORT
-    #     # 116.110.250.42: Timeout
-    #     # 127.0.0.1: Refused
-    #     # localhost: Refused
-    #     smtpObj = smtplib.SMTP('127.0.0.1', 5000, socket.getfqdn())
-    #     smtpObj.sendmail(sender, receivers, message)         
-    #     print("Successfully sent email")
-    #     return JsonResponse({"status": "success"})
-
-    # except smtplib.SMTPException:
-    #     print("Error: unable to send email")
-    #     return JsonResponse({"status": "fail"})
-    #endregion
-
-    #region Cách 2
-    # Define the SMTP server
-    # port = 2525
-    # smtp_server = "smtp.mailtrap.io"
-    # login = "c5a6b7264acd23"
-    # password = "c69400ef5d34f7"
-
-    # # specify the sender and receiver
-    # sender = "thanhtuanhuynh0011@gmail.com"
-    # receiver = email
-
-    # message = f"""\
-    # Subject: Verify code to create new password - Mask Warning
-    # To: {receiver}
-    # From: {sender}
-
-    # Hi you, your code is: 123456"""
-
-    # try:
-    #     #send your message with credentials specified above
-    #     server = smtplib.SMTP(smtp_server, port)
-    #     server.login(login, password)
-    #     server.sendmail(sender, receiver, message)
-        
-    #     # sent success
-    #     print('Sent')
-    #     return JsonResponse({"status": "success"})
-    # except (gaierror, ConnectionRefusedError):
-    #     print('Failed to connect to the server. Bad connection settings?')
-    #     return JsonResponse({"status": "fail"})
-    # except smtplib.SMTPServerDisconnected:
-    #     print('Failed to connect to the server. Wrong user/password?')
-    #     return JsonResponse({"status": "fail"})
-    # except smtplib.SMTPException as e:
-    #     print('SMTP error occurred: ' + str(e))
-    #     return JsonResponse({"status": "fail"})
-    #endregion
-    #endregion
-
+def UpdateCodeInDB(email, code): 
+    print(email, code)
     try:
         # Lấy ra mảng các document theo email
         docs = db.collection('users').where(u"email", u"==", f"{email}").stream()
@@ -323,12 +261,44 @@ def SendCode(email):
         # Lấy ra chính document đó theo document id lấy được ở trên và cập nhật nó
         if userId != "":
             doc_ref = db.collection('users').document(userId)
-            doc_ref.update({'code': RandomCode()})
+            doc_ref.update({'code': code})
             return True
-        else:
-            return False
     except:
-        return False 
+        return False
+
+
+def SendCode(email):
+    sender_email = "baop38391@gmail.com"
+    receiver_email = email
+    password = ",,s,ffine-m..a.r.t.::ds-=/ / //5V y"
+
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "Verify code to create new password - Mask Warning"
+    message["From"] = "Mask Warning's support team"
+    message["To"] = receiver_email
+
+    # Create the plain-text of your message
+    code = RandomCode()
+    text = f"Hi, your verification code is: {code}"
+
+    # Turn these into plain MIMEText objects
+    part = MIMEText(text, "plain")
+    message.attach(part)
+
+    # Create secure connection with server and send email
+    context = ssl.create_default_context()
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(
+                sender_email, receiver_email, message.as_string()
+            )
+            if UpdateCodeInDB(email, code): 
+                return True
+            else: 
+                return False
+    except:
+        return False
 
 
 def HandleSubmitEmail(request): 
@@ -338,7 +308,7 @@ def HandleSubmitEmail(request):
         body_data = json.loads(body_unicode)
         email = body_data["email"].strip()
 
-        # NNếu người dùng không nhập gì cả
+        # Nếu người dùng không nhập gì cả
         if email == "":
             return JsonResponse({"message": "Please enter your email"})
         else:
@@ -459,3 +429,207 @@ def HandleCreateNewPassword(request):
         else:
             return JsonResponse({"message": "User not found"})
   
+
+def ViewReportList(request):
+    try:
+        docs = db.collection(f"reports").stream()
+
+        result = []
+        for doc in docs:
+            report = doc.to_dict()
+            report["reportId"] = doc.id
+            result.append(report)
+            
+        return JsonResponse({"result": result})
+    except:
+        return JsonResponse({"error": "Failed to get data"})
+
+
+def ViewReportDetailUser(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        reportId = body_data["reportId"]
+        
+        # Xử lí
+        try:
+            report = db.collection(f"reports").document(reportId)
+            userId = report.get().to_dict().get("userId")
+
+            # Trả về thông tin user gửi report dựa vào userId ở trên
+            user = db.collection(f"users").document(userId)
+            doc = user.get().to_dict()
+
+            result = {
+                "userId": user.get().id,
+                "storeName": doc.get("storeName"),
+                "fullName": doc.get("fullName"),
+                "email": doc.get("email"),
+                "gender": doc.get("gender"),
+                "address": doc.get("address").split(",")[0].strip(),
+                "district": doc.get("address").split(",")[1].strip(),
+                "hometown": doc.get("address").split(",")[2].strip(),
+                "phoneNumber": doc.get("phoneNumber"),
+            }
+            return JsonResponse(result)
+        except:
+            return JsonResponse({"error": "Failed to get data"})
+
+
+def ViewReportHistory(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        
+        # Xử lí
+        try:
+            docs = db.collection(f"reports").where(u"userId", u"==", f"{userId}").stream()
+
+            result = []
+            for doc in docs:
+                report = doc.to_dict()
+                report["reportId"] = doc.id
+                result.append(report)
+                
+            return JsonResponse({"result": result})
+        except:
+            return JsonResponse({"error": "Failed to get data"})
+
+
+def ViewReportDetail(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        reportId = body_data["reportId"]
+        
+        # Xử lí
+        try:
+            report_ref = db.collection(f"reports").document(reportId)
+            report = report_ref.get().to_dict()
+            report["reportId"] = report_ref.get().id
+                
+            return JsonResponse(report)
+        except:
+            return JsonResponse({"error": "Failed to get data"})
+
+
+def ViewUserList(request):
+    try:
+        docs = db.collection(f"users").stream()
+
+        result = []
+        for doc in docs:
+            user = doc.to_dict()
+            user["userId"] = doc.id
+            result.append(user)
+            
+        return JsonResponse({"result": result})
+    except:
+        return JsonResponse({"error": "Failed to get data"})
+
+
+def DeleteUser(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        
+        # Xử lí
+        try:
+            if CheckUserIdExist(userId):
+                db.collection(f"users").document(userId).delete()
+                return JsonResponse({"status": "success"})
+            else:
+                return JsonResponse({"status": "fail"})
+        except:
+            return JsonResponse({"status": "fail"})
+
+
+def ConfirmSolvedReport(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        reportId = body_data["reportId"]
+
+        # Xử lí
+        try:
+            doc = db.collection(f"reports").document(reportId)
+            doc.update({
+                'isSolved': True
+            })
+            return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "fail"})
+        
+
+def SendReport(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        image = body_data["image"]
+        title = body_data["title"]
+        description = body_data["description"]
+        
+        # Xử lí
+        try:
+            randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
+            datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
+            createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
+            createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+            new_report = db.collection("reports").document(str(randomString))
+            
+            new_report.set({
+                "userId": userId,
+                "createdDate": createdDate,
+                "image": image,
+                "title": title,
+                "description": description,
+                "isSolved": False,
+            })
+            return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "fail"})
+
+
+def HandleSigninAdmin(request): 
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userName = body_data["userName"].strip()
+        password = body_data["password"].strip()
+
+        # Nếu người dùng ko nhập gì cả
+        if userName == "" or password == "":
+            return JsonResponse({"message": "Please enter all information"})
+        else:
+            # Nếu độ dài mật khẩu < 8
+            if len(password) < 8:
+                return JsonResponse({"message": "Please enter password has more 8 characters"})
+            else:
+                try:
+                    # Thực hiện đăng nhập
+                    docs = db.collection(f"admins").where(u"userName", u"==", f"{userName}").where(u"password", u"==", f"{password}").stream()
+
+                    check = False
+                    for doc in docs:
+                        if doc.to_dict().get("userName") == userName and doc.to_dict().get("password") == password:
+                            check = True
+                            
+                    if check:
+                        return JsonResponse({"message": "Signin success"})
+                    else:
+                        return JsonResponse({"message": "User name and password do not match"})
+                except:
+                    return JsonResponse({"message": "Signin failed"})
+
+
+ 

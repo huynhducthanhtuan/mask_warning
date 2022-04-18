@@ -6,15 +6,15 @@ import { UserContext } from "../../App";
 import { isAuthenticated } from "../Auth";
 import { signOutApi } from "../../apis";
 import { UserAvatar } from "../../assets/ExportImages";
-import Modal from "../Modal";
+import Modal from "../Helper/Modal";
 
 const Header = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const { token } = isAuthenticated();
   const notify = () => {
-    if (!state) {
+    if (notify) {
       toast.info("PLEASE SIGNIN FIRST !!");
     }
   };
@@ -74,28 +74,28 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link to={state ? "/guide" : "/signin"} onClick={!state && notify}>
+            <Link to={token ? "/guide" : "/signin"} onClick={!token && notify}>
               <img alt="" src="./icons/guide.png" />
               <p>Guide</p>
             </Link>
           </li>
           <li>
-            <Link to={state ? "/camera" : "/signin"} onClick={!state && notify}>
+            <Link to={token ? "/camera" : "/signin"} onClick={!token && notify}>
               <img alt="" src="./icons/camera.png" />
               <p>Camera</p>
             </Link>
           </li>
           <li>
             <Link
-              to={state ? "/statistic" : "/signin"}
-              onClick={!state && notify}
+              to={token ? "/statistic" : "/signin"}
+              onClick={!token && notify}
             >
               <img alt="" src="./icons/statistic.png" />
               <p>Statistic</p>
             </Link>
           </li>
           <li>
-            <Link to={state ? "/report" : "/signin"} onClick={!state && notify}>
+            <Link to={token ? "/report" : "/signin"} onClick={!token && notify}>
               <img alt="" src="./icons/report.png" />
               <p>Report</p>
             </Link>
@@ -114,6 +114,7 @@ const Header = () => {
           body="Are you sure to sign out ??"
           setOpenModal={setModalOpen}
           action={handleSignout}
+          isCss={true}
         />
       )}
     </header>

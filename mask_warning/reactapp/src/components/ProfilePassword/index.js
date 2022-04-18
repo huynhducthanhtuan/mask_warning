@@ -19,15 +19,15 @@ const ProfilePassword = () => {
             <ul className={styles.boxChangePassword}>
               <li className={styles.item}>
                 <label>Enter old password:</label>
-                <input disabled />
+                <input />
               </li>
               <li className={styles.item}>
                 <label>Enter new password:</label>
-                <input disabled />
+                <input />
               </li>
               <li className={styles.item}>
                 <label>Re-enter new password:</label>
-                <input disabled />
+                <input />
               </li>
             </ul>
             <div

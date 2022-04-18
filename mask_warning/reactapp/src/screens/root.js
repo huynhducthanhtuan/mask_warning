@@ -28,8 +28,10 @@ import {
   AdminReportsManager,
   AdminUsersManager,
   UserDetail,
+  AdminReportDetail,
+  AdminReportUserDetail,
+  Frame,
 } from "../components/Admin";
-import Frame from "../components/Admin/Frame";
 
 const ScreensRoot = () => {
   return (
@@ -43,7 +45,9 @@ const ScreensRoot = () => {
       <Route path="/report-history" element={<ReportHistory />} />
       <Route path="/report-history-detail" element={<ReportHistoryDetail />} />
       <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/footer" element={<Footer />} />
       <Route path="/signin" element={<Signin />} />
+      <Route path="/statistic" element={<Statistic />} />
       <Route path="/profile" element={<Profile />} />
       <Route
         path="/profile-change-information"
@@ -51,9 +55,6 @@ const ScreensRoot = () => {
       />
       <Route path="/profile-password" element={<ProfilePassword />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/admin-signin" element={<AdminSignin />} />
-      <Route path="/admin-home" element={<AdminHome />} />
-      <Route path="/statistic" element={<Statistic />} />
       <Route
         path="/forgot-password-enter-code"
         element={<ForgotPasswordEnterCode />}
@@ -63,15 +64,21 @@ const ScreensRoot = () => {
         element={<ForgotPasswordCreateNewPassword />}
       />
       <Route path="/change-password" element={<ChangePassword />} />
-      <Route path="/footer" element={<Footer />} />
 
       <Route path="/admin/signin" element={<AdminSignin />} />
-      <Route path="/home/admin" element={<AdminHome />} />
-      <Route path="/reports-manager" element={<AdminReportsManager />} />
-      <Route path="/users-manager" element={<AdminUsersManager />} />
-      <Route path="/users-manager/user-detail" element={<UserDetail />} />
-      <Route path="/frame" element={<Frame />} />
+      <Route path="/admin/home" element={<AdminHome />} />
+      <Route path="/admin/users-manager" element={<AdminUsersManager />} />
+      <Route
+        path="/admin/reports-manager/report-detail/:reportId"
+        element={<AdminReportDetail />}
+      />
+      <Route
+        path="/admin/reports-manager/user-detail/:userId"
+        element={<AdminReportUserDetail />}
+      />
+      <Route path="/admin/reports-manager" element={<AdminReportsManager />} />
     </Routes>
   );
 };
+
 export default ScreensRoot;
