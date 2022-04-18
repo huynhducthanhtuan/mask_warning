@@ -1,0 +1,33 @@
+.personalInformation {
+  justify-content: flex-start;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d9d9d9;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.boxPersonalInformation .fillText {
+  color: #cf4646;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.boxInformation {
+  padding: 40px 40px;
+}
+
+.boxInformation li {
+  border-top: 1px solid #d9d9d9;
+  padding: 15px 0px;
+}
+
+.item label {
+  width: 200px;
+  font-size: 16px;
+}
+
+.item p {
+  font-weight: 500;
+}

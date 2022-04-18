@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { createContext, useReducer } from "react";
+import React, { useEffect, createContext, useReducer, useContext } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import ScreensRoot from "./screens/root";
 import GlobalStyle from "./components/GlobalStyle";

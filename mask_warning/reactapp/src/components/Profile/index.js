@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./Profile.module.css";
 import Header from "../Header";
+import { Link } from "react-router-dom";
 import ProfileSidebar from "../ProfileSidebar";
 import { updateProfile, viewProfile } from "../../apis";
 import { isAuthenticated } from "../Auth";
@@ -128,7 +129,9 @@ const Profile = () => {
               <p>0376543210</p>
             </li>
           </ul>
-          <button className={styles.btnUpdate}>Update</button>
+          <Link to="/profile-change-information">
+            <button className={styles.btnUpdate}>Update</button>
+          </Link>
         </section>
       </div>
     </section>

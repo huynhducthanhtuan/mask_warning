@@ -73,6 +73,10 @@
   cursor: pointer;
 }
 
+.headerLogin:hover  {
+    cursor: pointer;
+}
+
 .headerLogin a:hover {
   opacity: 0.7;
 }

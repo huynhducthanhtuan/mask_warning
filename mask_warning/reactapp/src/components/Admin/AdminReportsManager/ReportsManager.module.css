@@ -1,0 +1,25 @@
+.reportsMain{
+    display: flex;
+}
+.reportsRight{
+    flex-basis: 84%;
+}
+.reportsTasksTabs{
+    display: flex;
+    position: absolute;
+    right: 50px;
+}
+.reportsTasks{
+    cursor: pointer;
+    color: #6160DC;
+}
+.reportsTasks.active{
+    cursor: pointer;
+    color: #6160DC;
+    font-weight: 600;
+}
+
+
+.reportsList{
+    margin-top: 60px;
+}
