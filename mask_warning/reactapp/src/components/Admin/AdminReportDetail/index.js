@@ -59,7 +59,7 @@ const ReportDetailAdmin = () => {
         >
           <div className={styles.detailTopInformation}>
             <h3 className={styles.detailId}>ID#{reportId}</h3>
-            <p>{report.createdDate.split("T1")[0]}</p>
+            <p>{report.createdDate.split("T")[0]}</p>
           </div>
           <div className={styles.detailUserInformation}>
             <p>User ID:</p>
