@@ -1,0 +1,99 @@
+
+.camera__header {
+    max-width: 1500px;
+}
+.sideBar {
+    text-align: center;
+    border-right: 1px solid #4444;
+    height: 1000px;
+    padding: 0;
+}
+
+.sideBar__home {
+    justify-content: start;
+    align-items: center;
+    padding: 15px 0 15px 60px;
+    width: 100%;
+    transition: 0.5s;
+}
+
+.sideBar__home:hover {
+    background: #0075FF;
+    cursor: pointer;
+}
+
+ .sideBar__home:hover p {
+    color: white;
+    opacity: 1;
+ }
+
+.sideBar__home p {
+    color: #0075FF;
+    padding-left: 15px;
+}
+
+.chooseImage {
+    margin-top: 15px;
+}
+
+.chooseImage img {
+    width: 100%;
+    height: 250px;
+    border: 1px solid #4444;
+}
+
+.chooseImage h5 {
+    text-align: center;
+    font-size: 18px;
+    padding: 10px 10px;
+    margin-bottom: 25px;
+    background: #A3F0FE;
+    border-radius: 50px;
+}
+
+.chooseImage input {
+    text-align: center;
+}
+
+.reportRight {
+    display: flex;
+    padding: 0;
+}
+
+.textInstruction {
+    font-size: 14px;
+}
+
+.selectionBug {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+}
+
+.selectionBug select {
+    display: block;
+    width: 200px;
+    background: #4444;
+}
+
+.selectionBug p {
+    font-weight: bold;
+}
+
+.reportDescription {
+    margin-top: 15px;
+}
+
+.reportDescription h5 {
+    font-size: 20px;
+}
+
+.reportDescription input {
+    width: 95% !important;
+    height: 200px !important;
+    background: ghostwhite !important;
+    border-radius: 5px!important;
+    border: 1px solid #4444 !important;
+}
