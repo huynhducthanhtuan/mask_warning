@@ -99,6 +99,7 @@ def ViewProfile(request):
                 "district": doc.get("address").split(",")[1].strip(),
                 "hometown": doc.get("address").split(",")[2].strip(),
                 "phoneNumber": doc.get("phoneNumber"),
+                "avatar": doc.get("avatar")
             }
             return JsonResponse(result)
         except:
@@ -490,6 +491,7 @@ def ViewReportDetailUser(request):
                 "district": doc.get("address").split(",")[1].strip(),
                 "hometown": doc.get("address").split(",")[2].strip(),
                 "phoneNumber": doc.get("phoneNumber"),
+                "avatar": doc.get("avatar"),
             }
             return JsonResponse(result)
         except:
