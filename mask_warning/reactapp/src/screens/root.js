@@ -43,7 +43,10 @@ const ScreensRoot = () => {
       <Route path="/camera" element={<Camera />} />
       <Route path="/report" element={<Report />} />
       <Route path="/report-history" element={<ReportHistory />} />
-      <Route path="/report-history-detail" element={<ReportHistoryDetail />} />
+      <Route
+        path="/report-history-detail/:reportId"
+        element={<ReportHistoryDetail />}
+      />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/footer" element={<Footer />} />
       <Route path="/signin" element={<Signin />} />

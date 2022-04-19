@@ -1,11 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ReportHistory.module.css";
 import Header from "../Header";
 import { Link } from "react-router-dom";
+import CardReport from "./CardReport";
+import { isAuthenticated } from "./../Auth/index";
+import { reportsHistory } from "../../apis";
 
 const ReportHistory = () => {
+  const { user } = isAuthenticated();
+  const [reports, setReports] = useState();
+  const loadReportsHistory = async () => {
+    const reports = await reportsHistory({ userId: user.userId });
+    setReports(reports.result);
+  };
   useEffect(() => {
     window.scrollTo(0, 0);
+    loadReportsHistory();
   }, []);
 
   return (
@@ -26,21 +36,8 @@ const ReportHistory = () => {
             </div>
           </Link>
         </div>
-        <div className={`col-9 ${styles.reportHistory}`}>
-          <Link to="/report-history-detail">
-            <div className={`row ${styles.reportHistoryItem}`}>
-              <div className={`col-4 ${styles.reportHistoryLeft}`}>
-                <h3>Report #1</h3>
-                <p>Speaker error</p>
-              </div>
-              <div className={`col-5 ${styles.reportHistoryMiddle}`}>
-                <p>The notify of speaker is wrong. That person ...</p>
-              </div>
-              <div className={`co-3 ${styles.reportHistoryRight}`}>
-                <p>22:12 10/01/2022</p>
-              </div>
-            </div>
-          </Link>
+        <div className={`col-9 ${styles.reportHistory}`}>   
+            {reports && <CardReport reports={reports} />}
         </div>
       </div>
     </section>

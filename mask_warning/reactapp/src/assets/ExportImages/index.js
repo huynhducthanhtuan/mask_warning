@@ -37,3 +37,6 @@ export { default as AvatarThanhTuan } from "../../assets/icons/thanhtuan.png";
 
 //gif
 export { default as LoadingReport } from "../../assets/Gif/loadingReport.gif";
+
+//icons
+export { default as ArrowBack } from "../../assets/icons/arrow_back.png";

@@ -196,7 +196,7 @@ def HandleChangePassword(request):
                         if CheckPasswordExist(userId, oldPassword):
                             # Thực hiện cập nhật mật khẩu
                             if ChangePassword(userId, newPassword):
-                                return JsonResponse({"message": "Change password success"})
+                                return JsonResponse({"success": "Change password success"})
                             else:
                                 return JsonResponse({"message": "Change password failed"})
                         else:

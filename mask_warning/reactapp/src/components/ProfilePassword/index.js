@@ -1,10 +1,36 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "./ProfilePassword.module.css";
 import Header from "../Header";
 import ProfileSidebar from "../ProfileSidebar";
-
+import { isAuthenticated } from "./../Auth/index";
+import { changePasswordApi } from "../../apis";
+import { toast } from "react-toastify";
 const ProfilePassword = () => {
+  const { user } = isAuthenticated();
+  const oldPassword = useRef();
+  const newPassword = useRef();
+  const newPasswordConfirm = useRef();
+
+  const handleChangePassword = async () => {
+    const data = {
+      userId: user.userId,
+      oldPassword: oldPassword.current.value,
+      newPassword: newPassword.current.value,
+      newPasswordConfirm: newPasswordConfirm.current.value,
+    };
+    console.log(data);
+    const result = await changePasswordApi(data);
+    if (result.message) {
+      toast.error(result.message);
+    } else {
+      toast.success(result.success);
+      oldPassword.current.value = "";
+      newPassword.current.value = "";
+      newPasswordConfirm.current.value = "";
+    }
+  };
+
   return (
     <div className={styles.profilePassword}>
       <Header />
@@ -19,21 +45,21 @@ const ProfilePassword = () => {
             <ul className={styles.boxChangePassword}>
               <li className={styles.item}>
                 <label>Enter old password:</label>
-                <input />
+                <input ref={oldPassword} type="password" />
               </li>
               <li className={styles.item}>
                 <label>Enter new password:</label>
-                <input />
+                <input ref={newPassword} type="password" />
               </li>
               <li className={styles.item}>
                 <label>Re-enter new password:</label>
-                <input />
+                <input ref={newPasswordConfirm} type="password" />
               </li>
             </ul>
             <div
               className={` d-flex justify-content-center ${styles.btnChangePassword}`}
             >
-              <button>Update</button>
+              <button onClick={handleChangePassword}>Update</button>
               <button>Cancel</button>
             </div>
             <ul className={styles.textPassword}>

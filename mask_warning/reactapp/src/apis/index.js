@@ -17,6 +17,7 @@ export const signOutApi = () => {
 };
 
 export const changePasswordApi = (data) => {
+  console.log(data);
   return fetch("change-password/", {
     method: "POST",
     headers: {
@@ -139,8 +140,33 @@ export const viewDetailUser = (userId) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
 export const viewUserList = () => {
   return fetch("/admin/users-manager//")
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const sendReport = (data) => {
+  return fetch("/send-report/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const reportsHistory = (userId) => {
+  return fetch("/report-history/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userId),
+  })
     .then((res) => res.json())
     .catch((err) => err);
 };

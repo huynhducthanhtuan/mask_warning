@@ -72,9 +72,13 @@ const SignIn = () => {
             <input
               className={styles.formControl}
               type="password"
-              placeholder="eg: *********"
               ref={passwordInputRef}
             />
+          </div>
+          <div className={styles.signinAdmin}>
+            <Link to="/admin/signin">
+              <p>Sign In with role Admin</p>
+            </Link>
           </div>
           <div className={styles.formRemind}>
             <div className={styles.formRemember}>

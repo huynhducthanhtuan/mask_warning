@@ -1,73 +1,79 @@
 .main {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    padding-top: 20px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
 }
 .form {
-    width: 400px;
-    min-height: 470px;
-    padding: 32px 24px;
-    text-align: center;
-    background: #fff;
-    border-radius: 6px;
-    margin: 24px;
-    align-self: center;
-    box-shadow: 0 10px 12px 0 rgb(51 62 73 / 12%);
+  width: 400px;
+  min-height: 470px;
+  padding: 32px 24px;
+  text-align: center;
+  background: #fff;
+  border-radius: 6px;
+  margin: 24px;
+  align-self: center;
+  box-shadow: 0 10px 12px 0 rgb(51 62 73 / 12%);
 }
 .headingSignIn {
-    text-align: center;
-    color: #3751FE;
-    font-weight: bold;
-    font-size: 48px;
-    line-height: 56px;
-
+  text-align: center;
+  color: #3751fe;
+  font-weight: bold;
+  font-size: 48px;
+  line-height: 56px;
 }
 .heading {
-    color: #3751FE;
-    font-size: 18px;
-    line-height: 34px;
-    margin-top: 34px;
+  color: #3751fe;
+  font-size: 18px;
+  line-height: 34px;
+  margin-top: 34px;
 }
 .desc {
-    font-size: 14px;
-    line-height: 21px;
-    margin-bottom: 38px;
+  font-size: 14px;
+  line-height: 21px;
+  margin-bottom: 38px;
 }
 .formGroup {
-    display: flex;
-    margin-bottom: 16px;
-    flex-direction: column;
+  display: flex;
+  margin-bottom: 16px;
+  flex-direction: column;
 }
 .formLabel {
-    text-align: left;
-    font-weight: 500;
-    padding-bottom: 6px;
-    line-height: 1.8rem;
-    font-size: 1.4rem;
-    color: rgb(66 64 64);
+  text-align: left;
+  font-weight: 500;
+  padding-bottom: 6px;
+  line-height: 1.8rem;
+  font-size: 1.4rem;
+  color: rgb(66 64 64);
 }
 
 .formControl {
-    color: #544444;
-    border: 1px solid #c1b9b9 !important;
-    padding: 8px 0px 6px 12px !important;
-    border-radius: 7px !important;
+  color: #544444;
+  border: 1px solid #c1b9b9 !important;
+  padding: 8px 0px 6px 12px !important;
+  border-radius: 7px !important;
 }
 
 .formSubmit {
-    padding: 8px 39px;
-    color: #FFFFFF;
-    background-color: #3751FE;
-    border: 1px solid;
-    margin-top: 20px;
-    font-size: 15px;
+  padding: 8px 39px;
+  color: #ffffff;
+  background-color: #3751fe;
+  border: 1px solid;
+  margin-top: 20px;
+  font-size: 15px;
 }
 .formRemind {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .formForgotPassword {
-    font-size: 14px;
+  font-size: 14px;
+}
+.signinAdmin {
+  margin: 16px 0;
+  color: #007bff;
+}
+.signinAdmin p {
+  color: #007bff;
 }
