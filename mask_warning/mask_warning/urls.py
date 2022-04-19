@@ -3,7 +3,7 @@ from django.contrib import admin
 from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, ChangeAvatar, HandleChangePassword
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
-from .apis import HandleSigninAdmin, Notifications
+from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity
 from .views import video_feed
 
 urlpatterns = [
@@ -29,6 +29,7 @@ urlpatterns = [
     path('auth/admin/signin/', HandleSigninAdmin),
     path('admin/notifications/<int:quantity>', Notifications),
     path('admin/notifications/', Notifications),
+    path('admin/notifications/new-notifications-quantity/', CountNewNotificationsQuantity),
     path('admin/users-manager/detail-user/', ViewProfile),
     path('admin/users-manager/delete-user/', DeleteUser),
     path('admin/users-manager/', ViewUserList),

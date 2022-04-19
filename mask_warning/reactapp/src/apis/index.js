@@ -167,3 +167,9 @@ export const viewNotificationAPI = (quantity = 0) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
+export const countNewNotificationsQuantityAPI = () => {
+  return fetch("/admin/notifications/new-notifications-quantity/")
+    .then((res) => res.json())
+    .catch((err) => err);
+};

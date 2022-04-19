@@ -8,7 +8,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
 import firebase_admin, smtplib, math, random, smtplib, ssl
-import string, pytz, json, os, jwt, re
+import string, pytz, json, os, jwt, re, pandas
+
 
 # Init app
 cred = credentials.Certificate(fr"{os.getcwd()}\mask_warning\mask-warning-787c4c69708d.json")
@@ -152,16 +153,49 @@ def ChangeAvatar(request):
             return JsonResponse({"status": "fail"})
 
 
+def CalculateTimestampDifferent(timestampInDB):
+    # Lấy ra timestamp ngay thời điểm hiện tại
+    datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
+    createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
+    createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+
+    # Tính khoảng cách giữa timestamp ngay thời điểm hiện tại và timestamp trong DB
+    timestamp_diff = abs(pandas.Timestamp(createdDate) - pandas.Timestamp(timestampInDB))
+
+    # Trả về số ngày
+    return timestamp_diff.days
+
+
 def Notifications(request, quantity = 0):
-    docs = db.collection(f'notifications').order_by(u'createdDate').stream()
+    docs = db.collection(f'notifications').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
     notifications = []
 
     for doc in docs:
-        notifications.append(doc.to_dict())
+        # CalculateTimestampDifferent
+        notification = doc.to_dict()
+        notification["timestampDifferent"] = CalculateTimestampDifferent(notification.get("createdDate"))
+        notifications.append(notification)
         
     return JsonResponse({
         'notifications': notifications[:quantity] if quantity else notifications
     })
+
+
+def CountNewNotificationsQuantity(request):
+    quantity = 0
+    try:
+        docs = db.collection(f'notifications').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
+
+        for doc in docs:
+            notification = doc.to_dict()
+            timestampDifferent = CalculateTimestampDifferent(notification.get("createdDate"))
+
+            if timestampDifferent == 0:
+                quantity = quantity + 1
+            
+        return JsonResponse({'quantity': quantity})
+    except:
+        return JsonResponse({'quantity': 0})
 
 
 def CheckPasswordExist(userId, password):
@@ -661,5 +695,3 @@ def HandleSigninAdmin(request):
                 except:
                     return JsonResponse({"message": "Signin failed"})
 
-
- 
