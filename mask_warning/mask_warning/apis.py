@@ -132,6 +132,25 @@ def UpdateProfile(request):
             return JsonResponse({"status": "fail"})
 
 
+def ChangeAvatar(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        avatar = body_data["avatar"]
+        
+        # Xử lí
+        try:
+            doc = db.collection(f"users").document(userId)
+            doc.update({
+                'avatar': avatar
+            })
+            return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "fail"})
+
+
 def Notifications(request, quantity = 0):
     docs = db.collection(f'notifications').order_by(u'createdDate').stream()
     notifications = []

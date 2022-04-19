@@ -1,9 +1,9 @@
 from django.urls import include, path
 from django.contrib import admin
-from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, Notifications, HandleChangePassword
+from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, ChangeAvatar, HandleChangePassword
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
-from .apis import HandleSigninAdmin
+from .apis import HandleSigninAdmin, Notifications
 from .views import video_feed
 
 urlpatterns = [
@@ -14,6 +14,7 @@ urlpatterns = [
     # Role User
     path('profile/', ViewProfile),
     path('update-profile/', UpdateProfile),
+    path('change-avatar/', ChangeAvatar),
     path('change-password/', HandleChangePassword),
     path('video_feed/', video_feed),
     path('forgot-password-submit-email/', HandleSubmitEmail),
