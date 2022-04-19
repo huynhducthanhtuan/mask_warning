@@ -13,20 +13,23 @@ const UsersManagerAdmin = () => {
   const [users, setUsers] = useState();
   const [OpenModal, setOpenModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState();
+
   const loadUsersManage = async () => {
     await viewUserList().then((data) => {
       setUsers(data.result);
     });
   };
+
   useEffect(() => {
     loadUsersManage();
   }, []);
+
   const handleDeleteUser = (userIdToDelete) => {
     deleteUser({ userId: userIdToDelete }).then((result) => {
       toast.info(result.status);
+      loadUsersManage();
     });
   };
-  // console.log("userIdToDelete", userIdToDelete);
 
   return (
     <div className="container">

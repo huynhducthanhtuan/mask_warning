@@ -65,8 +65,12 @@ const Report = () => {
         </div>
         <div className={`col-3 ${styles.chooseImage}`}>
           <h5>Choose image</h5>
-          {previewUrl && <img src={previewUrl} alt="preview" />}
-          <h2>Uploading done {progress}%</h2>
+          {/* <img src="./img/imageDefault.jpg"></img> */}
+          <img
+            src={previewUrl ? previewUrl : "./img/imageDefault.jpg"}
+            alt="preview"
+          />
+
           <p className={styles.textInstruction}>
             Click "Choose File" button to upload an image:
           </p>
@@ -81,9 +85,10 @@ const Report = () => {
           <div className="form-group">
             <input
               type="text"
-              className="form-control"
+              className={`form-control ${styles.titleBug}`}
               style={{ height: "40px" }}
               ref={inputTitleRef}
+              placeholder="Title bug"
             />
           </div>
         </div>
@@ -91,16 +96,17 @@ const Report = () => {
           <div className="form-group">
             <p>Description</p>
             <textarea
-              className="form-control"
+              className={`form-control ${styles.descBug}`}
               style={{ height: "123px" }}
               ref={descriptionRef}
+              placeholder="Description bug"
             ></textarea>
           </div>
           <button
             className={`btn btn-outline-primary ${styles.reportBtn}`}
             onClick={formHandler}
           >
-            Report
+            Send Report
           </button>
         </div>
       </div>

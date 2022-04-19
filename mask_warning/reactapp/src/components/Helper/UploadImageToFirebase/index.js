@@ -4,7 +4,7 @@ import { storage } from "../../../helpers/firebaseConfig/firebase";
 export const UploadImageToFirebase = (image, setProgress, setUrlImage) => {
   if (!image) return;
 
-  const storageRef = ref(storage, `TEST/${image.name}`);
+  const storageRef = ref(storage, `report-images/${image.name}`);
 
   const uploadTask = uploadBytesResumable(storageRef, image);
 
