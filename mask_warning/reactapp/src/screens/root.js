@@ -27,10 +27,10 @@ import {
   AdminHome,
   AdminReportsManager,
   AdminUsersManager,
-  UserDetail,
   AdminReportDetail,
   AdminReportUserDetail,
   Frame,
+  UsersDetail,
 } from "../components/Admin";
 
 const ScreensRoot = () => {
@@ -75,6 +75,10 @@ const ScreensRoot = () => {
       <Route
         path="/admin/reports-manager/user-detail/:userId"
         element={<AdminReportUserDetail />}
+      />
+      <Route
+        path="/admin/user-manager/user-detail/:userId"
+        element={<UsersDetail />}
       />
       <Route path="/admin/reports-manager" element={<AdminReportsManager />} />
     </Routes>

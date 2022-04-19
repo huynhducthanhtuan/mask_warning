@@ -157,3 +157,9 @@ export const signInAdminAPI = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
+export const showNewUser = () => {
+  return fetch("/admin/countnewuser")
+    .then((res) => res.json())
+    .catch((err) => err);
+};

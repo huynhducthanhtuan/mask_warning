@@ -13,9 +13,9 @@ const UsersDetail = () => {
     StoreName: "Shop Highway Menswear",
   };
   return (
-    <Frame>
+    <div>
       <UserInFormation data={UserExample} />
-    </Frame>
+    </div>
   );
 };
 export default UsersDetail;
