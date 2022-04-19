@@ -15,7 +15,7 @@
 }
 
 .boxInformation {
-  padding: 40px 40px;
+  padding: 30px 40px;
 }
 
 .boxInformation li {
@@ -30,4 +30,35 @@
 
 .item p {
   font-weight: 500;
+}
+
+.item select,
+input {
+  width: 350px;
+  padding: 5px 0px;
+  font-size: 14px;
+}
+
+.warning {
+  font-size: 16px;
+  margin-left: 5px;
+  color: red;
+}
+
+.btnChangePassword {
+  margin-left: 300px;
+}
+
+.btnChangePassword button {
+  font-size: 14px;
+  padding: 5px 25px;
+  border-radius: 50px;
+  background: #7877b9;
+  cursor: pointer;
+  transition: 0.5s;
+  margin-right: 10px;
+}
+
+.btnChangePassword button:hover {
+  opacity: 0.7;
 }

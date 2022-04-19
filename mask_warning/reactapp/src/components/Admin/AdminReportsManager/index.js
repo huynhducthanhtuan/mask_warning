@@ -38,7 +38,7 @@ const ReportsManagerAdmin = (onClick) => {
   useEffect(() => {
     loadViewReportList();
   }, []);
-  console.log("reports  ", reports);
+
   var reportsFilter =
     reports.length > 0 &&
     reports.filter((report) => {

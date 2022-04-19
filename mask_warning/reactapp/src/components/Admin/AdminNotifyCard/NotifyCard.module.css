@@ -7,12 +7,12 @@
 .cardBox {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 .cardBox img {
   width: 56px;
   height: 56px;
-  margin: 8px;
+  margin: 20px;
   opacity: 1;
   border-radius: 180px;
 }

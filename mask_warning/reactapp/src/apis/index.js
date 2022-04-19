@@ -9,7 +9,17 @@ export const signInAPI = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
-
+export const signInAdminAPI = (data) => {
+  return fetch("auth/admin/signin/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
 export const signOutApi = () => {
   return fetch("auth/signout")
     .then((res) => res.json())
@@ -161,6 +171,24 @@ export const sendReport = (data) => {
 
 export const reportsHistory = (userId) => {
   return fetch("/report-history/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userId),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const notifications = (userId) => {
+  return fetch("/admin/notifications/4")
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const deleteUser = (userId) => {
+  return fetch("/admin/users-manager/delete-user/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

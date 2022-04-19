@@ -1,27 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../AdminHome/Home.module.css";
 import NotifyCard from "../AdminNotifyCard";
 import { Bell, Dashicons } from "../../../assets/ExportImages";
+
+import { isAuthenticated } from "./../../Auth/index";
 import {
   BellIcon,
   ReportUserImage,
   LogOutIcon,
 } from "../../../assets/ExportImages";
+import { notifications } from "../../../apis";
 
 const ShowBox = () => {
   const [showBox, setShowBox] = useState(false);
-
-  const exampleUser = {
-    avatar: ReportUserImage,
-    name: "Huynh Ngoc Hieu",
+  const [notifys, setNotifys] = useState();
+  const loadNotifications = async () => {
+    const res = await notifications();
+    setNotifys(res.notifications);
   };
-  const exampleReport = {
-    id: "100000000",
-    createdDate: "15/01/2022",
-    description:
-      "Website thông báo sai username và password mặc dù tôi đã nhập đúng",
-    isSolved: true,
-  };
+  useEffect(() => {
+    loadNotifications();
+  }, []);
 
   return (
     <div className={styles.homeTopRightControl}>
@@ -38,13 +37,9 @@ const ShowBox = () => {
         }
       >
         <p className={styles.homeNotifyText}>News</p>
-        <NotifyCard report={exampleReport} user={exampleUser} />
-        <NotifyCard report={exampleReport} user={exampleUser} />
-        <img className="d-line" src="./icons/line.png" />
-        <p className={styles.homeNotifyText}>Old</p>
-        <NotifyCard report={exampleReport} user={exampleUser} />
-        <NotifyCard report={exampleReport} user={exampleUser} />
-        <NotifyCard report={exampleReport} user={exampleUser} />
+        {notifys && <NotifyCard notifys={notifys} />}
+        {/* <img className="d-line" src="./icons/line.png" />
+        <p className={styles.homeNotifyText}>Old</p> */}
       </div>
       <img className={styles.homeIconTopRight} src={LogOutIcon} />
     </div>

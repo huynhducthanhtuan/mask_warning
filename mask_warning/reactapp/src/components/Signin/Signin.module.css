@@ -77,3 +77,8 @@
 .signinAdmin p {
   color: #007bff;
 }
+.linkToAdminSignin {
+  float: right;
+  margin: 0 24px 24px 0;
+  font-size: 20px;
+}

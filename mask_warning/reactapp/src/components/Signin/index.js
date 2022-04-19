@@ -104,7 +104,14 @@ const SignIn = () => {
           </button>
         </form>
       </div>
+      <Link
+        to="/admin/signin"
+        className={`${styles.formForgotPassword} ${styles.linkToAdminSignin}`}
+      >
+        Admin? Signin here.
+      </Link>
     </>
   );
 };
+
 export default SignIn;
