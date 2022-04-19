@@ -141,13 +141,13 @@ export const viewDetailUser = (userId) => {
 };
 
 export const viewUserList = () => {
-  return fetch("/admin/users-manager//")
+  return fetch("/admin/users-manager/")
     .then((res) => res.json())
     .catch((err) => err);
 };
 
 export const signInAdminAPI = (data) => {
-  return fetch("auth/admin/signin/", {
+  return fetch("/auth/admin/signin/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

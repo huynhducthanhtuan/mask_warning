@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import StatisticCard from "../AdminStatisticCard";
 import LeftControl from "../AdminLeftControl";
 import ShowBox from "../ShowBox";
-import { ellipse, averageHours, newUsers} from "../../../assets/ExportImages";
+import { ellipse, averageHours, newUsers } from "../../../assets/ExportImages";
+
 const HomeAdmin = () => {
   const [toggle, setToggle] = useState("home");
-
   const [statisticToggle, setStatisticToggle] = useState("week");
 
   const dataUsersStatistic = {
