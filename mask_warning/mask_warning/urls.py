@@ -36,6 +36,4 @@ urlpatterns = [
     path('admin/reports-manager/confirm-solved/', ConfirmSolvedReport),
     path('admin/reports-manager/', ViewReportList),
     path('api-auth/', include('rest_framework.urls')),
-   path('admin/reports-manager/detail-report/', ViewReportDetail),
-
 ]

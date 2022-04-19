@@ -1,27 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../AdminHome/Home.module.css";
 import NotifyCard from "../AdminNotifyCard";
-import { Bell, Dashicons } from "../../../assets/ExportImages";
-import {
-  BellIcon,
-  ReportUserImage,
-  LogOutIcon,
-} from "../../../assets/ExportImages";
+import { DEFAULT_NOTIFICATIONS_QUANTITY } from "../../../constants";
+import { BellIcon, LogOutIcon } from "../../../assets/ExportImages";
+import { viewNotificationAPI } from "../../../apis";
 
 const ShowBox = () => {
   const [showBox, setShowBox] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [notificationsStatus, setNotificationsStatus] = useState("shortlisted");
 
-  const exampleUser = {
-    avatar: ReportUserImage,
-    name: "Huynh Ngoc Hieu",
+  const getNotifications = async () => {
+    const notificationQuantity =
+      notificationsStatus == "shortlisted" ? DEFAULT_NOTIFICATIONS_QUANTITY : 0;
+
+    const data = await viewNotificationAPI(notificationQuantity);
+    setNotifications(data.notifications);
   };
-  const exampleReport = {
-    id: "100000000",
-    createdDate: "15/01/2022",
-    description:
-      "Website thông báo sai username và password mặc dù tôi đã nhập đúng",
-    isSolved: true,
+
+  const renderNotifications = () => {
+    return notifications.map((notification, index) => (
+      <NotifyCard key={index} notification={notification} />
+    ));
   };
+
+  const handleClickSeeMore = () => {
+    setNotificationsStatus("full");
+  };
+
+  const handleClickSeeLess = () => {
+    setNotificationsStatus("shortlisted");
+  };
+
+  useEffect(async () => {
+    await getNotifications(notificationsStatus);
+  }, [notificationsStatus]);
 
   return (
     <div className={styles.homeTopRightControl}>
@@ -29,7 +42,7 @@ const ShowBox = () => {
       <div className={styles.homeNotify} onClick={() => setShowBox(!showBox)}>
         <img className={styles.homeIconTopRight} src={BellIcon} />
         <sup className={styles.homeNotifyContent}>
-          <small className={styles.cartBadge}>3</small>
+          <small className={styles.cartBadge}>4</small>
         </sup>
       </div>
       <div
@@ -37,14 +50,16 @@ const ShowBox = () => {
           showBox ? `${styles.homeNotifyBox} d-block` : styles.homeNotifyBox
         }
       >
-        <p className={styles.homeNotifyText}>News</p>
-        <NotifyCard report={exampleReport} user={exampleUser} />
-        <NotifyCard report={exampleReport} user={exampleUser} />
-        <img className="d-line" src="./icons/line.png" />
-        <p className={styles.homeNotifyText}>Old</p>
-        <NotifyCard report={exampleReport} user={exampleUser} />
-        <NotifyCard report={exampleReport} user={exampleUser} />
-        <NotifyCard report={exampleReport} user={exampleUser} />
+        {renderNotifications()}
+        {notificationsStatus == "shortlisted" ? (
+          <button className={styles.buttonSeeMore} onClick={handleClickSeeMore}>
+            See More
+          </button>
+        ) : (
+          <button className={styles.buttonSeeLess} onClick={handleClickSeeLess}>
+            See Less
+          </button>
+        )}
       </div>
       <img className={styles.homeIconTopRight} src={LogOutIcon} />
     </div>

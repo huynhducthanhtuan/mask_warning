@@ -23,67 +23,67 @@ const HomeAdmin = () => {
   };
 
   return (
-    <div className="container" style={{height: "107vh"}}>
+    <div className="container" style={{ height: "107vh" }}>
       <div className="row">
         <LeftControl />
         <div className="col-10">
-            <div className={styles.homeTabContents}>
-              <ShowBox />
-              <div>
-                <div className={styles.homeStatisticButtonGroup}>
-                  <div
-                    className={
-                      statisticToggle === "week"
-                        ? `${styles.homeStatisticButton} ${styles.active}`
-                        : styles.homeStatisticButton
-                    }
-                    onClick={() => setStatisticToggle("week")}
-                  >
-                    <img src={ellipse}/>
-                    <p>Week</p>
-                  </div>
-                  <div
-                    className={
-                      statisticToggle === "month"
-                        ? `${styles.homeStatisticButton} ${styles.active}`
-                        : styles.homeStatisticButton
-                    }
-                    onClick={() => setStatisticToggle("month")}
-                  >
-                    <img src={ellipse}/>
-                    <p>Month</p>
-                  </div>
-                  <div
-                    className={
-                      statisticToggle === "year"
-                        ? `${styles.homeStatisticButton} ${styles.active}`
-                        : styles.homeStatisticButton
-                    }
-                    onClick={() => setStatisticToggle("year")}
-                  >
-                    <img src={ellipse}/>
-                    <p>Year</p>
-                  </div>
+          <div className={styles.homeTabContents}>
+            <ShowBox />
+            <div>
+              <div className={styles.homeStatisticButtonGroup}>
+                <div
+                  className={
+                    statisticToggle === "week"
+                      ? `${styles.homeStatisticButton} ${styles.active}`
+                      : styles.homeStatisticButton
+                  }
+                  onClick={() => setStatisticToggle("week")}
+                >
+                  <img src={ellipse} />
+                  <p>Week</p>
                 </div>
-                <div className={styles.homeStatisticCards}>
-                  <StatisticCard
-                    cardName={"User(s)"}
-                    data={dataUsersStatistic[statisticToggle]}
-                    dataType={" new user(s)"}
-                    iconLink={newUsers}
-                  />
-                  <StatisticCard
-                    cardName={"Average hour(s) per day"}
-                    data={dataAvarageHoursStatistic[statisticToggle]}
-                    dataType={" hour(s) per day"}
-                    iconLink={averageHours}
-                  />
+                <div
+                  className={
+                    statisticToggle === "month"
+                      ? `${styles.homeStatisticButton} ${styles.active}`
+                      : styles.homeStatisticButton
+                  }
+                  onClick={() => setStatisticToggle("month")}
+                >
+                  <img src={ellipse} />
+                  <p>Month</p>
                 </div>
+                <div
+                  className={
+                    statisticToggle === "year"
+                      ? `${styles.homeStatisticButton} ${styles.active}`
+                      : styles.homeStatisticButton
+                  }
+                  onClick={() => setStatisticToggle("year")}
+                >
+                  <img src={ellipse} />
+                  <p>Year</p>
+                </div>
+              </div>
+              <div className={styles.homeStatisticCards}>
+                <StatisticCard
+                  cardName={"User(s)"}
+                  data={dataUsersStatistic[statisticToggle]}
+                  dataType={" new user(s)"}
+                  iconLink={newUsers}
+                />
+                <StatisticCard
+                  cardName={"Average hour(s) per day"}
+                  data={dataAvarageHoursStatistic[statisticToggle]}
+                  dataType={" hour(s) per day"}
+                  iconLink={averageHours}
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 export default HomeAdmin;

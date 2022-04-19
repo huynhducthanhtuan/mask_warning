@@ -1,3 +1,4 @@
+/* ROLE USER */
 export const signInAPI = (data) => {
   return fetch("auth/signin/", {
     method: "POST",
@@ -105,6 +106,7 @@ export const viewReportList = () => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
 export const viewReportDetail = (data) => {
   return fetch("/admin/reports-manager/detail-report/", {
     method: "POST",
@@ -116,6 +118,7 @@ export const viewReportDetail = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
 export const viewReportDetailUser = (reportId) => {
   return fetch("/admin/reports-manager/detail-user/", {
     method: "POST",
@@ -146,6 +149,7 @@ export const viewUserList = () => {
     .catch((err) => err);
 };
 
+/* ROLE ADMIN */
 export const signInAdminAPI = (data) => {
   return fetch("/auth/admin/signin/", {
     method: "POST",
@@ -154,6 +158,12 @@ export const signInAdminAPI = (data) => {
     },
     body: JSON.stringify(data),
   })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const viewNotificationAPI = (quantity = 0) => {
+  return fetch(`/admin/notifications/${quantity}`)
     .then((res) => res.json())
     .catch((err) => err);
 };
