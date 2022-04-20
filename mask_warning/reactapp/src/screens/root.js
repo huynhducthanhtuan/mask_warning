@@ -5,6 +5,7 @@ import {
   Guide,
   GuideConnectCamera,
   GuideReportDefect,
+  ConnectCamera,
   Camera,
   Report,
   ReportHistory,
@@ -41,6 +42,7 @@ const ScreensRoot = () => {
       <Route path="/guide-connect-camera" element={<GuideConnectCamera />} />
       <Route path="/guide-report-defect" element={<GuideReportDefect />} />
       <Route path="/camera" element={<Camera />} />
+      <Route path="/connect-camera" element={<ConnectCamera />} />
       <Route path="/report" element={<Report />} />
       <Route path="/report-history" element={<ReportHistory />} />
       <Route path="/report-history-detail" element={<ReportHistoryDetail />} />

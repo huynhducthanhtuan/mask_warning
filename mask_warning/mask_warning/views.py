@@ -1,8 +1,8 @@
+from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.core.mail import EmailMessage
 from django.views.decorators import gzip
-from django.http import StreamingHttpResponse
+import json
 
 # detect part import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -11,6 +11,7 @@ from tensorflow.keras.models import load_model
 from imutils.video import VideoStream
 import numpy as np
 import threading, imutils, time, cv2, os
+
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
 	# grab the dimensions of the frame and then construct a blob
@@ -91,10 +92,9 @@ pts = pts.reshape((-1, 1, 2))
 # Frame time when red corner off
 redCornerOffTime = [7,8,9]
 
-def stream():
-	# cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:80/onvif13") 
-	# cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:8080/onvif13") 
-	cap = cv2.VideoCapture(0) 
+
+def stream(videoStream):
+	cap = cv2.VideoCapture(videoStream) 
 	frame_count = 0
 
 	while True:
@@ -136,8 +136,6 @@ def stream():
 			label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
 
 			
-
-
 			# display the label and bounding box rectangle on the output
 			# frame
 			cv2.putText(frame, label, (startX, startY - 10),
@@ -152,8 +150,11 @@ def stream():
 		yield (b'--frame\r\n'
 				b'Content-Type: image/jpeg\r\n\r\n' + open('demo.jpg', 'rb').read() + b'\r\n')
 
-def video_feed(request):
-    return StreamingHttpResponse(stream(), content_type='multipart/x-mixed-replace; boundary=frame')
 
-def index(request):
-    return render(request,'my_app/index.html')
+def showCamera(request, videoStreamUrl):
+	try:
+		if request.method == "GET":
+			return StreamingHttpResponse(stream(videoStreamUrl), content_type='multipart/x-mixed-replace; boundary=frame')
+	except:
+		return JsonResponse({"error": "Connect camera failed"})
+

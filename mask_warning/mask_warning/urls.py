@@ -4,7 +4,7 @@ from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, ChangeAvata
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
 from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity
-from .views import video_feed
+from .views import showCamera
 
 urlpatterns = [
     # All roles
@@ -16,7 +16,7 @@ urlpatterns = [
     path('update-profile/', UpdateProfile),
     path('change-avatar/', ChangeAvatar),
     path('change-password/', HandleChangePassword),
-    path('video_feed/', video_feed),
+    path('camera/<str:videoStreamUrl>', showCamera),
     path('forgot-password-submit-email/', HandleSubmitEmail),
     path('forgot-password-submit-code/', HandleSubmitCode),
     path('forgot-password-resend-code/', HandleReSendCode),

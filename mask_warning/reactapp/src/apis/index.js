@@ -17,6 +17,18 @@ export const signOutApi = () => {
     .catch((err) => err);
 };
 
+export const getCameraVideoStreamAPI = (data) => {
+  return fetch("/video_feed/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
 export const changePasswordApi = (data) => {
   return fetch("change-password/", {
     method: "POST",
