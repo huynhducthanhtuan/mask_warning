@@ -696,3 +696,27 @@ def HandleSigninAdmin(request):
                     return JsonResponse({"message": "Signin failed"})
 
 
+def SaveVideoStreamUrl(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"].strip()
+        videoStreamUrl = body_data["videoStreamUrl"].strip()
+
+        try:
+            user = db.collection('users').document(userId)
+            user.update({'videoStreamUrl': videoStreamUrl})
+            return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "failed"})
+
+
+def GetVideoStreamUrl(userId):
+    try:
+        user = db.collection('users').document(userId)
+        videoStreamUrl = user.get().to_dict().get("videoStreamUrl")
+        return videoStreamUrl
+    except:
+        return ""
+

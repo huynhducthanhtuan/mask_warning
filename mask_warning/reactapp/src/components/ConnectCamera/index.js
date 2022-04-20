@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from "./ConnectCamera.module.css";
 import Header from "../Header";
 import { toast } from "react-toastify";
+import { isAuthenticated } from "../Auth";
+import { saveVideoStreamUrlAPI } from "../../apis";
 
 const ConnectCamera = ({ setVideoStreamUrl }) => {
   const videoStreamInputRef = useRef();
@@ -13,12 +15,20 @@ const ConnectCamera = ({ setVideoStreamUrl }) => {
     return regex.test(videoStreamUrl);
   };
 
-  const handleConnectCamera = () => {
+  const handleConnectCamera = async () => {
     const videoStreamUrl = videoStreamInputRef.current.value.trim();
 
     if (validateVideoStreamUrl(videoStreamUrl)) {
-      localStorage.setItem("videoStream", videoStreamUrl);
-      setVideoStreamUrl(videoStreamUrl);
+      // Lấy userId từ localStorage
+      const userId = isAuthenticated().user.userId || "";
+
+      // Call API
+      const data = await saveVideoStreamUrlAPI({ userId, videoStreamUrl });
+
+      if (data.status === "success") {
+        setVideoStreamUrl(videoStreamUrl);
+        localStorage.setItem("videoStreamUrl", videoStreamUrl);
+      }
     } else {
       toast.error("Invalid video stream format".toLocaleUpperCase());
     }

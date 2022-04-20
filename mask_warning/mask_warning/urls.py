@@ -3,7 +3,7 @@ from django.contrib import admin
 from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, ChangeAvatar, HandleChangePassword
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
-from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity
+from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl
 from .views import showCamera
 
 urlpatterns = [
@@ -16,7 +16,9 @@ urlpatterns = [
     path('update-profile/', UpdateProfile),
     path('change-avatar/', ChangeAvatar),
     path('change-password/', HandleChangePassword),
-    path('camera/<str:videoStreamUrl>', showCamera),
+    path('camera/<str:userId>/', showCamera),
+    path('save-video-stream-url/', SaveVideoStreamUrl),
+    path('get-video-stream-url/', GetVideoStreamUrl),
     path('forgot-password-submit-email/', HandleSubmitEmail),
     path('forgot-password-submit-code/', HandleSubmitCode),
     path('forgot-password-resend-code/', HandleReSendCode),

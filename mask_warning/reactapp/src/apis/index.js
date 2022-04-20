@@ -17,8 +17,20 @@ export const signOutApi = () => {
     .catch((err) => err);
 };
 
-export const getCameraVideoStreamAPI = (data) => {
-  return fetch("/video_feed/", {
+export const saveVideoStreamUrlAPI = (data) => {
+  return fetch("/save-video-stream-url/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const getVideoStreamUrlAPI = (data) => {
+  return fetch("/get-video-stream-url/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

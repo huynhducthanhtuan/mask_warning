@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Camera.module.css";
 import Header from "../Header";
-import { toast } from "react-toastify";
 import ConnectCamera from "../ConnectCamera";
+import { toast } from "react-toastify";
+import { isAuthenticated } from "../Auth";
+import { getVideoStreamUrlAPI } from "../../apis";
 
 const Camera = () => {
-  const [videoStreamUrl, setVideoStreamUrl] = useState("");
+  const [videoStreamUrl, setVideoStreamUrl] = useState(null);
 
   const getVideoStreamUrl = () => {
-    if (localStorage.getItem("videoStream")) {
-      setVideoStreamUrl(localStorage.getItem("videoStream"));
-    }
+    setVideoStreamUrl(localStorage.getItem("videoStreamUrl") || null);
   };
 
   const renderConnectCameraPage = () => {
@@ -18,13 +18,16 @@ const Camera = () => {
   };
 
   const renderCameraPage = () => {
+    // Lấy userId từ localStorage
+    const userId = isAuthenticated().user.userId || "";
+
     return (
       <section className={`container_fluid ${styles.camera}`}>
         <Header />
         <div className={styles.activeCamera}>
           <img
             className={styles.activeCamraImage}
-            src={`/camera/${videoStreamUrl}`}
+            src={videoStreamUrl ? `/camera/${userId}/` : ""}
             alt="camera video"
           />
           <div className={styles.speaker}>
@@ -36,20 +39,11 @@ const Camera = () => {
     );
   };
 
-  const handleToggleRenderCameraPage = () => {
-    if (localStorage.getItem("videoStream")) {
-      return renderCameraPage();
-    } else {
-      return renderConnectCameraPage();
-    }
-  };
-
   useEffect(() => {
-    window.scrollTo(0, 0);
     getVideoStreamUrl();
   }, [videoStreamUrl]);
 
-  return handleToggleRenderCameraPage();
+  return videoStreamUrl ? renderCameraPage() : renderConnectCameraPage();
 };
 
 export default Camera;

@@ -2,6 +2,7 @@ from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
 from django.core.mail import EmailMessage
 from django.views.decorators import gzip
+from .apis import GetVideoStreamUrl
 
 # detect part import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -150,9 +151,10 @@ def stream(videoStream):
 				b'Content-Type: image/jpeg\r\n\r\n' + open('demo.jpg', 'rb').read() + b'\r\n')
 
 
-def showCamera(request, videoStreamUrl):
+def showCamera(request, userId):
 	try:
 		if request.method == "GET":
+			videoStreamUrl = GetVideoStreamUrl(userId)
 			return StreamingHttpResponse(stream(videoStreamUrl), content_type='multipart/x-mixed-replace; boundary=frame')
 	except:
 		return JsonResponse({"error": "Connect camera failed"})
