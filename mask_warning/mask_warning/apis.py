@@ -286,7 +286,7 @@ def CheckEmailExist(email):
 
 def CheckValidFormatEmail(email):
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'  
-    if(re.search(regex,email)):   
+    if(re.search(regex, email)):   
         return True 
     else:   
         return False  
@@ -694,4 +694,5 @@ def HandleSigninAdmin(request):
                         return JsonResponse({"message": "User name and password do not match"})
                 except:
                     return JsonResponse({"message": "Signin failed"})
+
 

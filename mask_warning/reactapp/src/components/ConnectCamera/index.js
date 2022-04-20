@@ -7,17 +7,18 @@ const ConnectCamera = ({ setVideoStreamUrl }) => {
   const videoStreamInputRef = useRef();
 
   const validateVideoStreamUrl = (videoStreamUrl) => {
-    if (videoStreamUrl.trim() == "") {
-      return false;
-    } else {
-      return true;
-    }
+    const regex = new RegExp(
+      /(rtsp):\/\/([^\s@/]+)@([^\s/:]+)(?::([0-9]+))?(\/.*)/gm
+    );
+    return regex.test(videoStreamUrl);
   };
 
   const handleConnectCamera = () => {
-    if (validateVideoStreamUrl(videoStreamInputRef.current.value)) {
-      localStorage.setItem("videoStream", videoStreamInputRef.current.value);
-      setVideoStreamUrl(videoStreamInputRef.current.value);
+    const videoStreamUrl = videoStreamInputRef.current.value.trim();
+
+    if (validateVideoStreamUrl(videoStreamUrl)) {
+      localStorage.setItem("videoStream", videoStreamUrl);
+      setVideoStreamUrl(videoStreamUrl);
     } else {
       toast.error("Invalid video stream format".toLocaleUpperCase());
     }

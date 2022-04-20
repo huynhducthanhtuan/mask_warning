@@ -2,7 +2,6 @@ from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
 from django.core.mail import EmailMessage
 from django.views.decorators import gzip
-import json
 
 # detect part import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
