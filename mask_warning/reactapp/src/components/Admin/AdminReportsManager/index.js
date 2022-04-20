@@ -27,7 +27,7 @@ const ReportsManagerAdmin = (onClick) => {
       if (toggle === "solved") return report.isSolved;
       return !report.isSolved;
     });
-
+  // console.log(reports);
   return (
     <section className={styles.reportsMain}>
       <LeftControl toggle="reports" />

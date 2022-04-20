@@ -4,6 +4,8 @@ from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, Notificatio
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
 from .apis import HandleSigninAdmin
+from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, ListOfUsers
+from .apis import addUser, searchUsers, getRevenue, countNewUser
 from .views import video_feed
 
 urlpatterns = [
@@ -39,4 +41,12 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
    path('admin/reports-manager/detail-report/', ViewReportDetail),
 
+    path('list', ListOfUsers),
+    path('addUser', addUser),
+    path('searchUsers/', searchUsers),
+    path('revenue', getRevenue),
+    path('admin/countnewuser', countNewUser),
+    # Trang admin mặc định của Django, mình ko dùng
+    # path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls'))
 ]

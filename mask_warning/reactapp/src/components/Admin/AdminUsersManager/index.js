@@ -16,7 +16,8 @@ const UsersManagerAdmin = () => {
 
   const loadUsersManage = async () => {
     await viewUserList().then((data) => {
-      setUsers(data.result);
+      // setUsers(data.result);
+      console.log(data);
     });
   };
 

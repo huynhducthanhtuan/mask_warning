@@ -26,12 +26,12 @@ const Profile = () => {
   useEffect(() => {
     loadViewProfile();
   }, []);
-
+  console.log(userInfo);
   return (
     <section>
       <Header />
       <div className="d-flex">
-        <ProfileSidebar />
+        {userInfo && <ProfileSidebar userInfo={userInfo} />}
         <section className="col-9">
           <div className={styles.personalInformation}>
             <img src="./icons/personalInformationImage.png"></img>
