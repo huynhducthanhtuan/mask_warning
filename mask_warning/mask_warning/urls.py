@@ -14,6 +14,7 @@ urlpatterns = [
     # Role User
     path('profile/', ViewProfile),
     path('update-profile/', UpdateProfile),
+ 
     path('change-password/', HandleChangePassword),
     path('video_feed/', video_feed),
     path('forgot-password-submit-email/', HandleSubmitEmail),

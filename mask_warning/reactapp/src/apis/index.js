@@ -152,7 +152,7 @@ export const viewDetailUser = (userId) => {
 };
 
 export const viewUserList = () => {
-  return fetch("/admin/users-manager//")
+  return fetch("/admin/users-manager/")
     .then((res) => res.json())
     .catch((err) => err);
 };

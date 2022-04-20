@@ -23,6 +23,7 @@
   height: 54px;
   background-size: cover;
   object-fit: contain;
+  border-radius: 50%;
 }
 .customerName {
   display: flex;

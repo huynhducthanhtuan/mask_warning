@@ -92,6 +92,7 @@ def ViewProfile(request):
             result = {
                 "userId": user_ref.get().id,
                 "storeName": doc.get("storeName"),
+                "avatar": doc.get("avatar"),
                 "fullName": doc.get("fullName"),
                 "email": doc.get("email"),
                 "gender": doc.get("gender"),
@@ -130,6 +131,7 @@ def UpdateProfile(request):
             return JsonResponse({"status": "success"})
         except:
             return JsonResponse({"status": "fail"})
+
 
 
 def Notifications(request, quantity = 0):
@@ -577,27 +579,28 @@ def SendReport(request):
         image = body_data["image"]
         title = body_data["title"]
         description = body_data["description"]
-        
-        # Xử lí
-        try:
-            randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
-            datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
-            createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
-            createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
-            new_report = db.collection("reports").document(str(randomString))
-            
-            new_report.set({
-                "userId": userId,
-                "createdDate": createdDate,
-                "image": image,
-                "title": title,
-                "description": description,
-                "isSolved": False,
-            })
-            return JsonResponse({"status": "success"})
-        except:
-            return JsonResponse({"status": "fail"})
 
+        if ValidateReport(image, title, description):
+            try:
+                randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
+                datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
+                createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
+                createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+                new_report = db.collection("reports").document(str(randomString))
+                
+                new_report.set({
+                    "userId": userId,
+                    "createdDate": createdDate,
+                    "image": image,
+                    "title": title,
+                    "description": description,
+                    "isSolved": False,
+                })
+                return JsonResponse({"status": "success"})
+            except:
+                return JsonResponse({"status": "fail"})
+        else:
+            return JsonResponse({"error": "Please enter all information"})
 
 def HandleSigninAdmin(request): 
     if request.method == "POST":

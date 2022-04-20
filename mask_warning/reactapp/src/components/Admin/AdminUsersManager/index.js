@@ -23,7 +23,7 @@ const UsersManagerAdmin = () => {
   useEffect(() => {
     loadUsersManage();
   }, []);
-
+  console.log(users);
   const handleDeleteUser = (userIdToDelete) => {
     deleteUser({ userId: userIdToDelete }).then((result) => {
       toast.info(result.status);

@@ -25,11 +25,11 @@ const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
           {users.map((user, index) => {
             return (
               <tr className={styles.rowValueUser} key={user.userId}>
-                <Link to={`/users-manager/user-detail`}>
+                <Link to={`/admin/users-manager/user-detail/${user.userId}`}>
                   <td className={styles.customerName}>
                     <div
                       className={styles.avatarUserManager}
-                      style={{ backgroundImage: `url('${AvatarTrungHieu}')` }}
+                      style={{ backgroundImage: `url('${user.avatar}')` }}
                     ></div>
                     <span className="ml-4">{user.fullName}</span>
                   </td>
