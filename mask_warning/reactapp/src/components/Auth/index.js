@@ -4,10 +4,10 @@ export const initialLocalStorageConfig = () => {
   const lastVisitDay = localStorage.getItem("lastVisitDay");
 
   if (lastVisitDay) {
-    // auto clear localStorage after 1 day
-    if (lastVisitDay != todayDay) {
-      // clear localStorage
-      localStorage.clear();
+    // auto clear key jwt in localStorage after 7 days
+    if (todayDay - lastVisitDay >= 7) {
+      // clear key jwt in localStorage
+      localStorage.removeItem("jwt");
 
       // set new date for lastVisitDay
       localStorage.setItem("lastVisitDay", JSON.stringify(todayDay));

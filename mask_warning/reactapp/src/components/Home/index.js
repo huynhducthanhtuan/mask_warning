@@ -13,7 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Home = () => {
   const { state, payload } = useContext(UserContext);
-  console.log(state, payload);
+
   var settings = {
     dots: true,
     infinite: true,
@@ -22,15 +22,17 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const notify = () => {
     if (!state) {
       toast.info("YOU MUST SIGN IN !");
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <body>
       <section className={`container_fluid ${styles.home}`}>
@@ -38,7 +40,7 @@ const Home = () => {
         <Slider {...settings}>
           <div className={styles.homeSlider}>
             <img src="./icons/slider.png"></img>
-            <Link to="/">
+            <Link to={state ? "/camera" : "/signin"}>
               <div className={styles.homeSliderGettingStarted}>
                 <p>Getting Started</p>
               </div>
@@ -51,7 +53,7 @@ const Home = () => {
           </div>
           <div className={styles.homeSlider}>
             <img src="./icons/slider.png"></img>
-            <Link to="/">
+            <Link to={state ? "/camera" : "/signin"}>
               <div className={styles.homeSliderGettingStarted}>
                 <p>Getting Started</p>
               </div>
@@ -64,7 +66,7 @@ const Home = () => {
           </div>
           <div className={styles.homeSlider}>
             <img src="./icons/slider.png"></img>
-            <Link to="/">
+            <Link to={state ? "/camera" : "/signin"}>
               <div className={styles.homeSliderGettingStarted}>
                 <p>Getting Started</p>
               </div>

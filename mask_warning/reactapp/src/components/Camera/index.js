@@ -19,7 +19,7 @@ const Camera = () => {
 
   const renderCameraPage = () => {
     // Lấy userId từ localStorage
-    const userId = isAuthenticated().user.userId || "";
+    const userId = isAuthenticated()?.user?.userId || "";
 
     return (
       <section className={`container_fluid ${styles.camera}`}>
