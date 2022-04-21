@@ -28,11 +28,13 @@ const ProfileSidebar = ({ userInfo }) => {
     <section className={`col-3 ${styles.profileSidebar}`}>
       <h2>Profile</h2>
       <div className={styles.boxSide}>
-        <img
-          className={styles.avatarName}
-          src={previewUrl ? previewUrl : userInfo.avatar}
-          alt=""
-        ></img>
+        {userInfo && (
+          <img
+            className={styles.avatarName}
+            src={previewUrl ? previewUrl : userInfo.avatar}
+            alt=""
+          ></img>
+        )}
         <div className={styles.formUploadImage}>
           <button className={`${styles.uploadBtn} btn btn-primary`}>
             {" "}

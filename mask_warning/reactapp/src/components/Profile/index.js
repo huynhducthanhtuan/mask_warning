@@ -31,7 +31,7 @@ const Profile = () => {
     <section>
       <Header />
       <div className="d-flex">
-        {userInfo && <ProfileSidebar userInfo={userInfo} />}
+        <ProfileSidebar userInfo={userInfo} />
         <section className="col-9">
           <div className={styles.personalInformation}>
             <img src="./icons/personalInformationImage.png"></img>

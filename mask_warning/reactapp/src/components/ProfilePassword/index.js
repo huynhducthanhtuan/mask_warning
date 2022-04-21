@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./ProfilePassword.module.css";
 import Header from "../Header";
@@ -6,12 +6,26 @@ import ProfileSidebar from "../ProfileSidebar";
 import { isAuthenticated } from "./../Auth/index";
 import { changePasswordApi } from "../../apis";
 import { toast } from "react-toastify";
+import { viewProfile } from "./../../apis/index";
 const ProfilePassword = () => {
   const { user } = isAuthenticated();
+  const [userInfo, setUserInfo] = useState();
+
   const oldPassword = useRef();
   const newPassword = useRef();
   const newPasswordConfirm = useRef();
-
+  const loadViewProfile = async () => {
+    const data = await viewProfile({ userId: user.userId });
+    if (data.error === "User not found") {
+      toast.error("User not found !!!".toLocaleUpperCase());
+    } else {
+      setUserInfo(data);
+      // setLoadingPage(false);
+    }
+  };
+  useEffect(() => {
+    loadViewProfile();
+  }, []);
   const handleChangePassword = async () => {
     const data = {
       userId: user.userId,
@@ -35,7 +49,7 @@ const ProfilePassword = () => {
     <div className={styles.profilePassword}>
       <Header />
       <div className="d-flex">
-        <ProfileSidebar />
+        <ProfileSidebar userInfo={userInfo} />
         <section className="col-9">
           <div className={styles.changePassword}>
             <img src="./icons/iconPeople.png"></img>

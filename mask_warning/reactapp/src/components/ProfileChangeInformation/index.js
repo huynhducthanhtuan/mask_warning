@@ -61,7 +61,7 @@ const ProfileChangeInformation = () => {
     <section>
       <Header />
       <div className="d-flex">
-        <ProfileSidebar />
+        <ProfileSidebar userInfo={userInfo} />
         {loadingPage ? (
           <Loading />
         ) : (
