@@ -1,0 +1,58 @@
+.containerCreateAccount {
+  margin: 150px 50px 20px 50px;
+}
+
+.containerCreateAccount ul li {
+  margin-bottom: 40px;
+}
+
+.containerCreateAccount h2 {
+  color: #22242c;
+  font-size: 24px;
+  padding-bottom: 50px;
+}
+
+.containerCreateAccount label {
+  font-size: 16px;
+  font-weight: 500;
+  padding-bottom: 5px;
+}
+
+.containerCreateAccount span {
+  font-size: 16px;
+  color: red;
+}
+
+.boxContent {
+  width: 90px;
+}
+
+.containerCreateAccount input {
+  width: 86%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.slectOption {
+  width: 85%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  font-size: 14px;
+}
+
+.containerCreateAccount button {
+  border-radius: 28px;
+  margin: 0 auto;
+  padding: 8px 60px;
+  font-size: 16px;
+  color: white;
+  background: #6160dc;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.containerCreateAccount button:hover {
+  opacity: 0.6;
+}

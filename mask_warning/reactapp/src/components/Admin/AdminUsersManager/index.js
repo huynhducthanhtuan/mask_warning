@@ -56,12 +56,14 @@ const UsersManagerAdmin = () => {
               <ShowBox />
             </div>
 
-            <button
-              type="button"
-              className={`btn btn-warning mt-4 ${styles.createAccountUser}`}
-            >
-              Create Account for user
-            </button>
+            <Link to="/admin/users-manager/admin-create-user">
+              <button
+                type="button"
+                className={`btn btn-warning mt-4 ${styles.createAccountUser}`}
+              >
+                Create Account for user
+              </button>
+            </Link>
             {users ? (
               <TableUsers
                 users={users}
