@@ -4,6 +4,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from google.cloud.firestore_v1.field_path import FieldPath
 from datetime import datetime
+from googletrans import Translator
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
@@ -279,6 +280,17 @@ def CheckEmailExist(email):
     check = False
 
     # Nếu có document chứa email truyền vào thì check = True   
+    for doc in docs: 
+        check = True
+    return check
+
+
+def CheckUserNameExist(userName):
+    # Lấy ra mảng các document theo userName
+    docs = db.collection('users').where(u"userName", u"==", f"{userName}").stream()
+    check = False
+
+    # Nếu có document chứa userName truyền vào thì check = True   
     for doc in docs: 
         check = True
     return check
@@ -719,4 +731,70 @@ def GetVideoStreamUrl(userId):
         return videoStreamUrl
     except:
         return ""
+
+
+def CreateNewUser(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        hometown = body_data["hometown"]
+        district = body_data["district"]
+        address = body_data["address"]
+        fullName = body_data["fullName"]
+        phoneNumber = body_data["phoneNumber"]
+        gender = body_data["gender"]
+        storeName = body_data["storeName"]
+        email = body_data["email"]
+        userName = body_data["userName"]
+        password = body_data["password"]
+        
+        # Xử lí
+        try:
+            # FE: check valid email, phoneNumber, fullname, storeName, 2 password is same
+            
+            # Check email có đã tồn tại trong DB?
+            if CheckEmailExist(email):
+                return JsonResponse({"error": "Email already exists"})
+            else:
+                # Create new user
+                newUser = {
+                    'address': f'{address}, {district}, {hometown}',
+                    'fullName': fullName,
+                    'phoneNumber': phoneNumber,
+                    'gender': gender,
+                    'storeName': storeName,
+                    'email': email,
+                    'userName': userName,
+                    'password': password
+                }
+                randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
+                db.collection(f"users").document(f'{randomString}').set(newUser)
+
+                return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "fail"})
+
+
+# fire when onchange fullName
+def GenerateUserName(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        fullName = body_data["fullName"]
+        
+        # Xử lí
+        try:
+            translator = Translator()
+            translation = translator.translate(fullName, src="vi", dest='en')
+            userName = translation.text.lower().replace(" ", "")
+
+            if CheckUserNameExist(userName):
+                random_char_number = random.randint(0, 19)
+                userName = f'{userName}{random_char_number}'
+
+            return JsonResponse({"userName": userName})
+        except:
+            return JsonResponse({"userName": userName})
 
