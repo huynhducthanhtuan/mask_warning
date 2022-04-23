@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../AdminHome/Home.module.css";
 import NotifyCard from "../AdminNotifyCard";
+import { useNavigate } from "react-router-dom";
 import { DEFAULT_NOTIFICATIONS_QUANTITY } from "../../../constants";
 import { BellIcon, LogOutIcon } from "../../../assets/ExportImages";
 import {
@@ -12,13 +13,10 @@ const ShowBox = () => {
   const [showBox, setShowBox] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [newNotificationsQuantity, setNewNotificationsQuantity] = useState();
-  const [notificationsStatus, setNotificationsStatus] = useState("shortlisted");
+  const navigatate = useNavigate();
 
   const getNotifications = async () => {
-    const notificationQuantity =
-      notificationsStatus == "shortlisted" ? DEFAULT_NOTIFICATIONS_QUANTITY : 0;
-
-    const data = await viewNotificationAPI(notificationQuantity);
+    const data = await viewNotificationAPI(DEFAULT_NOTIFICATIONS_QUANTITY);
     setNotifications(data.notifications);
   };
 
@@ -43,33 +41,17 @@ const ShowBox = () => {
     );
   };
 
-  const renderButtonSeeMoreOrSeeLess = () => {
-    return notificationsStatus == "shortlisted" ? (
-      <button className={styles.buttonSeeMore} onClick={handleClickSeeMore}>
-        See More
-      </button>
-    ) : (
-      <button className={styles.buttonSeeLess} onClick={handleClickSeeLess}>
-        See Less
-      </button>
-    );
-  };
-
   const handleClickSeeMore = () => {
-    setNotificationsStatus("full");
-  };
-
-  const handleClickSeeLess = () => {
-    setNotificationsStatus("shortlisted");
+    navigatate("/admin/reports-manager");
   };
 
   useEffect(async () => {
-    await getNotifications(notificationsStatus);
-  }, [notificationsStatus]);
+    await getNotifications();
+  }, []);
 
   useEffect(async () => {
     await getNewNotificationsQuantity();
-  }, [newNotificationsQuantity]);
+  }, []);
 
   return (
     <div className={styles.homeTopRightControl}>
@@ -84,7 +66,9 @@ const ShowBox = () => {
         }
       >
         {renderNotifications()}
-        {renderButtonSeeMoreOrSeeLess()}
+        <button className={styles.buttonSeeMore} onClick={handleClickSeeMore}>
+          See More
+        </button>
       </div>
       <img className={styles.homeIconTopRight} src={LogOutIcon} />
     </div>

@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
-from google.cloud.firestore_v1.field_path import FieldPath
 from datetime import datetime
 from googletrans import Translator
 from email.mime.text import MIMEText
@@ -10,6 +9,7 @@ from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
 import firebase_admin, smtplib, math, random, smtplib, ssl
 import string, pytz, json, os, jwt, re, pandas
+DEFAULT_USER_AVATAR = "https://firebasestorage.googleapis.com/v0/b/mask-warning.appspot.com/o/user-avatars%2Fdefault-avatar.png?alt=media&token=5c74e841-ff74-43f3-a65d-583a35a5d98c"
 
 
 # Init app
@@ -154,14 +154,19 @@ def ChangeAvatar(request):
             return JsonResponse({"status": "fail"})
 
 
+def GetCurrentTimestamp():
+    datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
+    current_timestamp = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
+    current_timestamp = pytz.timezone("Asia/Ho_Chi_Minh").localize(current_timestamp)
+    return current_timestamp
+
+
 def CalculateTimestampDifferent(timestampInDB):
     # Lấy ra timestamp ngay thời điểm hiện tại
-    datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
-    createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
-    createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+    current_timestamp = GetCurrentTimestamp()
 
     # Tính khoảng cách giữa timestamp ngay thời điểm hiện tại và timestamp trong DB
-    timestamp_diff = abs(pandas.Timestamp(createdDate) - pandas.Timestamp(timestampInDB))
+    timestamp_diff = abs(pandas.Timestamp(current_timestamp) - pandas.Timestamp(timestampInDB))
 
     # Trả về số ngày
     return timestamp_diff.days
@@ -655,14 +660,12 @@ def SendReport(request):
         if ValidateReport(image, title, description):
             try:
                 randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
-                datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
-                createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
-                createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+                current_timestamp = GetCurrentTimestamp()
                 new_report = db.collection("reports").document(str(randomString))
                 
                 new_report.set({
                     "userId": userId,
-                    "createdDate": createdDate,
+                    "createdDate": current_timestamp,
                     "image": image,
                     "title": title,
                     "description": description,
@@ -753,18 +756,22 @@ def CreateNewUser(request):
         try:
             # FE: check valid email, phoneNumber, fullname, storeName, 2 password is same
             
-            # Check email có đã tồn tại trong DB?
+            # Check email có đã tồn tại trong DB ?
             if CheckEmailExist(email):
                 return JsonResponse({"error": "Email already exists"})
             else:
                 # Create new user
+                current_timestamp = GetCurrentTimestamp()
+                
                 newUser = {
                     'address': f'{address}, {district}, {hometown}',
-                    'fullName': fullName,
-                    'phoneNumber': phoneNumber,
-                    'gender': gender,
-                    'storeName': storeName,
+                    'avatar': DEFAULT_USER_AVATAR,
                     'email': email,
+                    'createdDate': current_timestamp,
+                    'fullName': fullName,
+                    'gender': gender,
+                    'phoneNumber': phoneNumber,
+                    'storeName': storeName,
                     'userName': userName,
                     'password': password
                 }
@@ -797,4 +804,11 @@ def GenerateUserName(request):
             return JsonResponse({"userName": userName})
         except:
             return JsonResponse({"userName": userName})
+
+
+# fire when load "Create new user" page
+def GeneratePassword(request):
+    if request.method == "POST":
+        randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=15))
+        return JsonResponse({"password": randomString})
 
