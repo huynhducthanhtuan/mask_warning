@@ -11,7 +11,7 @@ export const signInAPI = (data) => {
     .catch((err) => err);
 };
 export const signOutApi = () => {
-  return fetch("auth/signout")
+  return fetch("/auth/signout/")
     .then((res) => res.json())
     .catch((err) => err);
 };
