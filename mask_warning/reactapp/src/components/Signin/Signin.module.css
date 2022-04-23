@@ -72,7 +72,13 @@
 .formForgotPassword {
   font-size: 14px;
 }
-
+.signinAdmin {
+  margin: 16px 0;
+  color: #007bff;
+}
+.signinAdmin p {
+  color: #007bff;
+}
 .linkToAdminSignin {
   float: right;
   margin: 0 24px 24px 0;

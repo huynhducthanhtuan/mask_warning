@@ -9,25 +9,6 @@ import ShowBox from "../ShowBox";
 const ReportsManagerAdmin = (onClick) => {
   const [toggle, setToggle] = useState("all");
   const [reports, setReports] = useState([]);
-  // //a report
-  // const exampleReport = {
-  //   id: "100000000",
-  //   createdDate: "15/01/2022",
-  //   isSolved: true,
-  //   userId: "1231434",
-  // };
-  // const exampleReport2 = {
-  //   id: "100000001",
-  //   createdDate: "17/01/2022",
-  //   isSolved: false,
-  //   userId: "12334566",
-  // };
-  // const exampleReport3 = {
-  //   id: "100000002",
-  //   createdDate: "20/01/2022",
-  //   isSolved: false,
-  //   userId: "12764866",
-  // };
 
   // const arrayRp = [exampleReport, exampleReport2, exampleReport3];
   const loadViewReportList = async () => {
@@ -38,7 +19,7 @@ const ReportsManagerAdmin = (onClick) => {
   useEffect(() => {
     loadViewReportList();
   }, []);
-  console.log("reports  ", reports);
+
   var reportsFilter =
     reports.length > 0 &&
     reports.filter((report) => {
@@ -46,7 +27,7 @@ const ReportsManagerAdmin = (onClick) => {
       if (toggle === "solved") return report.isSolved;
       return !report.isSolved;
     });
-
+  // console.log(reports);
   return (
     <section className={styles.reportsMain}>
       <LeftControl toggle="reports" />

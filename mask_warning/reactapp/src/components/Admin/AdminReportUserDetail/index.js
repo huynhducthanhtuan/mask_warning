@@ -17,10 +17,12 @@ const ReportUserDetailAdmin = () => {
       setLoading(false);
     });
   };
+  
   console.log("user detail ", userInfo);
   useEffect(() => {
     loadReportDetailUser();
   }, []);
+
   return (
     <section className="d-flex">
       <LeftControl toggle="reports" />
@@ -39,7 +41,7 @@ const ReportUserDetailAdmin = () => {
             <img className={styles.avatar} src={ReportUserImage} />
             <div className={styles.idAndName}>
               <p>User ID: #{userId}</p>
-              <p>{userInfo.name}</p>
+              <p>{userInfo.fullName}</p>
             </div>
           </div>
           <div>

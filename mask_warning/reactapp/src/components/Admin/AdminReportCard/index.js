@@ -20,7 +20,7 @@ const ReportCard = ({ reports }) => {
               }
             >
               <p>#{index}</p>
-              <p>{report.createdDate.split("T17:00:00Z")[0]}</p>
+              <p>{report.createdDate.split("T")[0]}</p>
               <p>{report.title}</p>
               <Link to={`/admin/reports-manager/user-detail/${report.userId}`}>
                 <button

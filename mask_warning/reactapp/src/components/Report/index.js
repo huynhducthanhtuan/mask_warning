@@ -1,14 +1,53 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../helpers/firebaseConfig/firebase";
 import styles from "./Report.module.css";
 import Header from "../Header";
 import { Link } from "react-router-dom";
+import { UploadImageToFirebase } from "./../Helper/UploadImageToFirebase/index";
+import { isAuthenticated } from "./../Auth/index";
+import { async } from "@firebase/util";
+import { sendReport } from "./../../apis/index";
+import { toast } from "react-toastify";
+const path = "report-images";
 
 const Report = () => {
+  const [progress, setProgress] = useState(0);
+  const [image, setImage] = useState();
+  const [previewUrl, setPreviewUrl] = useState();
+  const [urlImage, setUrlImage] = useState();
+  const { user } = isAuthenticated();
+
+  const inputTitleRef = useRef();
+  const descriptionRef = useRef();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-
+    if (!image) {
+      return;
+    }
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      setPreviewUrl(fileReader.result);
+    };
+    fileReader.readAsDataURL(image);
+    //upload image report to firebase storage
+    UploadImageToFirebase(image, setProgress, setUrlImage, path);
+  }, [image]);
+  const formHandler = () => {
+    const dataUpload = {
+      userId: user.userId,
+      image: urlImage,
+      title: inputTitleRef.current.value,
+      description: descriptionRef.current.value,
+    };
+    console.log(dataUpload);
+    sendReport(dataUpload).then((result) => {
+      toast.success(result.status);
+      inputTitleRef.current.value = "";
+      descriptionRef.current.value = "";
+      setPreviewUrl(undefined);
+      console.log(result);
+    });
+  };
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />
@@ -27,40 +66,51 @@ const Report = () => {
             </div>
           </Link>
         </div>
-        <div className={`col-9 ${styles.reportRight}`}>
-          <div className={`col-4 ${styles.chooseImage}`}>
-            <h5>Choose image</h5>
-            <img src="./img/imageDefault.jpg"></img>
-            <p className={styles.textInstruction}>
-              Click "Choose File" button to upload an image:
-            </p>
-            <input type="file" />
+        <div className={`col-3 ${styles.chooseImage}`}>
+          <h5>Choose image</h5>
+          {/* <img src="./img/imageDefault.jpg"></img> */}
+          <img
+            src={previewUrl ? previewUrl : "./img/imageDefault.jpg"}
+            alt="preview"
+          />
+
+          <p className={styles.textInstruction}>
+            Click "Choose File" button to upload an image:
+          </p>
+          <input
+            type="file"
+            className="input"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+        </div>
+        <div className={`col-3 ${styles.chooseImage}`}>
+          <h5>Title bug</h5>
+          <div className="form-group">
+            <input
+              type="text"
+              className={`form-control ${styles.titleBug}`}
+              style={{ height: "40px" }}
+              ref={inputTitleRef}
+              placeholder="Title bug"
+            />
           </div>
-          <div className={`col-4 ${styles.chooseImage}`}>
-            <h5>Choose bugs</h5>
-            <div className={styles.selectionBug}>
-              <p>Camera error</p>
-              <select>
-                <option value=""> -- Please select --</option>
-                <option value="A">Apple</option>
-                <option value="B">Banana</option>
-                <option value="C">Cranberry</option>
-              </select>
-            </div>
-            <div className={styles.selectionBug}>
-              <p>Speaker error</p>
-              <select>
-                <option value=""> -- Please select --</option>
-                <option value="A">Apple</option>
-                <option value="B">Banana</option>
-                <option value="C">Cranberry</option>
-              </select>
-            </div>
+        </div>
+        <div className={`col-3 ${styles.reportDescription}`}>
+          <div className="form-group">
+            <p>Description</p>
+            <textarea
+              className={`form-control ${styles.descBug}`}
+              style={{ height: "123px" }}
+              ref={descriptionRef}
+              placeholder="Description bug"
+            ></textarea>
           </div>
-          <div className={`col-4 ${styles.reportDescription}`}>
-            <h5>Description</h5>
-            <input type="text" placeholder="Report description"></input>
-          </div>
+          <button
+            className={`btn btn-outline-primary ${styles.reportBtn}`}
+            onClick={formHandler}
+          >
+            Send Report
+          </button>
         </div>
       </div>
     </section>

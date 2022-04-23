@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
 import Header from "../Header";
 import { Link } from "react-router-dom";
@@ -6,117 +6,87 @@ import ProfileSidebar from "../ProfileSidebar";
 import { updateProfile, viewProfile } from "../../apis";
 import { isAuthenticated } from "../Auth";
 import { toast } from "react-toastify";
+import Loading from "../Helper/Loading";
 
 const Profile = () => {
-  // const handleViewProfile = async (e) => {
-  //   e.preventDefault();
+  const { user } = isAuthenticated();
+  const [loadingPage, setLoadingPage] = useState(true);
+  const [userInfo, setUserInfo] = useState();
 
-  //   // Lấy userId từ localStorage
-  //   const userId = isAuthenticated().user._id || "";
+  const loadViewProfile = async () => {
+    const data = await viewProfile({ userId: user.userId });
+    if (data.error === "User not found") {
+      toast.error("User not found !!!".toLocaleUpperCase());
+    } else {
+      setUserInfo(data);
+      setLoadingPage(false);
+    }
+  };
 
-  //   // Call API
-  //   const data = await viewProfile({ userId });
-
-  //   // Xử lí kết quả trả về từ API
-  //   if (data.error === "User not found") {
-  //     toast.error("User not found !!!".toLocaleUpperCase());
-  //   } else {
-  //     // data: lưu dữ liệu trả về từ API
-  //     console.log(data);
-  //   }
-  // };
-
-  // const handleUpdateProfile = async (e) => {
-  //   e.preventDefault();
-
-  //   // Lấy userId từ localStorage
-  //   const userId = isAuthenticated().user._id || "";
-
-  //   // Call API
-  //   // Khi test thì mình truyền dữ liệu cứng vào
-  //   // Các bạn cần xử lí để truyền dữ liệu người dùng nhập vào
-  //   const data = await updateProfile({
-  //     userId,
-  //     hometown: "Quang Nam",
-  //     district: "Tam Ky",
-  //     address: "20 Tran Phu",
-  //     storeName: "Tap hoa anh Tuan",
-  //     phoneNumber: "0388791378",
-  //     gender: "male",
-  //   });
-
-  //   // Xử lí kết quả trả về từ API
-  //   if (data.status === "fail") {
-  //     toast.error("Update failed !!!".toLocaleUpperCase());
-  //   } else {
-  //     toast.success("Update success !!!".toLocaleUpperCase());
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
-
+  useEffect(() => {
+    loadViewProfile();
+  }, []);
+  // console.log(userInfo);
   return (
     <section>
       <Header />
       <div className="d-flex">
-        <ProfileSidebar />
+        <ProfileSidebar userInfo={userInfo} />
         <section className="col-9">
           <div className={styles.personalInformation}>
             <img src="./icons/personalInformationImage.png"></img>
             <span>Personal Information</span>
           </div>
-          <ul className={styles.boxInformation}>
-            <li className={`d-flex ${styles.item}`}>
-              <p>Name: </p>
-              <p>Huỳnh Ngọc Hiếu</p>
-            </li>
-            <li className={`d-flex ${styles.item}`}>
-              <p>Day of birth: </p>
-              <p>01/08/2001</p>
-            </li>
-            <li className={`d-flex ${styles.item}`}>
-              <p>Email: </p>
-              <p>huynh***@gmail.com</p>
-            </li>
-            <li className={`d-flex ${styles.item}`}>
-              <p>Gender: </p>
-              <p>Male</p>
-            </li>
-            <li className={`d-flex ${styles.item}`}>
-              <p>Store: </p>
-              <p>BeautyShop</p>
-            </li>
-          </ul>
-          <div className={styles.personalInformation}>
-            <span>Contract Information</span>
-          </div>
-          <ul className={styles.boxInformation}>
-            <li className={`d-flex ${styles.item}`}>
-              <p>Address: </p>
-              <p>297 Phạm Ngũ Lão</p>
-            </li>
-            <li className={`d-flex ${styles.item}`}>
-              <p>District: </p>
-              <p>Hải Châu</p>
-            </li>
-            <li className={`d-flex ${styles.item}`}>
-              <p>Province/City: </p>
-              <p>Đà Nẵng</p>
-            </li>
-            <li className={`d-flex ${styles.item}`}>
-              <p>Country: </p>
-              <p>Việt Nam</p>
-            </li>
-            <li className={`d-flex ${styles.item}`}>
-              <p>Tel: </p>
-              <p>0376543210</p>
-            </li>
-          </ul>
-          <Link to="/profile-change-information">
-            <button className={styles.btnUpdate}>Update</button>
-          </Link>
+          {loadingPage ? (
+            <Loading />
+          ) : (
+            <>
+              <ul className={styles.boxInformation}>
+                <li className={`d-flex ${styles.item}`}>
+                  <p>Name: </p>
+                  <p>{userInfo.fullName}</p>
+                </li>
+
+                <li className={`d-flex ${styles.item}`}>
+                  <p>Email: </p>
+                  <p>{userInfo.email}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <p>Gender: </p>
+                  <p>{userInfo.gender}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <p>Store: </p>
+                  <p>{userInfo.storeName}</p>
+                </li>
+              </ul>
+              <div className={styles.personalInformation}>
+                <span>Contract Information</span>
+              </div>
+              <ul className={styles.boxInformation}>
+                <li className={`d-flex ${styles.item}`}>
+                  <p>Address: </p>
+                  <p>{userInfo.address}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <p>District: </p>
+                  <p>{userInfo.district}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <p>Province/City: </p>
+                  <p>{userInfo.hometown}</p>
+                </li>
+
+                <li className={`d-flex ${styles.item}`}>
+                  <p>Tell: </p>
+                  <p>{userInfo.phoneNumber}</p>
+                </li>
+              </ul>
+              <Link to="/profile-change-information">
+                <button className={styles.btnUpdate}>Update</button>
+              </Link>
+            </>
+          )}
         </section>
       </div>
     </section>

@@ -28,10 +28,10 @@ import {
   AdminHome,
   AdminReportsManager,
   AdminUsersManager,
-  UserDetail,
   AdminReportDetail,
   AdminReportUserDetail,
-  Frame,
+  UserDetail,
+  AdminCreateUser,
 } from "../components/Admin";
 
 const ScreensRoot = () => {
@@ -45,7 +45,10 @@ const ScreensRoot = () => {
       <Route path="/connect-camera" element={<ConnectCamera />} />
       <Route path="/report" element={<Report />} />
       <Route path="/report-history" element={<ReportHistory />} />
-      <Route path="/report-history-detail" element={<ReportHistoryDetail />} />
+      <Route
+        path="/report-history-detail/:reportId"
+        element={<ReportHistoryDetail />}
+      />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/footer" element={<Footer />} />
       <Route path="/signin" element={<Signin />} />
@@ -71,12 +74,24 @@ const ScreensRoot = () => {
       <Route path="/admin/home" element={<AdminHome />} />
       <Route path="/admin/users-manager" element={<AdminUsersManager />} />
       <Route
+        path="/admin/users-manager/create-user"
+        element={<AdminCreateUser />}
+      />
+      <Route
+        path="/admin/users-manager/user-detail/:userId"
+        element={<UserDetail />}
+      />
+      <Route
         path="/admin/reports-manager/report-detail/:reportId"
         element={<AdminReportDetail />}
       />
       <Route
         path="/admin/reports-manager/user-detail/:userId"
         element={<AdminReportUserDetail />}
+      />
+      <Route
+        path="/admin/user-manager/user-detail/:userId"
+        element={<UserDetail />}
       />
       <Route path="/admin/reports-manager" element={<AdminReportsManager />} />
     </Routes>

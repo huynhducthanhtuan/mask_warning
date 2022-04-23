@@ -1,6 +1,6 @@
 /* ROLE USER */
 export const signInAPI = (data) => {
-  return fetch("auth/signin/", {
+  return fetch("/auth/signin/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -12,7 +12,7 @@ export const signInAPI = (data) => {
 };
 
 export const signOutApi = () => {
-  return fetch("auth/signout")
+  return fetch("/auth/signout")
     .then((res) => res.json())
     .catch((err) => err);
 };
@@ -42,6 +42,7 @@ export const getVideoStreamUrlAPI = (data) => {
 };
 
 export const changePasswordApi = (data) => {
+  console.log(data);
   return fetch("change-password/", {
     method: "POST",
     headers: {
@@ -125,6 +126,18 @@ export const updateProfile = (data) => {
     .catch((err) => err);
 };
 
+export const updateAvatar = (data) => {
+  return fetch("change-avatar/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
 export const viewReportList = () => {
   return fetch("/admin/reports-manager/")
     .then((res) => res.json())
@@ -173,6 +186,17 @@ export const viewUserList = () => {
     .catch((err) => err);
 };
 
+export const sendReport = (data) => {
+  return fetch("/send-report/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
 /* ROLE ADMIN */
 export const signInAdminAPI = (data) => {
   return fetch("/auth/admin/signin/", {
@@ -186,12 +210,38 @@ export const signInAdminAPI = (data) => {
     .catch((err) => err);
 };
 
+export const reportsHistory = (userId) => {
+  return fetch("/report-history/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userId),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
 export const viewNotificationAPI = (quantity = 0) => {
   return fetch(`/admin/notifications/${quantity}`)
     .then((res) => res.json())
     .catch((err) => err);
 };
 
+export const notifications = (userId) => {
+  return fetch("/admin/notifications/4")
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const deleteUser = (userId) => {
+  return fetch("/admin/users-manager/delete-user/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userId),
+  });
+};
 export const countNewNotificationsQuantityAPI = () => {
   return fetch("/admin/notifications/new-notifications-quantity/")
     .then((res) => res.json())

@@ -30,6 +30,9 @@ const SignIn = () => {
       case "Please enter password has more 8 characters":
         toast.error(data.message.toLocaleUpperCase());
         break;
+      case "User not found":
+        toast.error(data.message.toLocaleUpperCase());
+        break;
       case "User name and password do not match":
         toast.error(data.message.toLocaleUpperCase());
         break;
@@ -63,7 +66,7 @@ const SignIn = () => {
             <input
               className={styles.formControl}
               type="text"
-              placeholder="eg: Hamesh"
+              placeholder="Enter username"
               ref={userNameInputRef}
             />
           </div>
@@ -72,7 +75,7 @@ const SignIn = () => {
             <input
               className={styles.formControl}
               type="password"
-              placeholder="eg: *********"
+              placeholder="Enter password"
               ref={passwordInputRef}
             />
           </div>
@@ -85,7 +88,7 @@ const SignIn = () => {
           <button
             type="button"
             className={`${styles.formSubmit}`}
-            onClick={(e) => handleSignin(e)}
+            onClick={handleSignin}
           >
             Sign in
           </button>

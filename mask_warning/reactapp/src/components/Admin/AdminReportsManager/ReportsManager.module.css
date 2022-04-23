@@ -1,31 +1,31 @@
-.reportsMain{
-    display: flex;
+.reportsMain {
+  display: flex;
 }
-.reportsRight{
-    flex-basis: 84%;
-    margin-top: 50px;
+.reportsRight {
+  flex-basis: 84%;
+  margin-top: 50px;
 }
-.reportsTitle{
-    font-size: 20px;
-    font-weight: 700;
-    margin-left: 20px;
+.reportsTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-left: 20px;
 }
-.reportsTasksTabs{
-    display: flex;
-    position: absolute;
-    right: 50px;
+.reportsTasksTabs {
+  display: flex;
+  position: absolute;
+  right: 50px;
 }
-.reportsTasks{
-    cursor: pointer;
-    color: #6160DC;
+.reportsTasks {
+  cursor: pointer;
+  color: #6160dc;
+  padding: 0 12px;
 }
-.reportsTasks.active{
-    cursor: pointer;
-    color: #6160DC;
-    font-weight: 600;
+.reportsTasks.active {
+  cursor: pointer;
+  color: #6160dc;
+  font-weight: 600;
 }
 
-
-.reportsList{
-    margin-top: 60px;
+.reportsList {
+  margin-top: 60px;
 }

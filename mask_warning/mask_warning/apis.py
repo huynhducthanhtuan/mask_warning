@@ -1,4 +1,6 @@
-from django.http import JsonResponse
+from tabnanny import check
+from tkinter.tix import Tree
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
@@ -9,6 +11,8 @@ from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
 import firebase_admin, smtplib, math, random, smtplib, ssl
 import string, pytz, json, os, jwt, re, pandas
+from numpy import true_divide
+from datetime import datetime, timedelta, date
 DEFAULT_USER_AVATAR = "https://firebasestorage.googleapis.com/v0/b/mask-warning.appspot.com/o/user-avatars%2Fdefault-avatar.png?alt=media&token=5c74e841-ff74-43f3-a65d-583a35a5d98c"
 
 
@@ -66,13 +70,16 @@ def HandleSignin(request):
             if len(password) < 8:
                 return JsonResponse({"message": "Please enter password has more 8 characters"})
             else:
-                # Thực hiện đăng nhập
-                if Signin(userName, password) == False:
-                    return JsonResponse({"message": "User name and password do not match"})
+                if CheckUserNameExist(userName) == False:
+                    return JsonResponse({"message": "User not found"})
                 else:
-                    data = Signin(userName, password)
-                    data["message"] = "Signin success"
-                    return JsonResponse(data)
+                    # Thực hiện đăng nhập
+                    if Signin(userName, password) == False:
+                        return JsonResponse({"message": "User name and password do not match"})
+                    else:
+                        data = Signin(userName, password)
+                        data["message"] = "Signin success"
+                        return JsonResponse(data)
   
 
 def Signout(request):
@@ -94,6 +101,7 @@ def ViewProfile(request):
             result = {
                 "userId": user_ref.get().id,
                 "storeName": doc.get("storeName"),
+                "avatar": doc.get("avatar"),
                 "fullName": doc.get("fullName"),
                 "email": doc.get("email"),
                 "gender": doc.get("gender"),
@@ -177,6 +185,8 @@ def Notifications(request, quantity = 0):
     notifications = []
 
     for doc in docs:
+        result = doc.to_dict()
+    
         # CalculateTimestampDifferent
         notification = doc.to_dict()
         notification["timestampDifferent"] = CalculateTimestampDifferent(notification.get("createdDate"))
@@ -184,6 +194,404 @@ def Notifications(request, quantity = 0):
         
     return JsonResponse({
         'notifications': notifications[:quantity] if quantity else notifications
+    })
+
+
+def ListOfUsers(request):
+
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        pageSize = body_data['pageSize']
+        pageIndex = body_data['pageIndex']
+
+        usersList = []
+        startIndex = (pageIndex-1)*pageSize
+        endIndex = startIndex + pageSize
+
+        
+        
+        docs = db.collection(u'users').order_by(u'fullName').limit(endIndex+1).stream()
+
+        for doc in docs:
+            usersList.append({
+                'fullName': doc.to_dict()['fullName'],
+                'storeName': doc.to_dict()['storeName'],
+                'createdDate': doc.to_dict()['createdDate']
+            })
+        
+        if startIndex >= len(usersList) or startIndex < 0:
+            return JsonResponse({
+                "error": "Index out of bound."
+            })
+        
+        return JsonResponse({
+            'pageIndex': pageIndex,
+            'pageSize': pageSize,
+            'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+        })
+
+
+def validatePassword(password):
+    
+    passwordLength = len(password)
+    if(passwordLength < 8 or passwordLength > 15):
+        return{
+            'isValid': False,
+            'message': 'Password should not be less than 8 characters or greater than 15 characters'
+        }
+
+    if(password.count(' ') > 0):
+        return{
+            'isValid': False,
+            'message': 'Password should not contain whitespace characters'
+        }
+
+    if(password.islower()):
+        return{
+            'isValid': False,
+            'message': 'Password should contain At least one upper case letter'
+        }
+
+    if(password.isupper()):
+        return{
+            'isValid': False,
+            'message': 'Password should contain At least one lower case letter'
+        }
+
+    if(not any(char.isdigit() for char in password)):
+        return{
+            'isValid': False,
+            'message': 'Password should contain at least one numeric value'
+        }
+
+    special_characters = "\"!@#$%^&*()-+?_=,<>\'"
+    if(not any(c in special_characters for c in password)):
+        return{
+            'isValid': False,
+            'message': 'Password should contain at least one special character'
+        }
+
+    return{
+        'isValid': True,
+        'message': 'Password is Valid'
+    }
+
+
+def validateNewUser(newUser):
+
+    if(not CheckValidFormatEmail(newUser['email'])):
+        return{
+            'isValid': False,
+            'message': 'Please Enter right email format!'
+        }
+
+   
+    if(newUser['password'] != newUser['confirm_password']):
+        return{
+            'isValid': False,
+            'message': 'Please enter the same password'
+        }
+
+
+    validPassword_Response = validatePassword(newUser['password'])
+    if(not validPassword_Response['isValid']):
+        return validPassword_Response
+
+    # Check if already have user with same username
+    if(checkExistAttributeValue('users', 'userName', newUser['userName'])):
+        return {
+            'isValid': False,
+            'message': 'Username existed'
+        }
+
+    # Check if already have user with same email
+    if(checkExistAttributeValue('users', 'email', newUser['email'])):
+        return {
+            'isValid': False,
+            'message': 'Email existed'
+        }
+
+    return {
+            'isValid': True,
+            'message': 'New User Valid'
+    }
+
+
+def checkExistAttributeValue(collection, attribute, value):
+    collection_ref = db.collection(collection)
+    query_ref = collection_ref.where(attribute,u'==',value).get()
+
+    return len(query_ref) > 0
+
+
+def addUser(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        firstName = body_data['firstName']
+        lastName = body_data['lastName']
+        phoneNumber = body_data['phoneNumber']
+        storeName = body_data['storeName']
+        email = body_data['email']
+        dateOfBirth = body_data['dateOfBirth'] 
+        gender = body_data['gender'] 
+        address = body_data['address'] 
+        province = body_data['province'] 
+        district = body_data['district'] 
+        userName = body_data['userName'] 
+        password = body_data['password'] 
+        confirm_password = body_data['re_password']
+
+        try:
+            newUser = {
+                'address': f'{address}, {district}, {province}',
+                'createdDate': datetime.now(tz=datetime),
+                'email': email,
+                'fullName': f'{firstName} {lastName}',
+                'gender': gender,
+                'password': password,
+                'confirm_password': confirm_password,
+                'phoneNumber': phoneNumber,
+                'storeName': storeName,
+                'userName': userName,
+                'dateOfBirth': dateOfBirth
+            }
+
+
+            # Validate new user
+            validUser_Response = validateNewUser(newUser)
+            if(validUser_Response['isValid']):
+
+                del newUser['confirm_password']
+                user_ref = db.collection('users')
+
+                user_ref.add(newUser)
+                
+                validUser_Response['newUser'] = newUser
+
+                return JsonResponse(
+                    validUser_Response
+                )
+
+            
+            return JsonResponse(validUser_Response)
+        except:
+            return JsonResponse({
+                'error': 'error'
+            }) 
+        
+
+def searchUsers(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        pageSize = body_data['pageSize']
+        pageIndex = body_data['pageIndex']
+        query = body_data['query']
+
+        users_ref = db.collection(u'users').get()
+        usersList = []
+        startIndex = (pageIndex-1)*pageSize
+        endIndex = startIndex + pageSize
+
+        # find user match in through phone, full name, store and username
+        attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
+        for user in users_ref:
+            for atb in attributeFind:
+                if query in user.to_dict()[atb].lower():
+                    usersList.append({
+                    'fullName': user.to_dict()['fullName'],
+                    'storeName': user.to_dict()['storeName'],
+                    'createdDate': user.to_dict()['createdDate']
+                    })
+                    break
+                
+                
+        if usersList == []:
+            return JsonResponse({
+            'message' : 'There is no user match you query!',
+            'usersList': usersList
+            })
+
+        if startIndex >= len(usersList) or startIndex < 0:
+            return JsonResponse({
+                "error": "Index out of bound."
+            })
+        
+        return JsonResponse({
+            'message' : 'Search succesfully',
+            'pageIndex': pageIndex,
+            'pageSize': pageSize,
+            'startIndex': startIndex,
+            'endIndex' : endIndex,
+            'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+        })
+
+
+def countNewUserInRange(startTime, endTime, users):
+    newUser = 0
+
+    # 12AM -> 00h00 in 24hrs.
+    # 12AM UTC+7 mean 5PM in the previous day
+    for user in users:
+        createdDate = user.to_dict()['createdDate'].date()
+        if startTime <= createdDate and createdDate <= endTime:
+            newUser += 1
+
+    return newUser
+
+
+def getRevenueInRange(startTime, endTime):
+    newAccountPrice = 500000  
+
+    return newAccountPrice*countNewUserInRange(startTime, endTime)
+
+
+def getRevenueByDay():
+    currentDay = date.today()
+    revenueByDay = {}
+
+    for i in range(-6,1):
+        iDayAgo = currentDay + timedelta(days=i)
+        revenueByDay[iDayAgo.strftime('%a')] = getRevenueInRange(iDayAgo, iDayAgo)
+
+    return revenueByDay
+
+
+def leap_year(year):
+    if year % 400 == 0:
+        return True
+    if year % 100 == 0:
+        return False
+    if year % 4 == 0:
+        return True
+    return False
+
+
+def days_in_month(month, year):
+    if month in {1, 3, 5, 7, 8, 10, 12}:
+        return 31
+    if month == 2:
+        if leap_year(year):
+            return 29
+        return 28
+    return 30
+
+
+def getRevenueByMonth():
+    currentDay = date.today()
+    middleDay = date(currentDay.year, currentDay.month, 15)
+    revenueByMonth = {}
+
+    for i in range(-12,1):
+        i4TimesDayAgo = middleDay + timedelta(weeks=4*i)
+        pastYears = i4TimesDayAgo.year
+        pastMonth = i4TimesDayAgo.month
+        revenueByMonth[i4TimesDayAgo.strftime('%b')] = getRevenueInRange(
+            date(pastYears, pastMonth, 1),
+            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears))
+            )
+
+    return revenueByMonth
+    
+
+def getRevenueByYear():
+    currentDay = date.today()
+    revenueByYear = {}
+
+    for i in range(-12,1):
+        iYearsAgo = currentDay.year + i
+        revenueByYear[iYearsAgo] = getRevenueInRange(
+            date(iYearsAgo, 1, 1),
+            date(iYearsAgo, 12, 31),
+            )
+
+    return revenueByYear
+
+
+def getRevenue(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        formatType = body_data['formatType']
+
+        revenue = {}
+        if formatType == 'd':
+            revenue = getRevenueByDay()
+
+        if formatType == 'm':
+            revenue = getRevenueByMonth()
+
+        if formatType == 'y':
+            revenue = getRevenueByYear()
+
+        
+        return JsonResponse({
+            'message' : 'Succesfully',
+            'revenue' :  revenue,
+            'formatType' : formatType
+        })
+
+
+def countNewUserByWeek(users):
+    currentDay = date.today()
+    newUser = 0
+
+    for i in range(-6,1):
+        iDayAgo = currentDay + timedelta(days=i)
+        newUser += countNewUserInRange(iDayAgo, iDayAgo, users)
+
+    return newUser
+
+
+def countNewUserByMonth(users):
+    currentDay = date.today()
+    middleDay = date(currentDay.year, currentDay.month, 15)
+    newUser = 0
+
+    for i in range(-12,1):
+        i4TimesDayAgo = middleDay + timedelta(weeks=4*i)
+        pastYears = i4TimesDayAgo.year
+        pastMonth = i4TimesDayAgo.month
+        newUser += countNewUserInRange(date(pastYears, pastMonth, 1),
+            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears)),
+            users
+            )
+
+    return newUser
+
+
+def countNewUserByYear(users):
+    currentDay = date.today()
+    newUser = 0
+
+    for i in range(-12,1):
+        iYearsAgo = currentDay.year + i
+        newUser += countNewUserInRange(
+            date(iYearsAgo, 1, 1),
+            date(iYearsAgo, 12, 31),
+            users
+            )
+
+    return newUser
+    
+
+def countNewUser(request):
+    users = db.collection(f"users").get()
+    newUserByWeek = countNewUserByWeek(users)
+    newUserByMonth = countNewUserByMonth(users)
+    newUserByYear = countNewUserByYear(users)
+    newUser = [newUserByWeek, newUserByMonth, newUserByYear]
+
+    
+    return JsonResponse({
+        'message' : 'Succesfully',
+        'newUser' :  newUser
     })
 
 
@@ -256,7 +664,7 @@ def HandleChangePassword(request):
                         if CheckPasswordExist(userId, oldPassword):
                             # Thực hiện cập nhật mật khẩu
                             if ChangePassword(userId, newPassword):
-                                return JsonResponse({"message": "Change password success"})
+                                return JsonResponse({"success": "Change password success"})
                             else:
                                 return JsonResponse({"message": "Change password failed"})
                         else:

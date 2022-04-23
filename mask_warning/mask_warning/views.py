@@ -4,6 +4,10 @@ from django.core.mail import EmailMessage
 from django.views.decorators import gzip
 from .apis import GetVideoStreamUrl
 
+# Sound Area
+from playsound import playsound
+import threading
+
 # detect part import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
@@ -73,30 +77,37 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 	# return a 2-tuple of the face locations and their corresponding locations
 	return (locs, preds)
 
-# load our serialized face detector model from disk
-prototxtPath = fr"{os.getcwd()}\deploy.prototxt"
-weightsPath = fr"{os.getcwd()}\res10_300x300_ssd_iter_140000.caffemodel"
-faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
+# # load our serialized face detector model from disk
+# prototxtPath = fr"{os.getcwd()}\deploy.prototxt"
+# weightsPath = fr"{os.getcwd()}\res10_300x300_ssd_iter_140000.caffemodel"
+# faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
-# load the face mask detector model from disk
-maskNet = load_model(fr"{os.getcwd()}\mask_detector.model")
-# maskNet = load_model("keras_model.h5")
-# initialize the video stream
+# # load the face mask detector model from disk
+# maskNet = load_model(fr"{os.getcwd()}\mask_detector.model")
+# # maskNet = load_model("keras_model.h5")
+# # initialize the video stream
 
-# Create red corner
-pts = np.array([[15,15], [625, 15], 
-	[625, 465], [15, 465]],
-	np.int32)
-pts = pts.reshape((-1, 1, 2))
+# # Create red corner
+# pts = np.array([[15,15], [625, 15], 
+# 	[625, 465], [15, 465]],
+# 	np.int32)
+# pts = pts.reshape((-1, 1, 2))
 
 # Frame time when red corner off
-redCornerOffTime = [7,8,9]
+redCornerOffFrame = [7,8,9]
+
+def playUnmaskSound(urlSound):
+	# using play sound
+	playsound(urlSound)
 
 
 def stream(videoStream):
 	cap = cv2.VideoCapture(videoStream) 
 	frame_count = 0
 
+	limitCallSound = 50;
+	lastFrameCallSound = 0
+	urlSound = fr"{os.getcwd()}\vuilongdeokhautrang.mp3"
 	while True:
 		frame_count += 1
 		ret, frame = cap.read()
@@ -123,13 +134,28 @@ def stream(videoStream):
 
 				isOnRedcorner = True
 
-				for time_off in redCornerOffTime:
-					if frame_count % time_off == 0:
-						isOnRedcorner = False
-						break
+			for time_off in redCornerOffFrame:
+				if frame_count % time_off == 0:
+					isOnRedcorner = False
+					break
 
-				if isOnRedcorner:
-					frame = cv2.polylines(frame, [pts], isClosed=True, color=color, thickness=30)
+			if isOnRedcorner:
+				frame = cv2.polylines(frame, [pts], isClosed=True, color=color, thickness=30)
+
+			if label == 'No Mask' and lastFrameCallSound == 0 or frame_count - lastFrameCallSound >= limitCallSound:
+				lastFrameCallSound = frame_count
+
+				# using play sound
+				# playsound(urlSound)
+
+				# using vlc
+				# p = vlc.Me
+				# diaPlayer(urlSound)
+				# p.play()
+				# time.sleep(3)
+				# p.stop()
+				t2 = threading.Thread(target=playUnmaskSound, args=(urlSound,))
+				t2.start()
 
 
 			# include the probability in the label

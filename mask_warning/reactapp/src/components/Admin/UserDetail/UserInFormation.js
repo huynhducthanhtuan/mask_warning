@@ -1,57 +1,75 @@
 import React from "react";
 import styles from "./UserDetail.module.css";
-import { AvatarThanhTuan } from "../../../assets/ExportImages";
+import {
+  Address,
+  Mail,
+  Phone,
+  Boat,
+  HomeAdmin,
+} from "../../../assets/ExportImages";
+
 const UserInFormation = ({ data }) => {
   return (
     <div className={styles.userInfo}>
-      <div className="row">
-        <div className="col-6">
-          <h3>User information</h3>
+      <div className={styles.boxUserInfor}>
+        <h3>User information</h3>
+        <div
+          className={` d-flex justify-content-start align-items-center ${styles.inforUser}`}
+        >
+          <img src={data.avatar} style={{ borderRadius: "50%" }} />
           <div>
-            <div
-              className={styles.avatarUserManager}
-              style={{ backgroundImage: `url('${AvatarThanhTuan}')` }}
-            ></div>
-            <div>
-              <span>{data.name}</span>
-              <p>ID: {data.id}</p>
-            </div>
-          </div>
-          <div>
-            <image src="" />
-            <div>
-              <span>Address</span>
-              <p> {data.Address}</p>
-            </div>
-          </div>
-          <div>
-            <image src="" />
-            <div>
-              <span>Email</span>
-              <p> {data.Email}</p>
-            </div>
-          </div>
-          <div>
-            <image src="" />
-            <div>
-              <span>Telephone</span>
-              <p> {data.Telephone}</p>
-            </div>
+            <span>{data.fullName}</span>
+            <p>ID: {data.userId}</p>
           </div>
         </div>
-        <div className="col-6">
-          <div>
-            <image src="" />
-            <div>
-              <span>Day of birth</span>
-              <p> {data.DayOfBirth}</p>
+        <div className="row">
+          <div className="col-6">
+            <div
+              className={`d-flex justify-content-start align-items-center ${styles.address}`}
+            >
+              <img src={Address} />
+              <div>
+                <span>Address</span>
+                <p> {data.address}</p>
+              </div>
+            </div>
+            <div
+              className={`d-flex justify-content-start align-items-center ${styles.address}`}
+            >
+              <img src={Mail} />
+              <div>
+                <span>Email</span>
+                <p> {data.email}</p>
+              </div>
+            </div>
+            <div
+              className={`d-flex justify-content-start align-items-center ${styles.address}`}
+            >
+              <img src={Phone} />
+              <div>
+                <span>Telephone</span>
+                <p> {data.phoneNumber}</p>
+              </div>
             </div>
           </div>
-          <div>
-            <image src="" />
-            <div>
-              <span>Store name</span>
-              <p> {data.StoreName}</p>
+          <div className="col-6">
+            <div
+              className={`d-flex justify-content-start align-items-center ${styles.address}`}
+            >
+              <img src={Boat} />
+              <div>
+                <span>Day of birth</span>
+                <p> {data.DayOfBirth}</p>
+              </div>
+            </div>
+            <div
+              className={`d-flex justify-content-start align-items-center ${styles.address}`}
+            >
+              <img src={HomeAdmin} />
+              <div>
+                <span>Store name</span>
+                <p> {data.storeName}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -59,4 +77,5 @@ const UserInFormation = ({ data }) => {
     </div>
   );
 };
+
 export default UserInFormation;

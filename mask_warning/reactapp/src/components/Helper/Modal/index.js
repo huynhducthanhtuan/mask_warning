@@ -8,11 +8,14 @@ function Modal({
   body = "Body",
   action,
   isCss = false,
+  userDeleteId = undefined,
 }) {
+  // action();
+
   return (
     <div
       className={styles.modalBackground}
-      style={isCss ? { marginTop: "400px" } : ""}
+      style={isCss ? { marginTop: "400px" } : { marginTop: "1px" }}
     >
       <div className={styles.modalContainer}>
         <div className={styles.titleCloseBtn}>
@@ -36,7 +39,14 @@ function Modal({
           <p>{body}</p>
         </div>
         <div className={styles.footer}>
-          <button onClick={action}>Oke</button>
+          <button
+            onClick={() => {
+              action(userDeleteId);
+              setOpenModal(false);
+            }}
+          >
+            Oke
+          </button>
           <button
             onClick={() => {
               setOpenModal(false);

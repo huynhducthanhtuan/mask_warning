@@ -13,7 +13,7 @@ const SideBarLeftStatistic = () => {
             <p> 1. Guest Statistic</p>
           </div>
         </Link>
-        <Link to="/report-history">
+        <Link to="#!">
           <div className={`d-flex ${styles.sideBar__statistic}`}>
             <img src="./icons/report__history.png"></img>
             <p>2. Unwearing Mask Guest Statistic</p>

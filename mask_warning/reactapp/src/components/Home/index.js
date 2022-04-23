@@ -10,10 +10,12 @@ import "./sliderDot.css";
 import { UserContext } from "../../App";
 import { AboutUsIcon } from "../../assets/ExportImages";
 import { ToastContainer, toast } from "react-toastify";
+import { isAuthenticated } from "./../Auth/index";
 
 const Home = () => {
   const { state, payload } = useContext(UserContext);
-
+  console.log(state, payload);
+  const { token } = isAuthenticated();
   var settings = {
     dots: true,
     infinite: true,
@@ -45,7 +47,7 @@ const Home = () => {
                 <p>Getting Started</p>
               </div>
             </Link>
-            <Link to="/">
+            <Link to={token ? "/camera" : "/signin"}>
               <div className={styles.homeSliderArrowBot}>
                 <img src="./icons/arrowBottom.png"></img>
               </div>
@@ -58,7 +60,7 @@ const Home = () => {
                 <p>Getting Started</p>
               </div>
             </Link>
-            <Link to="/">
+            <Link to={token ? "/camera" : "/signin"}>
               <div className={styles.homeSliderArrowBot}>
                 <img src="./icons/arrowBottom.png"></img>
               </div>

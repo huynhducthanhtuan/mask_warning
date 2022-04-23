@@ -5,7 +5,18 @@ import { toast } from "react-toastify";
 import { UserContext } from "../../App";
 import { isAuthenticated } from "../Auth";
 import { signOutApi } from "../../apis";
-import { UserAvatar } from "../../assets/ExportImages";
+import { LogOutIcon, UserAvatar } from "../../assets/ExportImages";
+import {
+  AboutUsIcon,
+  HomeIcon,
+  GuideIcon,
+  CameraIcon,
+  StatisticIcon,
+  ReportIcon,
+  LogoImage,
+  SigninIcon,
+  userAvatar,
+} from "../../assets/ExportImages";
 import Modal from "../Helper/Modal";
 
 const Header = () => {
@@ -45,7 +56,7 @@ const Header = () => {
             className={styles.headerLogin}
             onClick={() => setModalOpen(true)}
           >
-            <img src="./icons/signout.png" alt="" />
+            <img src={LogOutIcon} alt="" />
             <p>Sign Out</p>
           </div>
         </>
@@ -53,7 +64,7 @@ const Header = () => {
     } else
       return (
         <div className={styles.headerLogin} onClick={() => navigate("/signin")}>
-          <img src="./icons/signin.png" alt="" />
+          <img src={SigninIcon} alt="" />
           <p>Sign In</p>
         </div>
       );
@@ -63,26 +74,26 @@ const Header = () => {
     <header className={`container ${styles.header}`}>
       <div className={styles.headerLogo}>
         <Link to="/">
-          <img alt="" src="./icons/logo.png" />
+          <img alt="" src={LogoImage} />
         </Link>
       </div>
       <nav className={`${styles.headerNavigation}`}>
         <ul className=" d-flex">
           <li>
             <Link to="/">
-              <img src="./icons/home.png" alt="" />
+              <img src={HomeIcon} alt="" />
               <p>Home</p>
             </Link>
           </li>
           <li>
             <Link to={token ? "/guide" : "/signin"} onClick={!token && notify}>
-              <img alt="" src="./icons/guide.png" />
+              <img alt="" src={GuideIcon} />
               <p>Guide</p>
             </Link>
           </li>
           <li>
             <Link to={token ? "/camera" : "/signin"} onClick={!token && notify}>
-              <img alt="" src="./icons/camera.png" />
+              <img alt="" src={CameraIcon} />
               <p>Camera</p>
             </Link>
           </li>
@@ -91,19 +102,19 @@ const Header = () => {
               to={token ? "/statistic" : "/signin"}
               onClick={!token && notify}
             >
-              <img alt="" src="./icons/statistic.png" />
+              <img alt="" src={StatisticIcon} />
               <p>Statistic</p>
             </Link>
           </li>
           <li>
             <Link to={token ? "/report" : "/signin"} onClick={!token && notify}>
-              <img alt="" src="./icons/report.png" />
+              <img alt="" src={ReportIcon} />
               <p>Report</p>
             </Link>
           </li>
           <li>
             <Link to="/about-us">
-              <img src="./icons/aboutus.png" alt="" />
+              <img src={AboutUsIcon} alt="" />
               <p>About us</p>
             </Link>
           </li>

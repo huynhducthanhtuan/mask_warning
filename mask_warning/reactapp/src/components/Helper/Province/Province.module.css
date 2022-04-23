@@ -1,0 +1,15 @@
+.item label {
+  width: 200px;
+  font-size: 16px;
+}
+
+.item p {
+  font-weight: 500;
+}
+
+.item select,
+input {
+  width: 350px;
+  padding: 5px 0px;
+  font-size: 14px;
+}

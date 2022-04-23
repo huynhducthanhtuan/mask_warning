@@ -29,6 +29,12 @@ export { default as newUsers } from "../../assets/icons/new_users.png";
 
 //report user detail
 export { default as BackButton } from "../icons/arrow.png";
+export { default as Address } from "../../assets/icons/address.png";
+export { default as Mail } from "../../assets/icons/mail.png";
+export { default as Phone } from "../../assets/icons/phone.png";
+export { default as Boat } from "../../assets/icons/boat.png";
+export { default as HomeAdmin } from "../../assets/icons/homeAdmin.png";
+export { default as Tuan } from "../../assets/icons/tuan.png";
 
 //avatar
 export { default as AvatarTrungHieu } from "../../assets/icons/trunghieu.png";
@@ -37,3 +43,6 @@ export { default as AvatarThanhTuan } from "../../assets/icons/thanhtuan.png";
 
 //gif
 export { default as LoadingReport } from "../../assets/Gif/loadingReport.gif";
+
+//icons
+export { default as ArrowBack } from "../../assets/icons/arrow_back.png";
