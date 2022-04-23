@@ -77,15 +77,6 @@ const SignIn = () => {
             />
           </div>
           <div className={styles.formRemind}>
-            <div className={styles.formRemember}>
-              <input className={styles.formControl} type="checkbox" />
-              <span
-                className={styles.formRememberText}
-                style={{ fontSize: "14px" }}
-              >
-                Remember Me
-              </span>
-            </div>
             <Link to="/forgot-password" className={styles.formForgotPassword}>
               Forgot Password?
             </Link>
