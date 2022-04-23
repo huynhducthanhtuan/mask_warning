@@ -197,6 +197,7 @@ export const sendReport = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
 /* ROLE ADMIN */
 export const signInAdminAPI = (data) => {
   return fetch("/auth/admin/signin/", {
@@ -242,6 +243,7 @@ export const deleteUser = (userId) => {
     body: JSON.stringify(userId),
   });
 };
+
 export const countNewNotificationsQuantityAPI = () => {
   return fetch("/admin/notifications/new-notifications-quantity/")
     .then((res) => res.json())

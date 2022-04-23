@@ -55,14 +55,6 @@ const LeftControl = ({ toggle = "home" }) => {
           <p>Reports Manager</p>
         </div>
       </div>
-
-      <div className={styles.homeDecs}>
-        <img src={Line} />
-        <h3 className={styles.titleHome}>Mask Warning. 2022</h3>
-        <p className={styles.desHome}>
-          Mask Warning is a system help store notify customer wearing mask
-        </p>
-      </div>
     </div>
   );
 };
