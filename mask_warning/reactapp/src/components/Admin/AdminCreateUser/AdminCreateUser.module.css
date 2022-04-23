@@ -45,7 +45,7 @@
 .containerCreateAccount button {
   border-radius: 28px;
   margin: 0 auto;
-  padding: 8px 60px;
+  padding: 12px 70px;
   font-size: 16px;
   color: white;
   background: #6160dc;
@@ -55,4 +55,17 @@
 
 .containerCreateAccount button:hover {
   opacity: 0.6;
+}
+
+.genderCheckbox {
+  width: 80%;
+}
+
+.form-check-input {
+  margin-top: 0.8rem !important;
+  margin-left: 3.75rem !important;
+}
+
+.confirmPassword {
+  margin-bottom: 60px !important;
 }

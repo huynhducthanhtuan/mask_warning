@@ -11,10 +11,10 @@ const AdminCreateUser = () => {
             <ul className="col-6">
               <li>
                 <div className="d-flex">
-                  <label>First name</label>
+                  <label>Full name</label>
                   <span>*</span>
                 </div>
-                <input type="text" placeholder="First Name"></input>
+                <input type="text" placeholder="Full name"></input>
               </li>
               <li>
                 <div className="d-flex">
@@ -44,20 +44,42 @@ const AdminCreateUser = () => {
                 </select>
               </li>
               <li>
-                <div className="d-flex">
+                <div c lassName="d-flex">
                   <label>Address</label>
                   <span>*</span>
                 </div>
                 <input type="text" placeholder="Enter your address"></input>
               </li>
+              <li>
+                <div className="d-flex">
+                  <label>Gender</label>
+                  <span>*</span>
+                </div>
+                <div
+                  className={`d-flex justify-content-between ${styles.genderCheckbox}`}
+                >
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">Male</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">Female</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">Other</label>
+                  </div>
+                </div>
+              </li>
             </ul>
             <ul className="col-6">
               <li>
                 <div className="d-flex">
-                  <label>Last name</label>
+                  <label>Email</label>
                   <span>*</span>
                 </div>
-                <input type="text" placeholder="Last name"></input>
+                <input type="email" placeholder="Enter your email"></input>
               </li>
               <li>
                 <div className="d-flex">
@@ -80,15 +102,17 @@ const AdminCreateUser = () => {
                 </div>
                 <input type="password" placeholder="Enter password"></input>
               </li>
-              <li>
+              <li className={styles.confirmPassword}>
                 <div className="d-flex">
                   <label>Confirm Password</label>
                   <span>*</span>
                 </div>
                 <input type="password" placeholder="ReEnter password"></input>
               </li>
+              <li>
+                <button type="submit">Submit</button>
+              </li>
             </ul>
-            <button type="submit">Submit</button>
           </div>
         </section>
       </Frame>
