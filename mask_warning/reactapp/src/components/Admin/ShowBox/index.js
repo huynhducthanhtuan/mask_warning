@@ -6,7 +6,9 @@ import { BellIcon, LogOutIcon } from "../../../assets/ExportImages";
 import {
   viewNotificationAPI,
   countNewNotificationsQuantityAPI,
+  signOutApi,
 } from "../../../apis";
+import { toast } from "react-toastify";
 
 const ShowBox = () => {
   const [showBox, setShowBox] = useState(false);
@@ -74,6 +76,13 @@ const ShowBox = () => {
     await getNewNotificationsQuantity();
   }, [newNotificationsQuantity]);
 
+  const logOut = async () => {
+    await signOutApi().then((result) => {
+      console.log(result);
+      toast.success(result);
+    });
+  };
+
   return (
     <div className={styles.homeTopRightControl}>
       <p>Admin</p>
@@ -89,7 +98,9 @@ const ShowBox = () => {
         {renderNotifications()}
         {renderButtonSeeMoreOrSeeLess()}
       </div>
-      <img className={styles.homeIconTopRight} src={LogOutIcon} />
+      <div onClick={logOut}>
+        <img className={styles.homeIconTopRight} src={LogOutIcon} alt="" />
+      </div>
     </div>
   );
 };

@@ -16,22 +16,21 @@ const UsersManagerAdmin = () => {
 
   const loadUsersManage = async () => {
     await viewUserList().then((data) => {
-      // setUsers(data.result);
-      console.log(data);
+      setUsers(data.result);
     });
   };
 
   useEffect(() => {
     loadUsersManage();
   }, []);
-  console.log(users);
+
   const handleDeleteUser = (userIdToDelete) => {
     deleteUser({ userId: userIdToDelete }).then((result) => {
       toast.info(result.status);
       loadUsersManage();
     });
   };
-
+  console.log(users);
   return (
     <div className="container">
       {OpenModal && userIdToDelete && (
@@ -55,12 +54,15 @@ const UsersManagerAdmin = () => {
               <ShowBox />
             </div>
 
-            <button
-              type="button"
-              className={`btn btn-warning mt-4 ${styles.createAccountUser}`}
-            >
-              Create Account for user
-            </button>
+            <Link to="/admin/users-manager/create-user">
+              {" "}
+              <button
+                type="button"
+                className={`btn btn-warning mt-4 ${styles.createAccountUser}`}
+              >
+                Create Account for user
+              </button>
+            </Link>
             {users ? (
               <TableUsers
                 users={users}
@@ -69,7 +71,7 @@ const UsersManagerAdmin = () => {
                 setUserIdToDelete={setUserIdToDelete}
               />
             ) : (
-              <p>Loading...</p>
+              <Loading />
             )}
           </div>
         </div>

@@ -26,7 +26,7 @@ const Profile = () => {
   useEffect(() => {
     loadViewProfile();
   }, []);
-  // console.log(userInfo);
+
   return (
     <section>
       <Header />
