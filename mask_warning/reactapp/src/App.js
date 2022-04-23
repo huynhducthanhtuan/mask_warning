@@ -16,7 +16,7 @@ function App() {
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       <GlobalStyle>
-        {initialLocalStorageConfig()}
+        {/* {initialLocalStorageConfig()} */}
         <ToastContainer position="top-center" autoClose={1000} type="default" />
         <BrowserRouter>
           <ForgotPasswordContextProvider>

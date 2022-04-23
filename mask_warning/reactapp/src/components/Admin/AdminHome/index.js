@@ -83,6 +83,31 @@ const HomeAdmin = () => {
                   <img src={ellipse} />
                   <p>Year</p>
                 </div>
+                <div
+                  className={
+                    statisticToggle === "year"
+                      ? `${styles.homeStatisticButton} ${styles.active}`
+                      : styles.homeStatisticButton
+                  }
+                  onClick={() => setStatisticToggle("year")}
+                >
+                  <img src={ellipse} />
+                  <p>Year</p>
+                </div>
+              </div>
+              <div className={styles.homeStatisticCards}>
+                <StatisticCard
+                  cardName={"User(s)"}
+                  data={dataUsersStatistic[statisticToggle]}
+                  dataType={" new user(s)"}
+                  iconLink={newUsers}
+                />
+                <StatisticCard
+                  cardName={"Average hour(s) per day"}
+                  data={dataAvarageHoursStatistic[statisticToggle]}
+                  dataType={" hour(s) per day"}
+                  iconLink={averageHours}
+                />
               </div>
               <div className={styles.homeStatisticCards}>
                 <StatisticCard
@@ -102,7 +127,6 @@ const HomeAdmin = () => {
           </div>
         </div>
       </div>
-      {/* )} */}
     </div>
   );
 };

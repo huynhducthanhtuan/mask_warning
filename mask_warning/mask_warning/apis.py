@@ -10,9 +10,10 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
 import firebase_admin, smtplib, math, random, smtplib, ssl
-import string, pytz, json, os, jwt, re
+import string, pytz, json, os, jwt, re, pandas
 from numpy import true_divide
 from datetime import datetime, timedelta, date
+
 
 # Init app
 cred = credentials.Certificate(fr"{os.getcwd()}\mask_warning\mask-warning-787c4c69708d.json")
@@ -116,6 +117,7 @@ def ViewProfile(request):
                 "district": doc.get("address").split(",")[1].strip(),
                 "hometown": doc.get("address").split(",")[2].strip(),
                 "phoneNumber": doc.get("phoneNumber"),
+                "avatar": doc.get("avatar")
             }
             return JsonResponse(result)
         except:
@@ -149,14 +151,49 @@ def UpdateProfile(request):
             return JsonResponse({"status": "fail"})
 
 
+def ChangeAvatar(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"]
+        avatar = body_data["avatar"]
+        
+        # Xử lí
+        try:
+            doc = db.collection(f"users").document(userId)
+            doc.update({
+                'avatar': avatar
+            })
+            return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "fail"})
+
+
+def CalculateTimestampDifferent(timestampInDB):
+    # Lấy ra timestamp ngay thời điểm hiện tại
+    datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
+    createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
+    createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+
+    # Tính khoảng cách giữa timestamp ngay thời điểm hiện tại và timestamp trong DB
+    timestamp_diff = abs(pandas.Timestamp(createdDate) - pandas.Timestamp(timestampInDB))
+
+    # Trả về số ngày
+    return timestamp_diff.days
+
 
 def Notifications(request, quantity = 0):
-    docs = db.collection(f'notifications').order_by(u'createdDate').stream()
+    docs = db.collection(f'notifications').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
     notifications = []
 
     for doc in docs:
         result = doc.to_dict()
     
+        # CalculateTimestampDifferent
+        notification = doc.to_dict()
+        notification["timestampDifferent"] = CalculateTimestampDifferent(notification.get("createdDate"))
+        notifications.append(notification)
         
     return JsonResponse({
         'notifications': notifications[:quantity] if quantity else notifications
@@ -550,25 +587,23 @@ def countNewUser(request):
     })
 
 
-# (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
-# [ADD] data
-# arr = [
-#     { "date": [2021,12,31], "totalGuest": 100000000000, "totalUnmaskGuest": 37, "onlineHours": 10, "userId": "9ijj7GXUcyKia6uc1UOq" },
-#     # { "date": [2021,12,31], "totalGuest": 98, "totalUnmaskGuest": 43, "onlineHours": 12, "userId": "Lndoc3FNFjimEfMPDjiS" },
-# ]
-# for i in arr:
-#     randomString = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
-#     date = datetime.datetime(i.get("date")[0], i.get("date")[1], i.get("date")[2], 0, 0)
-#     date = pytz.timezone('Asia/Ho_Chi_Minh').localize(date)
-    # doc_ref = db.collection('userStatistics').document(str(randomString))
-    # doc_ref.set({
-    #     'date': date,
-    #     'onlineHours': i.get("onlineHours"),
-    #     'totalGuest': i.get("totalGuest"),
-    #     'totalUnmaskGuest': i.get("totalUnmaskGuest"),
-    #     'userId': i.get("userId")
-    # })
-    # doc_ref.set({'fullName': 'Tran Huyen My', 'address': '187 an hai, lien chieu, da nang', 'phoneNumber': '0900986450', 'createdDate': DatetimeWithNanoseconds(2021, 12, 31, 17, 0, tzinfo=datetime.timezone.utc), 'userName': 'huyenmytran', 'password': 'User120039873%', 'email': 'huyenmytran@gmail.com', 'storeName': 'Little Devil Shop'})
+def CountNewNotificationsQuantity(request):
+    quantity = 0
+    try:
+        docs = db.collection(f'notifications').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
+
+        for doc in docs:
+            notification = doc.to_dict()
+            timestampDifferent = CalculateTimestampDifferent(notification.get("createdDate"))
+
+            if timestampDifferent == 0:
+                quantity = quantity + 1
+            
+        return JsonResponse({'quantity': quantity})
+    except:
+        return JsonResponse({'quantity': 0})
+
+
 def CheckPasswordExist(userId, password):
     try:
         # Lấy ra document theo document id
@@ -657,7 +692,7 @@ def CheckEmailExist(email):
 
 def CheckValidFormatEmail(email):
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'  
-    if(re.search(regex,email)):   
+    if(re.search(regex, email)):   
         return True 
     else:   
         return False  
@@ -896,6 +931,7 @@ def ViewReportDetailUser(request):
                 "district": doc.get("address").split(",")[1].strip(),
                 "hometown": doc.get("address").split(",")[2].strip(),
                 "phoneNumber": doc.get("phoneNumber"),
+                "avatar": doc.get("avatar"),
             }
             return JsonResponse(result)
         except:
@@ -993,6 +1029,13 @@ def ConfirmSolvedReport(request):
             return JsonResponse({"status": "fail"})
         
 
+def ValidateReport(image, title, description):
+    if image.strip() != "" and title.strip() != "" and description.strip() != "":
+        return True
+    else:
+        return False
+
+
 def SendReport(request):
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
@@ -1002,6 +1045,28 @@ def SendReport(request):
         image = body_data["image"]
         title = body_data["title"]
         description = body_data["description"]
+
+        if ValidateReport(image, title, description):
+            try:
+                randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
+                datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
+                createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
+                createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+                new_report = db.collection("reports").document(str(randomString))
+                
+                new_report.set({
+                    "userId": userId,
+                    "createdDate": createdDate,
+                    "image": image,
+                    "title": title,
+                    "description": description,
+                    "isSolved": False,
+                })
+                return JsonResponse({"status": "success"})
+            except:
+                return JsonResponse({"status": "fail"})
+        else:
+            return JsonResponse({"error": "Please enter all information"})
 
         if ValidateReport(image, title, description):
             try:
@@ -1058,4 +1123,27 @@ def HandleSigninAdmin(request):
                     return JsonResponse({"message": "Signin failed"})
 
 
- 
+def SaveVideoStreamUrl(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        userId = body_data["userId"].strip()
+        videoStreamUrl = body_data["videoStreamUrl"].strip()
+
+        try:
+            user = db.collection('users').document(userId)
+            user.update({'videoStreamUrl': videoStreamUrl})
+            return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "failed"})
+
+
+def GetVideoStreamUrl(userId):
+    try:
+        user = db.collection('users').document(userId)
+        videoStreamUrl = user.get().to_dict().get("videoStreamUrl")
+        return videoStreamUrl
+    except:
+        return ""
+

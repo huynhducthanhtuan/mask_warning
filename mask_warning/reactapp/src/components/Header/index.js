@@ -24,6 +24,7 @@ const Header = () => {
   const { state, dispatch } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const { token } = isAuthenticated();
+
   const notify = () => {
     if (notify) {
       toast.info("PLEASE SIGNIN FIRST !!");
@@ -37,7 +38,7 @@ const Header = () => {
       localStorage.removeItem("jwt");
       dispatch({ type: "CLEAR" });
       toast.success(data.message.toLocaleUpperCase());
-      navigate("/signin");
+      navigate("/");
     }
   };
 

@@ -10,14 +10,15 @@ const ReportHistory = () => {
   const { user } = isAuthenticated();
   const [reports, setReports] = useState();
   const loadReportsHistory = async () => {
-    const reports = await reportsHistory({ userId: user.userId });
-    setReports(reports.result);
+    await reportsHistory({ userId: user.userId }).then((reports) => {
+      setReports(reports.result);
+    });
   };
   useEffect(() => {
     window.scrollTo(0, 0);
     loadReportsHistory();
   }, []);
-
+  console.log("reports", reports);
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />
@@ -36,8 +37,8 @@ const ReportHistory = () => {
             </div>
           </Link>
         </div>
-        <div className={`col-9 ${styles.reportHistory}`}>   
-            {reports && <CardReport reports={reports} />}
+        <div className={`col-9 ${styles.reportHistory}`}>
+          {reports && <CardReport reports={reports} />}
         </div>
       </div>
     </section>

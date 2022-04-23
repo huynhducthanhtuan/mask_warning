@@ -46,12 +46,13 @@
   align-items: flex-end;
   padding-top: 25px;
 }
-.buttonSend {
+.buttonConnect {
   padding: 8px 39px;
   color: #ffffff;
-  background-color: #3c3b93;
+  background-color: #3751fe;
   border: 1px solid;
   font-size: 18px;
+  cursor: pointer;
 }
 .buttonCancel {
   padding: 8px 39px;
@@ -90,7 +91,20 @@
   border-radius: 7px !important;
   margin-top: 10px;
 }
-
+.formContentPart {
+  color: #030303;
+  border-radius: 7px !important;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+}
+.inputPart {
+  margin-top: 50px;
+  margin-bottom: 20px;
+  width: 500px;
+}
 .imageForgot {
   position: absolute;
   width: 320px;

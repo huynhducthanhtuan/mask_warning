@@ -1,8 +1,8 @@
+from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.core.mail import EmailMessage
 from django.views.decorators import gzip
-from django.http import StreamingHttpResponse
+from .apis import GetVideoStreamUrl
 
 # Sound Area
 from playsound import playsound
@@ -15,6 +15,7 @@ from tensorflow.keras.models import load_model
 from imutils.video import VideoStream
 import numpy as np
 import threading, imutils, time, cv2, os
+
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
 	# grab the dimensions of the frame and then construct a blob
@@ -99,15 +100,9 @@ def playUnmaskSound(urlSound):
 	# using play sound
 	playsound(urlSound)
 
-	# using vlc
-	# p = vlc.MediaPlayer(urlSound)
-	# p.play()
-	# time.sleep(4)
-	# p.stop()
-def stream():
-	# cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:80/onvif13") 
-	# cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:8080/onvif13") 
-	cap = cv2.VideoCapture(0) 
+
+def stream(videoStream):
+	cap = cv2.VideoCapture(videoStream) 
 	frame_count = 0
 
 	limitCallSound = 50;
@@ -167,8 +162,6 @@ def stream():
 			label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
 
 			
-
-
 			# display the label and bounding box rectangle on the output
 			# frame
 			cv2.putText(frame, label, (startX, startY - 10),
@@ -183,8 +176,12 @@ def stream():
 		yield (b'--frame\r\n'
 				b'Content-Type: image/jpeg\r\n\r\n' + open('demo.jpg', 'rb').read() + b'\r\n')
 
-def video_feed(request):
-    return StreamingHttpResponse(stream(), content_type='multipart/x-mixed-replace; boundary=frame')
 
-def index(request):
-    return render(request,'my_app/index.html')
+def showCamera(request, userId):
+	try:
+		if request.method == "GET":
+			videoStreamUrl = GetVideoStreamUrl(userId)
+			return StreamingHttpResponse(stream(videoStreamUrl), content_type='multipart/x-mixed-replace; boundary=frame')
+	except:
+		return JsonResponse({"error": "Connect camera failed"})
+

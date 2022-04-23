@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { updateAvatar } from "../../apis";
+import { isAuthenticated } from "../Auth";
 import { UploadImageToFirebase } from "../Helper/UploadImageToFirebase";
 import styles from "./ProfileSidebar.module.css";
 
@@ -10,6 +12,8 @@ const ProfileSidebar = ({ userInfo }) => {
   const [previewUrl, setPreviewUrl] = useState();
   const [progress, setProgress] = useState(0);
   const [urlImage, setUrlImage] = useState();
+
+  const { user } = isAuthenticated();
 
   useEffect(() => {
     if (!image) {
@@ -23,7 +27,18 @@ const ProfileSidebar = ({ userInfo }) => {
     //upload image report to firebase storage
     UploadImageToFirebase(image, setProgress, setUrlImage, path);
   }, [image]);
-  const upLoadChangeAvatar = () => {};
+
+  const upLoadChangeAvatar = async () => {
+    console.log("change avatar");
+    await updateAvatar({ userId: user.userId, avatar: urlImage }).then(
+      (result) => {
+        console.log(result);
+      }
+    );
+  };
+  useEffect(() => {
+    upLoadChangeAvatar();
+  }, [urlImage]);
   return (
     <section className={`col-3 ${styles.profileSidebar}`}>
       <h2>Profile</h2>

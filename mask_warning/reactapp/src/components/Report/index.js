@@ -41,10 +41,10 @@ const Report = () => {
     };
     console.log(dataUpload);
     sendReport(dataUpload).then((result) => {
-      // toast.success(result.status);
-      // inputTitleRef.current.value = "";
-      // descriptionRef.current.value = "";
-      // setPreviewUrl(undefined);
+      toast.success(result.status);
+      inputTitleRef.current.value = "";
+      descriptionRef.current.value = "";
+      setPreviewUrl(undefined);
       console.log(result);
     });
   };

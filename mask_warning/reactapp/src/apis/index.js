@@ -1,3 +1,4 @@
+/* ROLE USER */
 export const signInAPI = (data) => {
   return fetch("auth/signin/", {
     method: "POST",
@@ -9,8 +10,14 @@ export const signInAPI = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
-export const signInAdminAPI = (data) => {
-  return fetch("auth/admin/signin/", {
+export const signOutApi = () => {
+  return fetch("auth/signout")
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const saveVideoStreamUrlAPI = (data) => {
+  return fetch("/save-video-stream-url/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,8 +27,15 @@ export const signInAdminAPI = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
-export const signOutApi = () => {
-  return fetch("auth/signout")
+
+export const getVideoStreamUrlAPI = (data) => {
+  return fetch("/get-video-stream-url/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
     .then((res) => res.json())
     .catch((err) => err);
 };
@@ -111,11 +125,24 @@ export const updateProfile = (data) => {
     .catch((err) => err);
 };
 
+export const updateAvatar = (data) => {
+  return fetch("change-avatar/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
 export const viewReportList = () => {
   return fetch("/admin/reports-manager/")
     .then((res) => res.json())
     .catch((err) => err);
 };
+
 export const viewReportDetail = (data) => {
   return fetch("/admin/reports-manager/detail-report/", {
     method: "POST",
@@ -127,6 +154,7 @@ export const viewReportDetail = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
 export const viewReportDetailUser = (reportId) => {
   return fetch("/admin/reports-manager/detail-user/", {
     method: "POST",
@@ -168,6 +196,18 @@ export const sendReport = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+/* ROLE ADMIN */
+export const signInAdminAPI = (data) => {
+  return fetch("/auth/admin/signin/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
 
 export const reportsHistory = (userId) => {
   return fetch("/report-history/", {
@@ -177,6 +217,11 @@ export const reportsHistory = (userId) => {
     },
     body: JSON.stringify(userId),
   })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+export const viewNotificationAPI = (quantity = 0) => {
+  return fetch(`/admin/notifications/${quantity}`)
     .then((res) => res.json())
     .catch((err) => err);
 };
@@ -194,7 +239,10 @@ export const deleteUser = (userId) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(userId),
-  })
+  });
+};
+export const countNewNotificationsQuantityAPI = () => {
+  return fetch("/admin/notifications/new-notifications-quantity/")
     .then((res) => res.json())
     .catch((err) => err);
 };
