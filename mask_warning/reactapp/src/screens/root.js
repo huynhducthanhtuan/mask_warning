@@ -31,7 +31,7 @@ import {
   AdminReportDetail,
   AdminReportUserDetail,
   UserDetail,
-  AdminUserCreate,
+  AdminCreateUser,
 } from "../components/Admin";
 
 const ScreensRoot = () => {
@@ -75,7 +75,7 @@ const ScreensRoot = () => {
       <Route path="/admin/users-manager" element={<AdminUsersManager />} />
       <Route
         path="/admin/users-manager/create-user"
-        element={<AdminUserCreate />}
+        element={<AdminCreateUser />}
       />
       <Route
         path="/admin/users-manager/user-detail/:userId"

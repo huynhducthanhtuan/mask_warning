@@ -4,8 +4,8 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
-from google.cloud.firestore_v1.field_path import FieldPath
 from datetime import datetime
+from googletrans import Translator
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
@@ -13,6 +13,7 @@ import firebase_admin, smtplib, math, random, smtplib, ssl
 import string, pytz, json, os, jwt, re, pandas
 from numpy import true_divide
 from datetime import datetime, timedelta, date
+DEFAULT_USER_AVATAR = "https://firebasestorage.googleapis.com/v0/b/mask-warning.appspot.com/o/user-avatars%2Fdefault-avatar.png?alt=media&token=5c74e841-ff74-43f3-a65d-583a35a5d98c"
 
 
 # Init app
@@ -61,18 +62,6 @@ def HandleSignin(request):
         userName = body_data["userName"].strip()
         password = body_data["password"].strip()
 
-        # Lấy thông tin _id và fullName của user
-        _id = ""
-        fullName = ""
-        docs = db.collection(f"users").where(u"userName", u"==", f"{userName}").stream()
-
-        for doc in docs:
-            _id = doc.id
-            fullName = doc.to_dict().get("fullName")
-
-        # Neu userName ko ton tai
-        if (_id == ""):
-            return JsonResponse({"error": "User not found."})
         # Nếu người dùng ko nhập gì cả
         if userName == "" or password == "":
             return JsonResponse({"message": "Please enter all information"})
@@ -81,13 +70,16 @@ def HandleSignin(request):
             if len(password) < 8:
                 return JsonResponse({"message": "Please enter password has more 8 characters"})
             else:
-                # Thực hiện đăng nhập
-                if Signin(userName, password) == False:
-                    return JsonResponse({"message": "User name and password do not match"})
+                if CheckUserNameExist(userName) == False:
+                    return JsonResponse({"message": "User not found"})
                 else:
-                    data = Signin(userName, password)
-                    data["message"] = "Signin success"
-                    return JsonResponse(data)
+                    # Thực hiện đăng nhập
+                    if Signin(userName, password) == False:
+                        return JsonResponse({"message": "User name and password do not match"})
+                    else:
+                        data = Signin(userName, password)
+                        data["message"] = "Signin success"
+                        return JsonResponse(data)
   
 
 def Signout(request):
@@ -170,14 +162,19 @@ def ChangeAvatar(request):
             return JsonResponse({"status": "fail"})
 
 
+def GetCurrentTimestamp():
+    datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
+    current_timestamp = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
+    current_timestamp = pytz.timezone("Asia/Ho_Chi_Minh").localize(current_timestamp)
+    return current_timestamp
+
+
 def CalculateTimestampDifferent(timestampInDB):
     # Lấy ra timestamp ngay thời điểm hiện tại
-    datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
-    createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
-    createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+    current_timestamp = GetCurrentTimestamp()
 
     # Tính khoảng cách giữa timestamp ngay thời điểm hiện tại và timestamp trong DB
-    timestamp_diff = abs(pandas.Timestamp(createdDate) - pandas.Timestamp(timestampInDB))
+    timestamp_diff = abs(pandas.Timestamp(current_timestamp) - pandas.Timestamp(timestampInDB))
 
     # Trả về số ngày
     return timestamp_diff.days
@@ -198,6 +195,7 @@ def Notifications(request, quantity = 0):
     return JsonResponse({
         'notifications': notifications[:quantity] if quantity else notifications
     })
+
 
 def ListOfUsers(request):
 
@@ -233,6 +231,7 @@ def ListOfUsers(request):
             'pageSize': pageSize,
             'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
         })
+
 
 def validatePassword(password):
     
@@ -279,6 +278,7 @@ def validatePassword(password):
         'message': 'Password is Valid'
     }
 
+
 def validateNewUser(newUser):
 
     if(not CheckValidFormatEmail(newUser['email'])):
@@ -318,14 +318,15 @@ def validateNewUser(newUser):
             'message': 'New User Valid'
     }
 
+
 def checkExistAttributeValue(collection, attribute, value):
     collection_ref = db.collection(collection)
     query_ref = collection_ref.where(attribute,u'==',value).get()
 
     return len(query_ref) > 0
 
-def addUser(request):
 
+def addUser(request):
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
@@ -384,7 +385,6 @@ def addUser(request):
         
 
 def searchUsers(request):
-
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
@@ -406,7 +406,9 @@ def searchUsers(request):
                     usersList.append({
                     'fullName': user.to_dict()['fullName'],
                     'storeName': user.to_dict()['storeName'],   
-                    'createdDate': user.to_dict()['createdDate']
+                    'createdDate': user.to_dict()['createdDate'],
+                    'avatar': user.to_dict()['avatar'],
+                    "userId": user.id
                     })
                     break
                 
@@ -430,9 +432,9 @@ def searchUsers(request):
             'pageSize': pageSize,
             'startIndex': startIndex,
             'endIndex' : endIndex,
-            'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+            # 'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+            'usersList': usersList
         })
-
 
 
 def countNewUserInRange(startTime, endTime, users):
@@ -447,13 +449,13 @@ def countNewUserInRange(startTime, endTime, users):
 
     return newUser
 
+
 def getRevenueInRange(startTime, endTime):
     newAccountPrice = 500000  
 
     return newAccountPrice*countNewUserInRange(startTime, endTime)
 
 
-import random
 def getRevenueByDay():
     currentDay = date.today()
     revenueByDay = {}
@@ -464,6 +466,7 @@ def getRevenueByDay():
 
     return revenueByDay
 
+
 def leap_year(year):
     if year % 400 == 0:
         return True
@@ -473,6 +476,7 @@ def leap_year(year):
         return True
     return False
 
+
 def days_in_month(month, year):
     if month in {1, 3, 5, 7, 8, 10, 12}:
         return 31
@@ -481,6 +485,7 @@ def days_in_month(month, year):
             return 29
         return 28
     return 30
+
 
 def getRevenueByMonth():
     currentDay = date.today()
@@ -498,6 +503,7 @@ def getRevenueByMonth():
 
     return revenueByMonth
     
+
 def getRevenueByYear():
     currentDay = date.today()
     revenueByYear = {}
@@ -510,6 +516,7 @@ def getRevenueByYear():
             )
 
     return revenueByYear
+
 
 def getRevenue(request):
     if request.method == "POST":
@@ -535,6 +542,7 @@ def getRevenue(request):
             'formatType' : formatType
         })
 
+
 def countNewUserByWeek(users):
     currentDay = date.today()
     newUser = 0
@@ -544,6 +552,7 @@ def countNewUserByWeek(users):
         newUser += countNewUserInRange(iDayAgo, iDayAgo, users)
 
     return newUser
+
 
 def countNewUserByMonth(users):
     currentDay = date.today()
@@ -561,6 +570,7 @@ def countNewUserByMonth(users):
 
     return newUser
 
+
 def countNewUserByYear(users):
     currentDay = date.today()
     newUser = 0
@@ -575,6 +585,7 @@ def countNewUserByYear(users):
 
     return newUser
     
+
 def countNewUser(request):
     users = db.collection(f"users").get()
     newUserByWeek = countNewUserByWeek(users)
@@ -687,6 +698,17 @@ def CheckEmailExist(email):
     check = False
 
     # Nếu có document chứa email truyền vào thì check = True   
+    for doc in docs: 
+        check = True
+    return check
+
+
+def CheckUserNameExist(userName):
+    # Lấy ra mảng các document theo userName
+    docs = db.collection('users').where(u"userName", u"==", f"{userName}").stream()
+    check = False
+
+    # Nếu có document chứa userName truyền vào thì check = True   
     for doc in docs: 
         check = True
     return check
@@ -1051,14 +1073,12 @@ def SendReport(request):
         if ValidateReport(image, title, description):
             try:
                 randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
-                datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
-                createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
-                createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
+                current_timestamp = GetCurrentTimestamp()
                 new_report = db.collection("reports").document(str(randomString))
                 
                 new_report.set({
                     "userId": userId,
-                    "createdDate": createdDate,
+                    "createdDate": current_timestamp,
                     "image": image,
                     "title": title,
                     "description": description,
@@ -1070,27 +1090,6 @@ def SendReport(request):
         else:
             return JsonResponse({"error": "Please enter all information"})
 
-        if ValidateReport(image, title, description):
-            try:
-                randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
-                datetime_arr = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
-                createdDate = datetime(int(datetime_arr[0]), int(datetime_arr[1]), int(datetime_arr[2]), int(datetime_arr[3]), int(datetime_arr[4]), int(datetime_arr[5]))
-                createdDate = pytz.timezone("Asia/Ho_Chi_Minh").localize(createdDate)
-                new_report = db.collection("reports").document(str(randomString))
-                
-                new_report.set({
-                    "userId": userId,
-                    "createdDate": createdDate,
-                    "image": image,
-                    "title": title,
-                    "description": description,
-                    "isSolved": False,
-                })
-                return JsonResponse({"status": "success"})
-            except:
-                return JsonResponse({"status": "fail"})
-        else:
-            return JsonResponse({"error": "Please enter all information"})
 
 def HandleSigninAdmin(request): 
     if request.method == "POST":
@@ -1148,3 +1147,81 @@ def GetVideoStreamUrl(userId):
         return videoStreamUrl
     except:
         return ""
+
+
+def CreateNewUser(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        hometown = body_data["hometown"]
+        district = body_data["district"]
+        address = body_data["address"]
+        fullName = body_data["fullName"]
+        phoneNumber = body_data["phoneNumber"]
+        gender = body_data["gender"]
+        storeName = body_data["storeName"]
+        email = body_data["email"]
+        userName = body_data["userName"]
+        password = body_data["password"]
+        
+        # Xử lí
+        try:
+            # FE: check valid email, phoneNumber, fullname, storeName, 2 password is same
+            
+            # Check email có đã tồn tại trong DB ?
+            if CheckEmailExist(email):
+                return JsonResponse({"error": "Email already exists"})
+            else:
+                # Create new user
+                current_timestamp = GetCurrentTimestamp()
+                
+                newUser = {
+                    'address': f'{address}, {district}, {hometown}',
+                    'avatar': DEFAULT_USER_AVATAR,
+                    'email': email,
+                    'createdDate': current_timestamp,
+                    'fullName': fullName,
+                    'gender': gender,
+                    'phoneNumber': phoneNumber,
+                    'storeName': storeName,
+                    'userName': userName,
+                    'password': password
+                }
+                randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
+                db.collection(f"users").document(f'{randomString}').set(newUser)
+
+                return JsonResponse({"status": "success"})
+        except:
+            return JsonResponse({"status": "fail"})
+
+
+# fire when onchange fullName
+def GenerateUserName(request):
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        fullName = body_data["fullName"]
+        
+        # Xử lí
+        try:
+            translator = Translator()
+            translation = translator.translate(fullName, src="vi", dest='en')
+            userName = translation.text.lower().replace(" ", "")
+
+            if CheckUserNameExist(userName):
+                random_char_number = random.randint(0, 19)
+                userName = f'{userName}{random_char_number}'
+
+            return JsonResponse({"userName": userName})
+        except:
+            return JsonResponse({"userName": userName})
+
+
+# fire when load "Create new user" page
+def GeneratePassword(request):
+    if request.method == "POST":
+        randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=15))
+        return JsonResponse({"password": randomString})
+

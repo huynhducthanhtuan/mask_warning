@@ -5,6 +5,7 @@ import Frame from "../Frame";
 import TableUsers from "../TableUsers";
 import UserInFormation from "./UserInFormation";
 import Loading from "../../Helper/Loading";
+
 const UsersDetail = () => {
   const [userInfo, setUserInfo] = useState();
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,8 @@ const UsersDetail = () => {
       setLoading(false);
     });
   };
-  console.log("user detail ", userInfo);
+
+  // console.log("user detail ", userInfo);
   useEffect(() => {
     loadReportDetailUser();
   }, []);

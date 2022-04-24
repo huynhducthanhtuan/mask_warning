@@ -62,11 +62,13 @@
   margin-top: 20px;
   font-size: 15px;
 }
+
 .formRemind {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
+
 .formForgotPassword {
   font-size: 14px;
 }

@@ -1,14 +1,13 @@
 import React from "react";
 import styles from "./UserDetail.module.css";
-import { AvatarThanhTuan } from "../../../assets/ExportImages";
 import {
   Address,
   Mail,
   Phone,
   Boat,
   HomeAdmin,
-  Tuan,
 } from "../../../assets/ExportImages";
+
 const UserInFormation = ({ data }) => {
   return (
     <div className={styles.userInfo}>
@@ -78,4 +77,5 @@ const UserInFormation = ({ data }) => {
     </div>
   );
 };
+
 export default UserInFormation;

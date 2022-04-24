@@ -3,6 +3,7 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 html {
   color: #333;
   font-size: 62.5%;
@@ -17,7 +18,13 @@ html {
 a {
   text-decoration: none !important;
 }
+
 nav ul a:hover {
   background-color: #fff;
   cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 5px;
 }

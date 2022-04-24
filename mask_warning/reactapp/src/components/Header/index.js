@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styles from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -42,6 +42,10 @@ const Header = () => {
     }
   };
 
+  const handleClickSignout = () => {
+    setModalOpen(true);
+  };
+
   const render = () => {
     if (isAuthenticated()) {
       return (
@@ -52,10 +56,7 @@ const Header = () => {
               <p>Profile</p>
             </div>
           </Link>
-          <div
-            className={styles.headerLogin}
-            onClick={() => setModalOpen(true)}
-          >
+          <div className={styles.headerLogin} onClick={handleClickSignout}>
             <img src={LogOutIcon} alt="" />
             <p>Sign Out</p>
           </div>
@@ -69,6 +70,11 @@ const Header = () => {
         </div>
       );
   };
+
+  useEffect(() => {
+    // Kích hoạt hoặc ngăn chặn hành vi cuộn của trình duyệt
+    document.body.style.overflow = modalOpen ? "hidden" : "visible";
+  }, [modalOpen]);
 
   return (
     <header className={`container ${styles.header}`}>

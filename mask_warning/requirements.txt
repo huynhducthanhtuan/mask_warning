@@ -10,5 +10,6 @@ firebase_admin
 gcloud
 django-rest_framework
 django-cors-headers
-playsound
 pyjwt[crypto]
+googletrans==3.1.0a0
+playsound

@@ -4,6 +4,6 @@ export { default as AdminReportsManager } from "./AdminReportsManager";
 export { default as AdminReportDetail } from "./AdminReportDetail";
 export { default as AdminReportUserDetail } from "./AdminReportUserDetail";
 export { default as AdminUsersManager } from "./AdminUsersManager";
-export { default as AdminUserCreate } from "./AdminCreateUser";
+export { default as AdminCreateUser } from "./AdminCreateUser";
 export { default as UserDetail } from "./UserDetail";
 export { default as Frame } from "./Frame";

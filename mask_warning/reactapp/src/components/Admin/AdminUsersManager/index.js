@@ -40,6 +40,7 @@ const UsersManagerAdmin = () => {
       query: querySearchRef.current.value,
     });
     console.log("data searched", data.usersList);
+    setUsers(data.usersList);
   };
 
   const submitSearch = (event) => {

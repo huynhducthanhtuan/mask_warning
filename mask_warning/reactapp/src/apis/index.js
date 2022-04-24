@@ -1,6 +1,6 @@
 /* ROLE USER */
 export const signInAPI = (data) => {
-  return fetch("auth/signin/", {
+  return fetch("/auth/signin/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -10,6 +10,7 @@ export const signInAPI = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
 export const signOutApi = () => {
   return fetch("/auth/signout/")
     .then((res) => res.json())
@@ -196,6 +197,7 @@ export const sendReport = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
 /* ROLE ADMIN */
 export const signInAdminAPI = (data) => {
   return fetch("/auth/admin/signin/", {
@@ -241,6 +243,7 @@ export const deleteUser = (userId) => {
     body: JSON.stringify(userId),
   });
 };
+
 export const countNewNotificationsQuantityAPI = () => {
   return fetch("/admin/notifications/new-notifications-quantity/")
     .then((res) => res.json())

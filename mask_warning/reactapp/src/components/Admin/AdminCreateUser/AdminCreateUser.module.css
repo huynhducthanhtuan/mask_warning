@@ -61,11 +61,47 @@
   width: 80%;
 }
 
-.form-check-input {
+.genderCheckbox .form-check {
+  display: flex !important;
+  justify-content: space-between !important;
+  flex-flow: wrap-reverse !important;
+}
+
+.genderCheckbox .form-check-input {
   margin-top: 0.8rem !important;
   margin-left: 3.75rem !important;
 }
 
+.genderCheckbox .form-check-label {
+  margin-top: 20px !important;
+  margin-left: 10px !important;
+}
+
 .confirmPassword {
   margin-bottom: 60px !important;
+}
+
+.submitButtonPart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.genderItemPart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.formCheckInput {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.genderItemPart > span {
+  color: #000;
+}
+
+.genderItemPart > span:nth-child(2) {
+  margin-left: 8px;
 }

@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 
 const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
-  // console.log(users);
+  console.log(users);
   return (
     <table className={`table ${styles.tableUsers}`}>
       <tbody className={styles.theadUser}>

@@ -1,10 +1,13 @@
 from django.urls import include, path
 from django.contrib import admin
-from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, ChangeAvatar, HandleChangePassword
+from .views import showCamera
+from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, ChangeAvatar, HandleChangePassword, CreateNewUser
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
 from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl,searchUsers
 from .views import showCamera
+from .apis import GenerateUserName, GeneratePassword
+
 
 urlpatterns = [
     # All roles
@@ -29,6 +32,9 @@ urlpatterns = [
 
     # Role Admin
     path('auth/admin/signin/', HandleSigninAdmin),
+    path('admin/create-new-user/', CreateNewUser),
+    path('admin/create-new-user/generate-username/', GenerateUserName),
+    path('admin/create-new-user/generate-password/', GeneratePassword),
     path('admin/notifications/<int:quantity>', Notifications),
     path('admin/notifications/', Notifications),
     path('admin/notifications/new-notifications-quantity/', CountNewNotificationsQuantity),

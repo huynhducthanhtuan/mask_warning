@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../AdminHome/Home.module.css";
 import NotifyCard from "../AdminNotifyCard";
+import { useNavigate } from "react-router-dom";
 import { DEFAULT_NOTIFICATIONS_QUANTITY } from "../../../constants";
 import { BellIcon, LogOutIcon } from "../../../assets/ExportImages";
 import {
@@ -10,7 +11,6 @@ import {
 } from "../../../apis";
 
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import Modal from "../../Helper/Modal";
 
 const ShowBox = () => {
@@ -20,13 +20,10 @@ const ShowBox = () => {
   const [showBox, setShowBox] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [newNotificationsQuantity, setNewNotificationsQuantity] = useState();
-  const [notificationsStatus, setNotificationsStatus] = useState("shortlisted");
+  const navigatate = useNavigate();
 
   const getNotifications = async () => {
-    const notificationQuantity =
-      notificationsStatus == "shortlisted" ? DEFAULT_NOTIFICATIONS_QUANTITY : 0;
-
-    const data = await viewNotificationAPI(notificationQuantity);
+    const data = await viewNotificationAPI(DEFAULT_NOTIFICATIONS_QUANTITY);
     setNotifications(data.notifications);
   };
 
@@ -51,36 +48,17 @@ const ShowBox = () => {
     );
   };
 
-  const renderButtonSeeMoreOrSeeLess = () => {
-    return notificationsStatus == "shortlisted" ? (
-      <button className={styles.buttonSeeMore} onClick={handleClickSeeMore}>
-        See More
-      </button>
-    ) : (
-      <button className={styles.buttonSeeLess} onClick={handleClickSeeLess}>
-        See Less
-      </button>
-    );
-  };
-
   const handleClickSeeMore = () => {
-    setNotificationsStatus("full");
+    navigatate("/admin/reports-manager");
   };
-
-  const handleClickSeeLess = () => {
-    setNotificationsStatus("shortlisted");
-  };
-  // useEffect(() => {
-  //   loadNotifications();
-  // }, []);
 
   useEffect(async () => {
-    await getNotifications(notificationsStatus);
-  }, [notificationsStatus]);
+    await getNotifications();
+  }, []);
 
   useEffect(async () => {
     await getNewNotificationsQuantity();
-  }, [newNotificationsQuantity]);
+  }, []);
 
   const handleSignout = async () => {
     const data = await signOutApi();
@@ -92,35 +70,23 @@ const ShowBox = () => {
   };
 
   return (
-    <>
-      {modalOpen && (
-        <Modal
-          body="Are you sure to sign out ??"
-          setOpenModal={setModalOpen}
-          action={handleSignout}
-          // isCss={true}
-        />
-      )}
-      <div className={styles.homeTopRightControl}>
-        <p>Admin</p>
-
-        <div className={styles.homeNotify} onClick={() => setShowBox(!showBox)}>
-          <img className={styles.homeIconTopRight} src={BellIcon} />
-          {renderNewNotificationsQuantity()}
-        </div>
-        <div
-          className={
-            showBox ? `${styles.homeNotifyBox} d-block` : styles.homeNotifyBox
-          }
-        >
-          {renderNotifications()}
-          {renderButtonSeeMoreOrSeeLess()}
-        </div>
-        <div onClick={() => setModalOpen(true)}>
-          <img className={styles.homeIconTopRight} src={LogOutIcon} alt="" />
-        </div>
+    <div className={styles.homeTopRightControl}>
+      <p>Admin</p>
+      <div className={styles.homeNotify} onClick={() => setShowBox(!showBox)}>
+        <img className={styles.homeIconTopRight} src={BellIcon} />
+        {renderNewNotificationsQuantity()}
       </div>
-    </>
+      <div
+        className={
+          showBox ? `${styles.homeNotifyBox} d-block` : styles.homeNotifyBox
+        }
+      >
+        {renderNotifications()}
+        <button className={styles.buttonSeeMore} onClick={handleClickSeeMore}>
+          See More
+        </button>
+      </div>
+  </div>
   );
 };
 
