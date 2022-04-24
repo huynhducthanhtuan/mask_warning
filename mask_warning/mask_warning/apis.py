@@ -420,6 +420,8 @@ def searchUsers(request):
         if startIndex >= len(usersList) or startIndex < 0:
             return JsonResponse({
                 "error": "Index out of bound."
+
+
             })
         
         return JsonResponse({
@@ -1146,4 +1148,3 @@ def GetVideoStreamUrl(userId):
         return videoStreamUrl
     except:
         return ""
-
