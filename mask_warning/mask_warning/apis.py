@@ -1006,9 +1006,7 @@ def ConfirmSolvedReport(request):
         # Xử lí
         try:
             doc = db.collection(f"reports").document(reportId)
-            doc.update({
-                'isSolved': True
-            })
+            doc.update({ 'isSolved': True })
             return JsonResponse({"status": "success"})
         except:
             return JsonResponse({"status": "fail"})

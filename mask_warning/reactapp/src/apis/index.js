@@ -222,14 +222,21 @@ export const reportsHistory = (userId) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
-export const viewNotificationAPI = (quantity = 0) => {
-  return fetch(`/admin/notifications/${quantity}`)
+
+export const confirmSolvedReportAPI = (data) => {
+  return fetch("/admin/reports-manager/confirm-solved/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
     .then((res) => res.json())
     .catch((err) => err);
 };
 
-export const notifications = (userId) => {
-  return fetch("/admin/notifications/4")
+export const viewNotificationAPI = (quantity = 0) => {
+  return fetch(`/admin/notifications/${quantity}`)
     .then((res) => res.json())
     .catch((err) => err);
 };
