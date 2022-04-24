@@ -326,65 +326,7 @@ def checkExistAttributeValue(collection, attribute, value):
     return len(query_ref) > 0
 
 
-def addUser(request):
-    if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
-        body_unicode = request.body.decode('utf-8')
-        body_data = json.loads(body_unicode)
-        firstName = body_data['firstName']
-        lastName = body_data['lastName']
-        phoneNumber = body_data['phoneNumber']
-        storeName = body_data['storeName']
-        email = body_data['email']
-        dateOfBirth = body_data['dateOfBirth'] 
-        gender = body_data['gender'] 
-        address = body_data['address'] 
-        province = body_data['province'] 
-        district = body_data['district'] 
-        userName = body_data['userName'] 
-        password = body_data['password'] 
-        confirm_password = body_data['re_password']
-
-        try:
-            newUser = {
-                'address': f'{address}, {district}, {province}',
-                'createdDate': datetime.now(tz=datetime),
-                'email': email,
-                'fullName': f'{firstName} {lastName}',
-                'gender': gender,
-                'password': password,
-                'confirm_password': confirm_password,
-                'phoneNumber': phoneNumber,
-                'storeName': storeName,
-                'userName': userName,
-                'dateOfBirth': dateOfBirth
-            }
-
-
-            # Validate new user
-            validUser_Response = validateNewUser(newUser)
-            if(validUser_Response['isValid']):
-
-                del newUser['confirm_password']
-                user_ref = db.collection('users')
-
-                user_ref.add(newUser)
-                
-                validUser_Response['newUser'] = newUser
-
-                return JsonResponse(
-                    validUser_Response
-                )
-
-            
-            return JsonResponse(validUser_Response)
-        except:
-            return JsonResponse({
-                'error': 'error'
-            }) 
-        
-
-def searchUsers(request):
+def SearchUser(request):
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
@@ -1191,7 +1133,6 @@ def CreateNewUser(request):
             return JsonResponse({"status": "fail"})
 
 
-# fire when onchange fullName
 def GenerateUserName(request):
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
@@ -1214,7 +1155,6 @@ def GenerateUserName(request):
             return JsonResponse({"userName": userName})
 
 
-# fire when load "Create new user" page
 def GeneratePassword(request):
     if request.method == "POST":
         randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=15))

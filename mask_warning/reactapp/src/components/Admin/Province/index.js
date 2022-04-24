@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../AdminCreateUser/AdminCreateUser.module.css";
+
 const Province = ({ setCity, setDistrict }) => {
   const [cities, setCities] = useState([]);
   const [cityCode, setCityCode] = useState(0);
@@ -58,6 +59,7 @@ const Province = ({ setCity, setDistrict }) => {
         </div>
         <select
           name="city"
+          required={true}
           onChange={(e) => handleCityCode(e)}
           className={styles.slectOption}
         >
@@ -75,8 +77,9 @@ const Province = ({ setCity, setDistrict }) => {
           <span>*</span>
         </div>
         <select
-          className={styles.slectOption}
           name="district"
+          required={true}
+          className={styles.slectOption}
           onChange={(e) => handleDistrict(e)}
         >
           <option value="">--Select District--</option>

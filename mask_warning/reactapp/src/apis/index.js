@@ -241,11 +241,49 @@ export const deleteUser = (userId) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(userId),
-  });
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
 };
 
 export const countNewNotificationsQuantityAPI = () => {
   return fetch("/admin/notifications/new-notifications-quantity/")
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const createNewUserAPI = (data) => {
+  return fetch("/admin/create-new-user/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const generateUserNameAPI = (data) => {
+  return fetch("/admin/create-new-user/generate-username/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const generatePasswordAPI = (data) => {
+  return fetch("/admin/create-new-user/generate-password/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
     .then((res) => res.json())
     .catch((err) => err);
 };

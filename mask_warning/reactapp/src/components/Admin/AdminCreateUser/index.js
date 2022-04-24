@@ -1,8 +1,20 @@
-import React, { useState, useRef } from "react";
-import Frame from "../Frame";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./AdminCreateUser.module.css";
-import Address from "./../../Helper/Province/Address";
+import Frame from "../Frame";
 import Province from "../Province";
+import { toast } from "react-toastify";
+import {
+  validateFullName,
+  validateStoreName,
+  validateEmail,
+  validatePhoneNumber,
+  validateAddress,
+} from "../../../helpers/validator";
+import {
+  createNewUserAPI,
+  generateUserNameAPI,
+  generatePasswordAPI,
+} from "../../../apis";
 
 const AdminCreateUser = () => {
   const [district, setDistrict] = useState("");
@@ -17,25 +29,82 @@ const AdminCreateUser = () => {
   const userNameRef = useRef();
   const passwordRef = useRef();
 
-  const submitForm = () => {
-    const data = {
-      fullName: fullNameRef.current.value,
-      email: emailRef.current.value,
-      gender: gender,
-      storeName: storeNameRef.current.value,
-      phoneNumber: phoneNumberRef.current.value,
-      address: addressRef.current.value,
-      userName: userNameRef.current.value,
-      password: passwordRef.current.value,
-      district,
-      city,
-    };
-    console.log(data);
-  };
-
   const handleChangeGender = (e) => {
     setGender(e.target.value);
   };
+
+  const handleGeneratePassword = async () => {
+    const data = await generatePasswordAPI();
+
+    // auto fill into password input
+    passwordRef.current.value = data.password;
+  };
+
+  const handleGenerateUserName = async (e) => {
+    const data = await generateUserNameAPI({
+      fullName: fullNameRef.current.value,
+    });
+
+    // auto fill into user name input
+    userNameRef.current.value = data.userName;
+  };
+
+  const handleValidateFields = () => {
+    const isValidFullName = validateFullName(fullNameRef.current.value.trim());
+    const isValidEmail = validateEmail(emailRef.current.value.trim());
+    const isValidAddress = validateAddress(addressRef.current.value.trim());
+    const isValidPhoneNumber = validatePhoneNumber(
+      phoneNumberRef.current.value.trim()
+    );
+    const isValidStoreName = validateStoreName(
+      storeNameRef.current.value.trim()
+    );
+
+    if (!isValidFullName.isValid) return { error: isValidFullName.error };
+    if (!isValidEmail.isValid) return { error: isValidEmail.error };
+    if (!isValidStoreName.isValid) return { error: isValidStoreName.error };
+    if (!isValidPhoneNumber.isValid) return { error: isValidPhoneNumber.error };
+    if (city === "") return { error: "Please select city" };
+    if (district === "") return { error: "Please select district" };
+    if (!isValidAddress.isValid) return { error: isValidAddress.error };
+    if (gender === "") return { error: "Please select gender" };
+
+    return { message: "success" };
+  };
+
+  const handleSubmitForm = async () => {
+    const validateResult = handleValidateFields();
+
+    if (validateResult.message === "success") {
+      // Gather data
+      const newUser = {
+        fullName: fullNameRef.current.value,
+        email: emailRef.current.value,
+        gender: gender,
+        storeName: storeNameRef.current.value,
+        phoneNumber: phoneNumberRef.current.value,
+        userName: userNameRef.current.value,
+        password: passwordRef.current.value,
+        district: district,
+        hometown: city,
+        address: addressRef.current.value,
+      };
+
+      // Call API
+      const data = await createNewUserAPI(newUser);
+      if (data.status === "success") {
+        toast.success("Create new user success".toLocaleUpperCase());
+      } else {
+        toast.error("Create new user failed".toLocaleUpperCase());
+      }
+    } else {
+      toast.error(validateResult.error.toLocaleUpperCase());
+    }
+  };
+
+  useEffect(async () => {
+    await handleGeneratePassword();
+  }, []);
 
   return (
     <section>
@@ -52,6 +121,7 @@ const AdminCreateUser = () => {
                 <input
                   type="text"
                   placeholder="Enter full name"
+                  onBlur={handleGenerateUserName}
                   ref={fullNameRef}
                 ></input>
               </li>
@@ -164,7 +234,7 @@ const AdminCreateUser = () => {
             </ul>
           </div>
           <div className={styles.submitButtonPart}>
-            <button type="submit" onClick={submitForm}>
+            <button type="submit" onClick={handleSubmitForm}>
               Submit
             </button>
           </div>
