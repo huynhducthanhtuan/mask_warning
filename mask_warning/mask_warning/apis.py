@@ -402,10 +402,10 @@ def searchUsers(request):
         attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
         for user in users_ref:
             for atb in attributeFind:
-                if query in user.to_dict()[atb].lower():
+                if query.lower() in user.to_dict()[atb].lower():
                     usersList.append({
                     'fullName': user.to_dict()['fullName'],
-                    'storeName': user.to_dict()['storeName'],
+                    'storeName': user.to_dict()['storeName'],   
                     'createdDate': user.to_dict()['createdDate']
                     })
                     break
