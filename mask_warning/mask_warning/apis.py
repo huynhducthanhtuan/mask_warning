@@ -1,18 +1,15 @@
 from tabnanny import check
 from tkinter.tix import Tree
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
-from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
 from datetime import datetime
 from googletrans import Translator
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
-import firebase_admin, smtplib, math, random, smtplib, ssl
-import string, pytz, json, os, jwt, re, pandas
 from numpy import true_divide
 from datetime import datetime, timedelta, date
+import firebase_admin, smtplib, math, random, smtplib, ssl
+import string, pytz, json, os, jwt, re, pandas
 DEFAULT_USER_AVATAR = "https://firebasestorage.googleapis.com/v0/b/mask-warning.appspot.com/o/user-avatars%2Fdefault-avatar.png?alt=media&token=5c74e841-ff74-43f3-a65d-583a35a5d98c"
 
 

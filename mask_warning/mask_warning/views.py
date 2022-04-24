@@ -2,19 +2,13 @@ from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
 from django.core.mail import EmailMessage
 from django.views.decorators import gzip
-from .apis import GetVideoStreamUrl
-
-# Sound Area
 from playsound import playsound
-import threading
-
-# detect part import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 from imutils.video import VideoStream
-import numpy as np
-import threading, imutils, time, cv2, os
+from .apis import GetVideoStreamUrl
+import threading, imutils, time, cv2, os, numpy as np
 
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
