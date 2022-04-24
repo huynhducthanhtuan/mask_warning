@@ -13,6 +13,7 @@ const ShowBox = () => {
   const [showBox, setShowBox] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [newNotificationsQuantity, setNewNotificationsQuantity] = useState();
+  const [newNotificationIndexList, setNewNotificationIndexList] = useState();
   const navigatate = useNavigate();
 
   const getNotifications = async () => {
@@ -22,13 +23,19 @@ const ShowBox = () => {
 
   const renderNotifications = () => {
     return notifications.map((notification, index) => (
-      <NotifyCard key={index} notification={notification} />
+      <NotifyCard
+        key={index}
+        notification={notification}
+        isNewNotification={newNotificationIndexList.indexOf(index) !== -1}
+      />
     ));
   };
 
   const getNewNotificationsQuantity = async () => {
     const data = await countNewNotificationsQuantityAPI();
+
     setNewNotificationsQuantity(data.quantity);
+    setNewNotificationIndexList(data.newNotificationIndexList);
   };
 
   const renderNewNotificationsQuantity = () => {

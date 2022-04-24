@@ -151,9 +151,7 @@ def ChangeAvatar(request):
         # Xử lí
         try:
             doc = db.collection(f"users").document(userId)
-            doc.update({
-                'avatar': avatar
-            })
+            doc.update({ 'avatar': avatar })
             return JsonResponse({"status": "success"})
         except:
             return JsonResponse({"status": "fail"})
@@ -173,29 +171,48 @@ def CalculateTimestampDifferent(timestampInDB):
     # Tính khoảng cách giữa timestamp ngay thời điểm hiện tại và timestamp trong DB
     timestamp_diff = abs(pandas.Timestamp(current_timestamp) - pandas.Timestamp(timestampInDB))
 
-    # Trả về số ngày
+    # Trả về số ngày chênh lệch
     return timestamp_diff.days
 
 
-def Notifications(request, quantity = 0):
-    docs = db.collection(f'notifications').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
+def Notifications(request, quantity = 4):
+    docs = db.collection(f'reports').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
     notifications = []
+    notificationQuantity = 0
 
     for doc in docs:
-        result = doc.to_dict()
-    
-        # CalculateTimestampDifferent
-        notification = doc.to_dict()
-        notification["timestampDifferent"] = CalculateTimestampDifferent(notification.get("createdDate"))
-        notifications.append(notification)
+        if notificationQuantity >= quantity:
+            break
+        else:
+            # Get report document
+            notification = doc.to_dict()
+
+            # Get user's fullName and avatar
+            userId = doc.to_dict().get("userId")
+            user = db.collection(f"users").document(userId)
+            userFullName = user.get().to_dict().get("fullName")
+            userImage = user.get().to_dict().get("avatar")
+
+            # Calculate timestamp different and report id
+            timestampDifferent = CalculateTimestampDifferent(notification.get("createdDate"))
+            reportId = doc.id
+
+            # Hook data
+            notification["reportId"] = reportId
+            notification["userFullName"] = userFullName
+            notification["userImage"] = userImage
+            notification["timestampDifferent"] = timestampDifferent
+
+            # Append notification into notifications
+            notifications.append(notification)
+
+            # Auto increase notificationQuantity
+            notificationQuantity = notificationQuantity + 1
         
-    return JsonResponse({
-        'notifications': notifications[:quantity] if quantity else notifications
-    })
+    return JsonResponse({ 'notifications': notifications })
 
 
 def ListOfUsers(request):
-
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
@@ -536,8 +553,11 @@ def countNewUser(request):
 
 def CountNewNotificationsQuantity(request):
     quantity = 0
+    index = 0
+    newNotificationIndexList = []
+
     try:
-        docs = db.collection(f'notifications').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
+        docs = db.collection(f'reports').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
 
         for doc in docs:
             notification = doc.to_dict()
@@ -545,8 +565,15 @@ def CountNewNotificationsQuantity(request):
 
             if timestampDifferent == 0:
                 quantity = quantity + 1
+
+                # Lấy ra index của các notification mới
+                newNotificationIndexList.append(index)
+                index = index + 1
             
-        return JsonResponse({'quantity': quantity})
+        return JsonResponse({
+            'quantity': quantity, 
+            'newNotificationIndexList': newNotificationIndexList
+        })
     except:
         return JsonResponse({'quantity': 0})
 
@@ -850,7 +877,7 @@ def HandleCreateNewPassword(request):
 
 def ViewReportList(request):
     try:
-        docs = db.collection(f"reports").stream()
+        docs = db.collection(f"reports").order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
 
         result = []
         for doc in docs:

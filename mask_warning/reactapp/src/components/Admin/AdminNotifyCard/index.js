@@ -1,15 +1,9 @@
 import styles from "./NotifyCard.module.css";
 import { Link } from "react-router-dom";
 
-const NotifyCard = ({ notification }) => {
-  const {
-    reportId,
-    userImage,
-    userFullname,
-    reportDesc,
-    createdDate,
-    timestampDifferent,
-  } = notification;
+const NotifyCard = ({ notification, isNewNotification }) => {
+  const { reportId, userImage, userFullName, description, timestampDifferent } =
+    notification;
 
   const handleRenderTimestampDifferent = () => {
     return timestampDifferent == 0
@@ -18,15 +12,19 @@ const NotifyCard = ({ notification }) => {
   };
 
   return (
-    <div className={styles.cardMain}>
+    <div
+      className={`${styles.cardMain} ${
+        isNewNotification ? styles.newNotification : ""
+      }`}
+    >
       <Link
         to={`/admin/reports-manager/report-detail/${reportId}`}
         className={styles.cardBox}
       >
         <img src={userImage} />
         <div className={styles.cardContent}>
-          <p>{userFullname}</p>
-          <p>{reportDesc}</p>
+          <p>{userFullName}</p>
+          <p>{description}</p>
           <p>{handleRenderTimestampDifferent()}</p>
         </div>
       </Link>
