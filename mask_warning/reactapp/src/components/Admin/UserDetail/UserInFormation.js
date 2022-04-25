@@ -1,14 +1,13 @@
 import React from "react";
 import styles from "./UserDetail.module.css";
-import { AvatarThanhTuan } from "../../../assets/ExportImages";
 import {
   Address,
   Mail,
   Phone,
   Boat,
   HomeAdmin,
-  Tuan,
 } from "../../../assets/ExportImages";
+
 const UserInFormation = ({ data }) => {
   return (
     <div className={styles.userInfo}>
@@ -17,10 +16,10 @@ const UserInFormation = ({ data }) => {
         <div
           className={` d-flex justify-content-start align-items-center ${styles.inforUser}`}
         >
-          <img src={Tuan} />
+          <img src={data.avatar} style={{ borderRadius: "50%" }} />
           <div>
-            <span>{data.name}</span>
-            <p>ID: {data.id}</p>
+            <span>{data.fullName}</span>
+            <p>ID: {data.userId}</p>
           </div>
         </div>
         <div className="row">
@@ -31,7 +30,7 @@ const UserInFormation = ({ data }) => {
               <img src={Address} />
               <div>
                 <span>Address</span>
-                <p> {data.Address}</p>
+                <p> {data.address}</p>
               </div>
             </div>
             <div
@@ -40,7 +39,7 @@ const UserInFormation = ({ data }) => {
               <img src={Mail} />
               <div>
                 <span>Email</span>
-                <p> {data.Email}</p>
+                <p> {data.email}</p>
               </div>
             </div>
             <div
@@ -49,7 +48,7 @@ const UserInFormation = ({ data }) => {
               <img src={Phone} />
               <div>
                 <span>Telephone</span>
-                <p> {data.Telephone}</p>
+                <p> {data.phoneNumber}</p>
               </div>
             </div>
           </div>
@@ -69,7 +68,7 @@ const UserInFormation = ({ data }) => {
               <img src={HomeAdmin} />
               <div>
                 <span>Store name</span>
-                <p> {data.StoreName}</p>
+                <p> {data.storeName}</p>
               </div>
             </div>
           </div>
@@ -78,4 +77,5 @@ const UserInFormation = ({ data }) => {
     </div>
   );
 };
+
 export default UserInFormation;

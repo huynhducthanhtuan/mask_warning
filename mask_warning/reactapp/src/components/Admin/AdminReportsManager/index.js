@@ -9,11 +9,13 @@ import ShowBox from "../ShowBox";
 const ReportsManagerAdmin = (onClick) => {
   const [toggle, setToggle] = useState("all");
   const [reports, setReports] = useState([]);
+
   const loadViewReportList = async () => {
     await viewReportList().then((data) => {
       setReports(data.result);
     });
   };
+
   useEffect(() => {
     loadViewReportList();
   }, []);
@@ -25,7 +27,7 @@ const ReportsManagerAdmin = (onClick) => {
       if (toggle === "solved") return report.isSolved;
       return !report.isSolved;
     });
-  // console.log(reports);
+
   return (
     <section className={styles.reportsMain}>
       <LeftControl toggle="reports" />

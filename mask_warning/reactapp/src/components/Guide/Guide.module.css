@@ -16,6 +16,7 @@
   font-weight: 700;
   font-size: 50px;
   font-family: "Inter", sans-serif;
+  text-align: center;
 }
 
 .headerGuide {
@@ -30,7 +31,6 @@
   color: #3751fe;
   opacity: 0.7;
   margin: 110px 0;
-  transition: 0.5s;
 }
 
 .contentString:hover {

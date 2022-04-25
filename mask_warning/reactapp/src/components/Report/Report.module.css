@@ -80,6 +80,16 @@
   margin-top: 15px;
 }
 
+.reportDescription p {
+  text-align: center;
+  font-size: 18px;
+  padding: 10px 10px;
+  margin-bottom: 25px;
+  background: #a3f0fe;
+  border-radius: 50px;
+  font-weight: 500;
+}
+
 .reportDescription h5 {
   font-size: 20px;
 }

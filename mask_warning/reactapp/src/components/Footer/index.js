@@ -15,26 +15,24 @@ const Footer = () => {
           <div className="col-lg-4">
             <div className={styles.footerContact}>
               <h4 className={styles.footerContactHeading}>Telephone</h4>
-              <span className={styles.footerContactInfo}>(+84) 967933259</span>
+              <span className={styles.footerContactInfo}>(+84) 376122913</span>
             </div>
             <div className={styles.footerContact}>
               <h4 className={styles.footerContactHeading}>WhatsApp</h4>
-              <span className={styles.footerContactInfo}>
-                +971 555 0114 321
-              </span>
+              <span className={styles.footerContactInfo}>+84 376122913</span>
             </div>
           </div>
           <div className="col-lg-4">
             <div className={styles.footerContact}>
               <h4 className={styles.footerContactHeading}>Office</h4>
               <span className={styles.footerContactInfo}>
-                455 Hoàng Diệu, Bình Thuận, Hải Châu, Đà Nẵng 550000
+                254 Nguyễn Văn Linh, Hải Châu, Đà Nẵng 550000
               </span>
             </div>
             <div className={styles.footerContact}>
               <h4 className={styles.footerContactHeading}>Email</h4>
               <span className={styles.footerContactInfo}>
-                dorephan@mmroup.com
+                votrunghieu3@dtu.edu.vn
               </span>
             </div>
           </div>

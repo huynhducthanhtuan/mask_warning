@@ -1,12 +1,116 @@
-import React from "react";
-import Frame from "../Frame";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./AdminCreateUser.module.css";
+import Frame from "../Frame";
+import Province from "../Province";
+import { toast } from "react-toastify";
+import {
+  validateFullName,
+  validateStoreName,
+  validateEmail,
+  validatePhoneNumber,
+  validateAddress,
+} from "../../../helpers/validator";
+import {
+  createNewUserAPI,
+  generateUserNameAPI,
+  generatePasswordAPI,
+} from "../../../apis";
+
 const AdminCreateUser = () => {
+  const [district, setDistrict] = useState("");
+  const [city, setCity] = useState("");
+  const [gender, setGender] = useState("");
+
+  const fullNameRef = useRef();
+  const emailRef = useRef();
+  const storeNameRef = useRef();
+  const phoneNumberRef = useRef();
+  const addressRef = useRef();
+  const userNameRef = useRef();
+  const passwordRef = useRef();
+
+  const handleChangeGender = (e) => {
+    setGender(e.target.value);
+  };
+
+  const handleGeneratePassword = async () => {
+    const data = await generatePasswordAPI();
+
+    // auto fill into password input
+    passwordRef.current.value = data.password;
+  };
+
+  const handleGenerateUserName = async (e) => {
+    const data = await generateUserNameAPI({
+      fullName: fullNameRef.current.value,
+    });
+
+    // auto fill into user name input
+    userNameRef.current.value = data.userName;
+  };
+
+  const handleValidateFields = () => {
+    const isValidFullName = validateFullName(fullNameRef.current.value.trim());
+    const isValidEmail = validateEmail(emailRef.current.value.trim());
+    const isValidAddress = validateAddress(addressRef.current.value.trim());
+    const isValidPhoneNumber = validatePhoneNumber(
+      phoneNumberRef.current.value.trim()
+    );
+    const isValidStoreName = validateStoreName(
+      storeNameRef.current.value.trim()
+    );
+
+    if (!isValidFullName.isValid) return { error: isValidFullName.error };
+    if (!isValidEmail.isValid) return { error: isValidEmail.error };
+    if (!isValidStoreName.isValid) return { error: isValidStoreName.error };
+    if (!isValidPhoneNumber.isValid) return { error: isValidPhoneNumber.error };
+    if (city === "") return { error: "Please select city" };
+    if (district === "") return { error: "Please select district" };
+    if (!isValidAddress.isValid) return { error: isValidAddress.error };
+    if (gender === "") return { error: "Please select gender" };
+
+    return { message: "success" };
+  };
+
+  const handleSubmitForm = async () => {
+    const validateResult = handleValidateFields();
+
+    if (validateResult.message === "success") {
+      // Gather data
+      const newUser = {
+        fullName: fullNameRef.current.value,
+        email: emailRef.current.value,
+        gender: gender,
+        storeName: storeNameRef.current.value,
+        phoneNumber: phoneNumberRef.current.value,
+        userName: userNameRef.current.value,
+        password: passwordRef.current.value,
+        district: district,
+        hometown: city,
+        address: addressRef.current.value,
+      };
+
+      // Call API
+      const data = await createNewUserAPI(newUser);
+      if (data.status === "success") {
+        toast.success("Create new user success".toLocaleUpperCase());
+      } else {
+        toast.error("Create new user failed".toLocaleUpperCase());
+      }
+    } else {
+      toast.error(validateResult.error.toLocaleUpperCase());
+    }
+  };
+
+  useEffect(async () => {
+    await handleGeneratePassword();
+  }, []);
+
   return (
     <section>
       <Frame>
         <section className={styles.containerCreateAccount}>
-          <h2>Account</h2>
+          <h2>Create new user account</h2>
           <div className="row">
             <ul className="col-6">
               <li>
@@ -14,41 +118,61 @@ const AdminCreateUser = () => {
                   <label>Full name</label>
                   <span>*</span>
                 </div>
-                <input type="text" placeholder="Full name"></input>
+                <input
+                  type="text"
+                  placeholder="Enter full name"
+                  onBlur={handleGenerateUserName}
+                  ref={fullNameRef}
+                ></input>
               </li>
               <li>
                 <div className="d-flex">
                   <label>Store name</label>
                   <span>*</span>
                 </div>
-                <input type="text" placeholder="Enter store name"></input>
+                <input
+                  type="text"
+                  placeholder="Enter store name"
+                  ref={storeNameRef}
+                ></input>
               </li>
+
+              <Province setDistrict={setDistrict} setCity={setCity} />
+
               <li>
-                <div className={`d-flex ${styles.boxContent}`}>
-                  <label>City</label>
-                  <span>*</span>
-                </div>
-                <select className={styles.slectOption}>
-                  <option>Hue</option>
-                  <option>Da Nang</option>
-                </select>
-              </li>
-              <li>
-                <div className={`d-flex ${styles.boxContent}`}>
-                  <label>Distric</label>
-                  <span>*</span>
-                </div>
-                <select className={styles.slectOption}>
-                  <option>Hai Chau</option>
-                  <option>Son tra</option>
-                </select>
-              </li>
-              <li>
-                <div c lassName="d-flex">
+                <div className="d-flex">
                   <label>Address</label>
                   <span>*</span>
                 </div>
-                <input type="text" placeholder="Enter your address"></input>
+                <input
+                  type="text"
+                  placeholder="Enter address"
+                  ref={addressRef}
+                ></input>
+              </li>
+            </ul>
+            <ul className="col-6">
+              <li>
+                <div className="d-flex">
+                  <label>Email</label>
+                  <span>*</span>
+                </div>
+                <input
+                  type="email"
+                  placeholder="Enter email"
+                  ref={emailRef}
+                ></input>
+              </li>
+              <li>
+                <div className="d-flex">
+                  <label>Phone number</label>
+                  <span>*</span>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Enter phone number"
+                  ref={phoneNumberRef}
+                ></input>
               </li>
               <li>
                 <div className="d-flex">
@@ -58,61 +182,61 @@ const AdminCreateUser = () => {
                 <div
                   className={`d-flex justify-content-between ${styles.genderCheckbox}`}
                 >
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" />
-                    <label class="form-check-label">Male</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" />
-                    <label class="form-check-label">Female</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" />
-                    <label class="form-check-label">Other</label>
+                  <div className="form-check" onChange={handleChangeGender}>
+                    <div className={styles.genderItemPart}>
+                      <input
+                        className={`${styles.formCheckInput}`}
+                        type="radio"
+                        value="male"
+                        name="gender"
+                      />{" "}
+                      <span>Male</span>
+                    </div>
+                    <div className={styles.genderItemPart}>
+                      <input
+                        className={`${styles.formCheckInput}`}
+                        type="radio"
+                        value="female"
+                        name="gender"
+                      />{" "}
+                      <span>Female</span>
+                    </div>
+                    <div className={styles.genderItemPart}>
+                      <input
+                        className={`${styles.formCheckInput}`}
+                        type="radio"
+                        value="other"
+                        name="gender"
+                      />{" "}
+                      <span>Other</span>
+                    </div>
                   </div>
                 </div>
-              </li>
-            </ul>
-            <ul className="col-6">
-              <li>
-                <div className="d-flex">
-                  <label>Email</label>
-                  <span>*</span>
-                </div>
-                <input type="email" placeholder="Enter your email"></input>
-              </li>
-              <li>
-                <div className="d-flex">
-                  <label>Phone</label>
-                  <span>*</span>
-                </div>
-                <input type="text" placeholder="+84..."></input>
               </li>
               <li>
                 <div className="d-flex">
                   <label>User name</label>
                   <span>*</span>
                 </div>
-                <input type="text" placeholder="Enter user name"></input>
+                <input type="text" disabled={true} ref={userNameRef}></input>
               </li>
               <li>
                 <div className="d-flex">
                   <label>Password</label>
                   <span>*</span>
                 </div>
-                <input type="password" placeholder="Enter password"></input>
-              </li>
-              <li className={styles.confirmPassword}>
-                <div className="d-flex">
-                  <label>Confirm Password</label>
-                  <span>*</span>
-                </div>
-                <input type="password" placeholder="ReEnter password"></input>
-              </li>
-              <li>
-                <button type="submit">Submit</button>
+                <input
+                  type="password"
+                  disabled={true}
+                  ref={passwordRef}
+                ></input>
               </li>
             </ul>
+          </div>
+          <div className={styles.submitButtonPart}>
+            <button type="submit" onClick={handleSubmitForm}>
+              Submit
+            </button>
           </div>
         </section>
       </Frame>

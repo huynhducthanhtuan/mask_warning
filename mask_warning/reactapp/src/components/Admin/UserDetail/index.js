@@ -1,21 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { viewDetailUser } from "../../../apis";
 import Frame from "../Frame";
 import TableUsers from "../TableUsers";
 import UserInFormation from "./UserInFormation";
+import Loading from "../../Helper/Loading";
+
 const UsersDetail = () => {
-  const UserExample = {
-    id: "123255224",
-    name: "Huỳnh Đức Thanh Tuấn",
-    Address: "72 Phạm Như Xương, Liên Chiều, Đà Nẵng",
-    Email: "thanhtuan@mail.com",
-    Telephone: "(+84)967993259",
-    DayOfBirth: "16/02/2001",
-    StoreName: "Shop Highway Menswear",
+  const [userInfo, setUserInfo] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const { userId } = useParams();
+  const loadReportDetailUser = async () => {
+    await viewDetailUser({ userId }).then((data) => {
+      setUserInfo(data);
+      setLoading(false);
+    });
   };
+  
+  console.log("user detail ", userInfo);
+  useEffect(() => {
+    loadReportDetailUser();
+  }, []);
+
   return (
-    <div>
-      <UserInFormation data={UserExample} />
-    </div>
+    <Frame>{loading ? <Loading /> : <UserInFormation data={userInfo} />}</Frame>
   );
 };
 export default UsersDetail;

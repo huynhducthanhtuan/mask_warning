@@ -1,25 +1,63 @@
 import React, { useState, useEffect } from "react";
 import styles from "../AdminHome/Home.module.css";
 import NotifyCard from "../AdminNotifyCard";
-import { Bell, Dashicons } from "../../../assets/ExportImages";
-
-import { isAuthenticated } from "./../../Auth/index";
+import { useNavigate } from "react-router-dom";
+import { DEFAULT_NOTIFICATIONS_QUANTITY } from "../../../constants";
+import { BellIcon, LogOutIcon } from "../../../assets/ExportImages";
 import {
-  BellIcon,
-  ReportUserImage,
-  LogOutIcon,
-} from "../../../assets/ExportImages";
-import { notifications } from "../../../apis";
+  viewNotificationAPI,
+  countNewNotificationsQuantityAPI,
+} from "../../../apis";
 
 const ShowBox = () => {
   const [showBox, setShowBox] = useState(false);
-  const [notifys, setNotifys] = useState();
-  const loadNotifications = async () => {
-    const res = await notifications();
-    setNotifys(res.notifications);
+  const [notifications, setNotifications] = useState([]);
+  const [newNotificationsQuantity, setNewNotificationsQuantity] = useState();
+  const [newNotificationIndexList, setNewNotificationIndexList] = useState();
+  const navigatate = useNavigate();
+
+  const getNotifications = async () => {
+    const data = await viewNotificationAPI(DEFAULT_NOTIFICATIONS_QUANTITY);
+    setNotifications(data.notifications);
   };
-  useEffect(() => {
-    loadNotifications();
+
+  const renderNotifications = () => {
+    return notifications.map((notification, index) => (
+      <NotifyCard
+        key={index}
+        notification={notification}
+        isNewNotification={newNotificationIndexList.indexOf(index) !== -1}
+      />
+    ));
+  };
+
+  const getNewNotificationsQuantity = async () => {
+    const data = await countNewNotificationsQuantityAPI();
+
+    setNewNotificationsQuantity(data.quantity);
+    setNewNotificationIndexList(data.newNotificationIndexList);
+  };
+
+  const renderNewNotificationsQuantity = () => {
+    return (
+      newNotificationsQuantity && (
+        <sup className={styles.homeNotifyContent}>
+          <small className={styles.cartBadge}>{newNotificationsQuantity}</small>
+        </sup>
+      )
+    );
+  };
+
+  const handleClickSeeMore = () => {
+    navigatate("/admin/reports-manager");
+  };
+
+  useEffect(async () => {
+    await getNotifications();
+  }, []);
+
+  useEffect(async () => {
+    await getNewNotificationsQuantity();
   }, []);
 
   return (
@@ -27,19 +65,17 @@ const ShowBox = () => {
       <p>Admin</p>
       <div className={styles.homeNotify} onClick={() => setShowBox(!showBox)}>
         <img className={styles.homeIconTopRight} src={BellIcon} />
-        <sup className={styles.homeNotifyContent}>
-          <small className={styles.cartBadge}>3</small>
-        </sup>
+        {renderNewNotificationsQuantity()}
       </div>
       <div
         className={
           showBox ? `${styles.homeNotifyBox} d-block` : styles.homeNotifyBox
         }
       >
-        <p className={styles.homeNotifyText}>News</p>
-        {notifys && <NotifyCard notifys={notifys} />}
-        {/* <img className="d-line" src="./icons/line.png" />
-        <p className={styles.homeNotifyText}>Old</p> */}
+        {renderNotifications()}
+        <button className={styles.buttonSeeMore} onClick={handleClickSeeMore}>
+          See More
+        </button>
       </div>
       <img className={styles.homeIconTopRight} src={LogOutIcon} />
     </div>

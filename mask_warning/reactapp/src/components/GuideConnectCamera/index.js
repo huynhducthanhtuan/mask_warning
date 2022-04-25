@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import styles from "./GuideConnectCamera.module.css";
 import Header from "../Header";
 import { Link } from "react-router-dom";
+import { PictureConnectCamera } from "../../assets/ExportImages";
+import { ButtonConnectCamera } from "../../assets/ExportImages";
+import { ArrowRight } from "../../assets/ExportImages";
 
 const GuideConnectCamera = () => {
   useEffect(() => {
@@ -11,8 +14,7 @@ const GuideConnectCamera = () => {
   return (
     <section>
       <Header />
-      <h1 className={styles.headerString}>Guide</h1>
-      <h2 className={styles.contentString}>Connect Camera</h2>
+      <h2 className={styles.contentString}>1.How to connect Camera</h2>
 
       <div className={styles.headerGuide}>
         <div>
@@ -27,23 +29,15 @@ const GuideConnectCamera = () => {
           </div>
 
           <div className={styles.item}>
-            <p className={styles.text}>
-              2. Click on “Find camera” button in Camera page
-            </p>
-            <img
-              className={styles.image}
-              src="./img/connect_camera_step2.png"
-            ></img>
+            <p className={styles.text}>2. Fill in your video stream </p>
+            <img className={styles.image} src={PictureConnectCamera}></img>
           </div>
 
           <div className={styles.item}>
             <p className={styles.text}>
-              3. Click the “Connect” button on the row has your camera
+              3. click on “connect camera” button in Camera page
             </p>
-            <img
-              className={styles.image}
-              src="./img/connect_camera_step3.png"
-            ></img>
+            <img className={styles.image} src={ButtonConnectCamera}></img>
           </div>
         </div>
 
@@ -60,7 +54,7 @@ const GuideConnectCamera = () => {
 
       <Link to="/guide-report-defect" className={styles.button}>
         <p className={styles.text}>Next guide 2</p>
-        <img src="./icons/right-arrow.png"></img>
+        <img src={ArrowRight}></img>
       </Link>
     </section>
   );

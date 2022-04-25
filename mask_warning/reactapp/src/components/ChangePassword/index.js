@@ -63,7 +63,6 @@ const ChangePassword = () => {
 
   return (
     <section>
-      {/*"Các bạn chỉnh lại UI, các prog "ref" giữ nguyên để các hàm xử lí ở phía trên chạy đúng"*/}
       <Header />
       <h1 className={`${styles.headerString} d-flex`}>Change password</h1>
       <img src="./icons/line.png" className={styles.lineAll}></img>

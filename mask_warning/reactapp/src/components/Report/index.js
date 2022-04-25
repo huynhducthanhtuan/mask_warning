@@ -9,6 +9,8 @@ import { isAuthenticated } from "./../Auth/index";
 import { async } from "@firebase/util";
 import { sendReport } from "./../../apis/index";
 import { toast } from "react-toastify";
+const path = "report-images";
+
 const Report = () => {
   const [progress, setProgress] = useState(0);
   const [image, setImage] = useState();
@@ -28,7 +30,7 @@ const Report = () => {
     };
     fileReader.readAsDataURL(image);
     //upload image report to firebase storage
-    UploadImageToFirebase(image, setProgress, setUrlImage);
+    UploadImageToFirebase(image, setProgress, setUrlImage, path);
   }, [image]);
   const formHandler = () => {
     const dataUpload = {
@@ -37,12 +39,13 @@ const Report = () => {
       title: inputTitleRef.current.value,
       description: descriptionRef.current.value,
     };
-
+    console.log(dataUpload);
     sendReport(dataUpload).then((result) => {
       toast.success(result.status);
       inputTitleRef.current.value = "";
       descriptionRef.current.value = "";
       setPreviewUrl(undefined);
+      console.log(result);
     });
   };
   return (
@@ -65,7 +68,6 @@ const Report = () => {
         </div>
         <div className={`col-3 ${styles.chooseImage}`}>
           <h5>Choose image</h5>
-          {/* <img src="./img/imageDefault.jpg"></img> */}
           <img
             src={previewUrl ? previewUrl : "./img/imageDefault.jpg"}
             alt="preview"

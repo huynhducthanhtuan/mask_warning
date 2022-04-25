@@ -19,7 +19,7 @@ const ReportCard = ({ reports }) => {
                   : styles.cardMain
               }
             >
-              <p>#{index}</p>
+              <p>#{index + 1}</p>
               <p>{report.createdDate.split("T")[0]}</p>
               <p>{report.title}</p>
               <Link to={`/admin/reports-manager/user-detail/${report.userId}`}>

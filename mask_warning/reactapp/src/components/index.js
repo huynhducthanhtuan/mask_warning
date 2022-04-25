@@ -1,5 +1,6 @@
 export { default as AboutUs } from "./AboutUs";
 export { default as Camera } from "./Camera";
+export { default as ConnectCamera } from "./ConnectCamera";
 export { default as Footer } from "./Footer";
 export { default as ForgotPassword } from "./ForgotPassword";
 export { default as ForgotPasswordEnterCode } from "./ForgotPasswordEnterCode";
@@ -17,6 +18,5 @@ export { default as ReportHistoryDetail } from "./ReportHistoryDetail";
 export { default as Signin } from "./Signin";
 export { default as Profile } from "./Profile";
 export { default as ChangePassword } from "./ChangePassword";
-export { default as Statistic } from "./Statistic";
 export { default as ProfileChangeInformation } from "./ProfileChangeInformation";
 export { default as ProfilePassword } from "./ProfilePassword";

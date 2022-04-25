@@ -1,35 +1,34 @@
-
 .footer {
-    background-color: #5D5FEF;
+  background-color: #5d5fef;
 }
 
 .main {
-    max-width: 1200px !important;
-    height: 220px;
-    padding: 47px 0px;
+  max-width: 1200px !important;
+  height: 220px;
+  padding: 47px 0px;
 }
 .footerHeading h2 {
-    color: #fff;
-    font-size: 24px;
-    font-weight: 500;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
 }
 .footerHeading h4 {
-    margin-top: 16px;
-    color: #fff;
-    font-weight: 200;
+  margin-top: 16px;
+  color: #fff;
+  font-weight: 200;
 }
 .footerContact {
-    padding-bottom: 30px;
+  padding-bottom: 30px;
 }
 .footerContactHeading {
-    color: #fff;
-    font-size: 16px;
-    font-weight: 500;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
 }
 .footerContactInfo {
-    margin-top: 8px;
-    display: block;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 400;
+  margin-top: 8px;
+  display: block;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
 }

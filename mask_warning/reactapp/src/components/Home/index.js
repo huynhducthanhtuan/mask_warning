@@ -1,21 +1,23 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styles from "./Home.module.css";
-import Header from "../Header";
-import Footer from "../Footer";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./sliderDot.css";
 import { UserContext } from "../../App";
 import { AboutUsIcon } from "../../assets/ExportImages";
 import { ToastContainer, toast } from "react-toastify";
 import { isAuthenticated } from "./../Auth/index";
+import styles from "./Home.module.css";
+import Header from "../Header";
+import Footer from "../Footer";
+import Slider from "react-slick";
+import { Slider2 } from "../../assets/ExportImages";
+import { Slider3 } from "../../assets/ExportImages";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./sliderDot.css";
 
 const Home = () => {
   const { state, payload } = useContext(UserContext);
-  console.log(state, payload);
   const { token } = isAuthenticated();
+
   var settings = {
     dots: true,
     infinite: true,
@@ -24,23 +26,25 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const notify = () => {
     if (!state) {
       toast.info("YOU MUST SIGN IN !");
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <body>
       <section className={`container_fluid ${styles.home}`}>
         <Header />
         <Slider {...settings}>
           <div className={styles.homeSlider}>
-            <img src="./icons/slider.png"></img>
-            <Link to={token ? "/camera" : "/signin"}>
+            <img className={styles.sliderImage} src="./icons/slider.png"></img>
+            <Link to={state ? "/camera" : "/signin"}>
               <div className={styles.homeSliderGettingStarted}>
                 <p>Getting Started</p>
               </div>
@@ -52,8 +56,8 @@ const Home = () => {
             </Link>
           </div>
           <div className={styles.homeSlider}>
-            <img src="./icons/slider.png"></img>
-            <Link to={token ? "/camera" : "/signin"}>
+            <img className={styles.sliderImage} src={Slider2}></img>
+            <Link to={state ? "/camera" : "/signin"}>
               <div className={styles.homeSliderGettingStarted}>
                 <p>Getting Started</p>
               </div>
@@ -65,8 +69,8 @@ const Home = () => {
             </Link>
           </div>
           <div className={styles.homeSlider}>
-            <img src="./icons/slider.png"></img>
-            <Link to={token ? "/camera" : "/signin"}>
+            <img className={styles.sliderImage} src={Slider3}></img>
+            <Link to={state ? "/camera" : "/signin"}>
               <div className={styles.homeSliderGettingStarted}>
                 <p>Getting Started</p>
               </div>

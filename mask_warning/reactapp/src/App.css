@@ -3,11 +3,26 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 html {
   color: #333;
   font-size: 62.5%;
   font-family: "Open Sans", sans-serif;
   scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 .container {
@@ -17,7 +32,13 @@ html {
 a {
   text-decoration: none !important;
 }
+
 nav ul a:hover {
   background-color: #fff;
   cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 5px;
 }

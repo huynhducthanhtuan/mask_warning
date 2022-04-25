@@ -35,11 +35,8 @@ const SignInAdmin = () => {
       case "Signin success":
         toast.success(data.message.toLocaleUpperCase());
         localStorage.setItem("isAdminLoggedIn", true);
-        navigate("/");
+        navigate("/admin/home");
         break;
-      // authenticate(data, () => {
-      //   toast.success(data.message.toLocaleUpperCase());
-      // });
     }
   };
 
@@ -81,7 +78,7 @@ const SignInAdmin = () => {
         <button
           type="button"
           className={`${styles.formSubmit}`}
-          onClick={(e) => handleSignin(e)}
+          onClick={handleSignin}
         >
           Sign in
         </button>

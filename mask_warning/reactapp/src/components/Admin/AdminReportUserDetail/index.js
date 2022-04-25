@@ -17,10 +17,12 @@ const ReportUserDetailAdmin = () => {
       setLoading(false);
     });
   };
+  
   console.log("user detail ", userInfo);
   useEffect(() => {
     loadReportDetailUser();
   }, []);
+
   return (
     <section className="d-flex">
       <LeftControl toggle="reports" />

@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom";
 
 const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
+  console.log(users);
   return (
     <div>
       <table className={`table ${styles.tableUsers}`}>
@@ -23,20 +24,21 @@ const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
         </thead>
         <tbody>
           {users.map((user, index) => {
+            // console.log(user.createdDate);
             return (
               <tr className={styles.rowValueUser} key={user.userId}>
-                <Link to={`admin/users-manager/user-detail/${user.userId}`}>
+                <Link to={`/admin/users-manager/user-detail/${user.userId}`}>
                   <td className={styles.customerName}>
                     <div
                       className={styles.avatarUserManager}
-                      style={{ backgroundImage: `url('${AvatarTrungHieu}')` }}
+                      style={{ backgroundImage: `url('${user.avatar}')` }}
                     ></div>
                     <span className="ml-4">{user.fullName}</span>
                   </td>
                 </Link>
 
                 <td>{user.storeName}</td>
-                <td>{user.createdDate.split("T")[0]}</td>
+                {/* <td>{user.createdDate.split("T")[0]}</td> */}
                 <td>
                   <button
                     className={`btn btn-danger ${styles.actionDelete}`}
