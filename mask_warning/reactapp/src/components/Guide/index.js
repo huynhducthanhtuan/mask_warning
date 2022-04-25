@@ -11,25 +11,29 @@ const Guide = () => {
   return (
     <section>
       <Header />
-      <h1 className={styles.headerString}>Guide</h1>
+      <div className={styles.guideBackground}>
+        <h1 className={styles.headerString}>Welcome to mask warning </h1>
+        <h3>
+          Hello everyone who has come to our tutorial page. Here are two
+          tutorials about our main function
+        </h3>
+        <div className={styles.headerGuide}>
+          <Link to="/guide-connect-camera">
+            <div className={styles.item}>
+              <p className={styles.contentString}>
+                1. How to connect camera IP with Mask Warning Website
+              </p>
+            </div>
+          </Link>
 
-      <div className={styles.headerGuide}>
-        <Link to="/guide-connect-camera">
-          <div>
-            <img
-              className={styles.image}
-              src="./img/connected_camera.png"
-            ></img>
-            <p className={styles.contentString}>1. Connect Camera</p>
-          </div>
-        </Link>
-
-        <Link to="/guide-report-defect">
-          <div className={styles.item}>
-            <img className={styles.image} src="./img/report_defect.png"></img>
-            <p className={styles.contentString}>2. Report Defect</p>
-          </div>
-        </Link>
+          <Link to="/guide-report-defect">
+            <div className={styles.item}>
+              <p className={styles.contentString}>
+                2. How to send the report to the admin
+              </p>
+            </div>
+          </Link>
+        </div>
       </div>
     </section>
   );

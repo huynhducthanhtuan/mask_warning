@@ -62,6 +62,7 @@
 }
 
 .form-check-input {
+  position: absolute;
   margin-top: 0.8rem !important;
   margin-left: 3.75rem !important;
 }

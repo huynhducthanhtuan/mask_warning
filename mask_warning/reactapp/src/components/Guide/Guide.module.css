@@ -1,26 +1,42 @@
-.headerString{
-    padding: 20px;
-    color: #3751FE;
-    font-weight: 700;
-}  
-
-.headerGuide{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 30px;
+.guideBackground {
+  background-color: #e3f2fd;
+  height: 100vh;
+  background-image: url(/src/assets/img/connectCamera.png);
+}
+.guideBackground h3 {
+  text-align: center;
+  font-style: italic;
+  font-family: 100;
+  opacity: 0.8;
 }
 
-.contentString{
-    text-align: center;
+.headerString {
+  padding: 20px;
+  color: #3751fe;
+  font-weight: 700;
+  font-size: 50px;
+  font-family: "Inter", sans-serif;
 }
 
-.item{
-    padding-left: 200px;
+.headerGuide {
+  align-items: center;
+  padding-top: 30px;
 }
 
-.image{
-    
-    width: 350px;
-    height: 230px;
+.contentString {
+  font-size: 30px;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  color: #3751fe;
+  opacity: 0.7;
+  margin: 110px 0;
+  transition: 0.5s;
+}
+
+.contentString:hover {
+  opacity: 1;
+}
+
+.item {
+  padding-left: 200px;
 }
