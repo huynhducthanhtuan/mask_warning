@@ -76,21 +76,21 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 	# return a 2-tuple of the face locations and their corresponding locations
 	return (locs, preds)
 
-# # load our serialized face detector model from disk
-# prototxtPath = fr"{os.getcwd()}\deploy.prototxt"
-# weightsPath = fr"{os.getcwd()}\res10_300x300_ssd_iter_140000.caffemodel"
-# faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
+# load our serialized face detector model from disk
+prototxtPath = fr"{os.getcwd()}\deploy.prototxt"
+weightsPath = fr"{os.getcwd()}\res10_300x300_ssd_iter_140000.caffemodel"
+faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
-# # load the face mask detector model from disk
-# maskNet = load_model(fr"{os.getcwd()}\mask_detector.model")
-# # maskNet = load_model("keras_model.h5")
-# # initialize the video stream
+# load the face mask detector model from disk
+maskNet = load_model(fr"{os.getcwd()}\mask_detector.model")
+# maskNet = load_model("keras_model.h5")
+# initialize the video stream
 
-# # Create red corner
-# pts = np.array([[15,15], [625, 15], 
-# 	[625, 465], [15, 465]],
-# 	np.int32)
-# pts = pts.reshape((-1, 1, 2))
+# Create red corner
+pts = np.array([[15,15], [625, 15], 
+	[625, 465], [15, 465]],
+	np.int32)
+pts = pts.reshape((-1, 1, 2))
 
 # Frame time when red corner off
 redCornerOffFrame = [7,8,9]
@@ -99,11 +99,7 @@ def playUnmaskSound(urlSound):
 	# using play sound
 	playsound(urlSound)
 
-	# using vlc
-	# p = vlc.MediaPlayer(urlSound)
-	# p.play()
-	# time.sleep(4)
-	# p.stop()
+	
 def stream():
 	# cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:80/onvif13") 
 	# cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:8080/onvif13") 

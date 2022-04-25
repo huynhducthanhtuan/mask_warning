@@ -4,3 +4,5 @@ test.py
 venv/
 *.jpg
 test_thread
+test/
+test2/

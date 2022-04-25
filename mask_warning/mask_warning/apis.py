@@ -363,7 +363,7 @@ def searchUsers(request):
         attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
         for user in users_ref:
             for atb in attributeFind:
-                if query in user.to_dict()[atb].lower():
+                if query.lower() in user.to_dict()[atb].lower():
                     usersList.append({
                     'fullName': user.to_dict()['fullName'],
                     'storeName': user.to_dict()['storeName'],
@@ -389,7 +389,7 @@ def searchUsers(request):
             'pageSize': pageSize,
             'startIndex': startIndex,
             'endIndex' : endIndex,
-            'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+            'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex:]
         })
 
 
@@ -406,20 +406,20 @@ def countNewUserInRange(startTime, endTime, users):
 
     return newUser
 
-def getRevenueInRange(startTime, endTime):
+def getRevenueInRange(startTime, endTime, users):
     newAccountPrice = 500000  
 
-    return newAccountPrice*countNewUserInRange(startTime, endTime)
+    return newAccountPrice*countNewUserInRange(startTime, endTime, users)
 
 
 import random
-def getRevenueByDay():
+def getRevenueByDay(users):
     currentDay = date.today()
     revenueByDay = {}
 
     for i in range(-6,1):
         iDayAgo = currentDay + timedelta(days=i)
-        revenueByDay[iDayAgo.strftime('%a')] = getRevenueInRange(iDayAgo, iDayAgo)
+        revenueByDay[iDayAgo.strftime('%a')] = getRevenueInRange(iDayAgo, iDayAgo,users)
 
     return revenueByDay
 
@@ -441,7 +441,7 @@ def days_in_month(month, year):
         return 28
     return 30
 
-def getRevenueByMonth():
+def getRevenueByMonth(users):
     currentDay = date.today()
     middleDay = date(currentDay.year, currentDay.month, 15)
     revenueByMonth = {}
@@ -452,12 +452,13 @@ def getRevenueByMonth():
         pastMonth = i4TimesDayAgo.month
         revenueByMonth[i4TimesDayAgo.strftime('%b')] = getRevenueInRange(
             date(pastYears, pastMonth, 1),
-            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears))
+            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears)),
+            users
             )
 
     return revenueByMonth
     
-def getRevenueByYear():
+def getRevenueByYear(users):
     currentDay = date.today()
     revenueByYear = {}
 
@@ -466,35 +467,30 @@ def getRevenueByYear():
         revenueByYear[iYearsAgo] = getRevenueInRange(
             date(iYearsAgo, 1, 1),
             date(iYearsAgo, 12, 31),
+            users
             )
 
     return revenueByYear
 
 def getRevenue(request):
-    if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
-        body_unicode = request.body.decode('utf-8')
-        body_data = json.loads(body_unicode)
-        formatType = body_data['formatType']
+   
+    users = db.collection(f"users").get()
+    revenueByDay = getRevenueByDay(users)
+    revenueByMonth = getRevenueByMonth(users)
+    revenueByYear = getRevenueByYear(users)
+    revenue = {
+        'revenueByDay' : revenueByDay,
+        'revenueByMonth' : revenueByMonth,
+        'revenueByYear' : revenueByYear
+    }
 
-        revenue = {}
-        if formatType == 'd':
-            revenue = getRevenueByDay()
+    
+    return JsonResponse({
+        'message' : 'Succesfully',
+        'revenue' :  revenue,
+    })
 
-        if formatType == 'm':
-            revenue = getRevenueByMonth()
-
-        if formatType == 'y':
-            revenue = getRevenueByYear()
-
-        
-        return JsonResponse({
-            'message' : 'Succesfully',
-            'revenue' :  revenue,
-            'formatType' : formatType
-        })
-
-def countNewUserByWeek(users):
+def totalNewUserByWeek(users):
     currentDay = date.today()
     newUser = 0
 
@@ -504,7 +500,7 @@ def countNewUserByWeek(users):
 
     return newUser
 
-def countNewUserByMonth(users):
+def totalNewUserByMonth(users):
     currentDay = date.today()
     middleDay = date(currentDay.year, currentDay.month, 15)
     newUser = 0
@@ -520,7 +516,7 @@ def countNewUserByMonth(users):
 
     return newUser
 
-def countNewUserByYear(users):
+def totalNewUserByYear(users):
     currentDay = date.today()
     newUser = 0
 
@@ -536,9 +532,9 @@ def countNewUserByYear(users):
     
 def countNewUser(request):
     users = db.collection(f"users").get()
-    newUserByWeek = countNewUserByWeek(users)
-    newUserByMonth = countNewUserByMonth(users)
-    newUserByYear = countNewUserByYear(users)
+    newUserByWeek = totalNewUserByWeek(users)
+    newUserByMonth = totalNewUserByMonth(users)
+    newUserByYear = totalNewUserByYear(users)
     newUser = [newUserByWeek, newUserByMonth, newUserByYear]
 
     
