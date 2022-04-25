@@ -98,3 +98,11 @@ export const validateAddress = (address) => {
     };
   }
 };
+
+export const validateVideoStreamUrl = (videoStreamUrl) => {
+  const regex = new RegExp(
+    /(rtsp):\/\/([^\s@/]+)@([^\s/:]+)(?::([0-9]+))?(\/.*)/gm
+  );
+
+  return regex.test(videoStreamUrl);
+};

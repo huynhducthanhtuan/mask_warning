@@ -18,6 +18,5 @@ export { default as ReportHistoryDetail } from "./ReportHistoryDetail";
 export { default as Signin } from "./Signin";
 export { default as Profile } from "./Profile";
 export { default as ChangePassword } from "./ChangePassword";
-export { default as Statistic } from "./Statistic";
 export { default as ProfileChangeInformation } from "./ProfileChangeInformation";
 export { default as ProfilePassword } from "./ProfilePassword";
