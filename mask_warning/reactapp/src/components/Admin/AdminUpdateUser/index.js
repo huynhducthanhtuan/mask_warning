@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import styles from "./AdminCreateUser.module.css";
+import styles from "./AdminUpdateUser.module.css";
 import Frame from "../Frame";
 import Address from "../Address";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 import {
   validateFullName,
   validateStoreName,
@@ -10,18 +11,22 @@ import {
   validatePhoneNumber,
   validateAddress,
 } from "../../../helpers/validator";
-import {
-  createNewUserAPI,
-  generateUserNameAPI,
-  generatePasswordAPI,
-} from "../../../apis";
+import { viewProfile, updateUserAPI } from "../../../apis";
 
-const AdminCreateUser = () => {
+const AdminUpdateUser = () => {
+  const { userId } = useParams();
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [ward, setWard] = useState("");
   const [gender, setGender] = useState("");
+  const [genderCheckedField, setGenderCheckedField] = useState("");
+  // const [oldAddress, setOldAddress] = useState({
+  //   hometown: "",
+  //   district: "",
+  //   ward: "",
+  // });
 
+  const genderRef = useRef();
   const fullNameRef = useRef();
   const emailRef = useRef();
   const storeNameRef = useRef();
@@ -30,24 +35,36 @@ const AdminCreateUser = () => {
   const userNameRef = useRef();
   const passwordRef = useRef();
 
+  const handleGetAndFillOldDatas = async () => {
+    const userInfo = await viewProfile({ userId });
+    const {
+      address,
+      ward,
+      district,
+      hometown,
+      fullName,
+      storeName,
+      email,
+      gender,
+      phoneNumber,
+      userName,
+      password,
+    } = userInfo;
+
+    fullNameRef.current.value = fullName;
+    emailRef.current.value = email;
+    addressRef.current.value = address;
+    phoneNumberRef.current.value = phoneNumber;
+    storeNameRef.current.value = storeName;
+    userNameRef.current.value = userName;
+    passwordRef.current.value = password;
+
+    setGenderCheckedField(gender);
+    // setOldAddress({ hometown, district, ward });
+  };
+
   const handleChangeGender = (e) => {
     setGender(e.target.value);
-  };
-
-  const handleGeneratePassword = async () => {
-    const data = await generatePasswordAPI();
-
-    // auto fill into password input
-    passwordRef.current.value = data.password;
-  };
-
-  const handleGenerateUserName = async (e) => {
-    const data = await generateUserNameAPI({
-      fullName: fullNameRef.current.value,
-    });
-
-    // auto fill into user name input
-    userNameRef.current.value = data.userName;
   };
 
   const handleValidateFields = () => {
@@ -67,19 +84,20 @@ const AdminCreateUser = () => {
     if (!isValidPhoneNumber.isValid) return { error: isValidPhoneNumber.error };
     if (city === "") return { error: "Please select city" };
     if (district === "") return { error: "Please select district" };
-    if (ward === "") return { error: "Please select ward" };
+    // if (wards === "") return { error: "Please select wards" };
     if (!isValidAddress.isValid) return { error: isValidAddress.error };
     if (gender === "") return { error: "Please select gender" };
 
     return { message: "success" };
   };
 
-  const handleCreateUser = async () => {
+  const handleUpdateUser = async () => {
     const validateResult = handleValidateFields();
 
     if (validateResult.message === "success") {
       // Gather data
-      const newUser = {
+      const updateUser = {
+        userId: userId,
         fullName: fullNameRef.current.value,
         email: emailRef.current.value,
         gender: gender,
@@ -94,11 +112,11 @@ const AdminCreateUser = () => {
       };
 
       // Call API
-      const data = await createNewUserAPI(newUser);
+      const data = await updateUserAPI(updateUser);
       if (data.status === "success") {
-        toast.success("Create new user success".toLocaleUpperCase());
+        toast.success("Update user success".toLocaleUpperCase());
       } else {
-        toast.error("Create new user failed".toLocaleUpperCase());
+        toast.error("Update user failed".toLocaleUpperCase());
       }
     } else {
       toast.error(validateResult.error.toLocaleUpperCase());
@@ -106,14 +124,14 @@ const AdminCreateUser = () => {
   };
 
   useEffect(async () => {
-    await handleGeneratePassword();
+    await handleGetAndFillOldDatas();
   }, []);
 
   return (
     <section>
       <Frame>
         <section className={styles.containerCreateAccount}>
-          <h2>Create new user account</h2>
+          <h2>Update user account</h2>
           <div className="row">
             <ul className="col-6">
               <li>
@@ -124,7 +142,6 @@ const AdminCreateUser = () => {
                 <input
                   type="text"
                   placeholder="Enter full name"
-                  onBlur={handleGenerateUserName}
                   ref={fullNameRef}
                 ></input>
               </li>
@@ -144,7 +161,7 @@ const AdminCreateUser = () => {
                 setCity={setCity}
                 setDistrict={setDistrict}
                 setWard={setWard}
-                defaultValue={{ hometown: "", district: "", ward: "" }}
+                // defaultValue={oldAddress}
               />
 
               <li>
@@ -190,13 +207,19 @@ const AdminCreateUser = () => {
                 <div
                   className={`d-flex justify-content-between ${styles.genderCheckbox}`}
                 >
-                  <div className="form-check" onChange={handleChangeGender}>
+                  <div
+                    className="form-check"
+                    onChange={handleChangeGender}
+                    ref={genderRef}
+                  >
                     <div className={styles.genderItemPart}>
                       <input
                         className={`${styles.formCheckInput}`}
                         type="radio"
                         value="male"
                         name="gender"
+                        checked={genderCheckedField === "male"}
+                        onChange={(e) => setGenderCheckedField("male")}
                       />{" "}
                       <span>Male</span>
                     </div>
@@ -206,6 +229,8 @@ const AdminCreateUser = () => {
                         type="radio"
                         value="female"
                         name="gender"
+                        checked={genderCheckedField === "female"}
+                        onChange={(e) => setGenderCheckedField("female")}
                       />{" "}
                       <span>Female</span>
                     </div>
@@ -215,6 +240,8 @@ const AdminCreateUser = () => {
                         type="radio"
                         value="other"
                         name="gender"
+                        checked={genderCheckedField === "other"}
+                        onChange={(e) => setGenderCheckedField("other")}
                       />{" "}
                       <span>Other</span>
                     </div>
@@ -238,8 +265,8 @@ const AdminCreateUser = () => {
             </ul>
           </div>
           <div className={styles.submitButtonPart}>
-            <button type="submit" onClick={handleCreateUser}>
-              Submit
+            <button type="submit" onClick={handleUpdateUser}>
+              Update
             </button>
           </div>
         </section>
@@ -248,4 +275,4 @@ const AdminCreateUser = () => {
   );
 };
 
-export default AdminCreateUser;
+export default AdminUpdateUser;

@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ProfileSidebar from "../ProfileSidebar";
 import styles from "./ProfileChangeInformation.module.css";
 import Header from "../Header";
-import Address from "../Helper/Province/Address";
+import Address from "../Admin/Address";
 import { isAuthenticated } from "./../Auth/index";
 import { updateProfile, viewProfile } from "../../apis";
 import { toast } from "react-toastify";
@@ -14,37 +14,41 @@ const ProfileChangeInformation = () => {
   const [userInfo, setUserInfo] = useState();
   const [district, setDistrict] = useState("");
   const [city, setCity] = useState("");
+  const [ward, setWard] = useState("");
 
-  const [data, setData] = useState({
-    address: "",
-    storeName: "",
-    phoneNumber: "",
-    gender: "Male",
-  });
+  // const { userId } = useParams();
+
+  const addressRef = useRef();
+  const storeNameRef = useRef();
+  const phoneNumberRef = useRef();
+  const genderRef = useRef();
+  const districtRef = useRef();
+  const cityRef = useRef();
 
   const { user } = isAuthenticated();
 
   const navigate = useNavigate();
 
-  const handleChange = (name) => (event) => {
-    setData({ ...data, [name]: event.target.value });
-  };
-
   const submitUpdateProfile = (e) => {
     e.preventDefault();
     const dataSubmit = {
-      ...data,
-      hometown: city,
-      district,
+      address: addressRef.current.value,
+      storeName: storeNameRef.current.value,
+      phoneNumber: phoneNumberRef.current.value,
+      gender: genderRef.current.value,
+      hometown: city ? city : userInfo.hometown,
+      district: district ? district : userInfo.district,
+      ward: ward ? ward : userInfo.ward,
       userId: user.userId,
     };
+    console.log(dataSubmit);
     updateProfile(dataSubmit).then((result) => {
       console.log(result);
-      toast.success(result.status);
+      toast.success("Update profile success".toLocaleUpperCase());
       navigate("/profile");
     });
   };
-
+  // console.log(cityRef.current.value);
   const loadViewProfile = async () => {
     const data = await viewProfile({ userId: user.userId });
     if (data.error === "User not found") {
@@ -57,6 +61,8 @@ const ProfileChangeInformation = () => {
   useEffect(() => {
     loadViewProfile();
   }, []);
+
+  // console.log(userInfo);
   return (
     <section>
       <Header />
@@ -94,7 +100,7 @@ const ProfileChangeInformation = () => {
               <ul className={styles.boxInformation}>
                 <li className={`d-flex ${styles.item}`}>
                   <label>Gender: </label>
-                  <select onChange={handleChange("gender")}>
+                  <select ref={genderRef}>
                     <option>Male</option>
                     <option>Female</option>
                     <option>Other</option>
@@ -105,8 +111,9 @@ const ProfileChangeInformation = () => {
                   <label>Store name: </label>
                   <input
                     name="text"
-                    onChange={handleChange("storeName")}
+                    ref={storeNameRef}
                     required
+                    defaultValue={userInfo.storeName}
                   />
                   <p className={styles.warning}>*</p>
                 </li>
@@ -115,13 +122,23 @@ const ProfileChangeInformation = () => {
                 <span>Contract Information</span>
               </div>
               <ul className={styles.boxInformation}>
-                <Address setDistrict={setDistrict} setCity={setCity} />
+                <Address
+                  setDistrict={setDistrict}
+                  setCity={setCity}
+                  setWard={setWard}
+                  defaultValue={{
+                    district: userInfo.district,
+                    hometown: userInfo.hometown,
+                    ward: userInfo.ward,
+                  }}
+                />
                 <li className={`d-flex ${styles.item}`}>
                   <label>Address: </label>
                   <input
                     name="text"
-                    onChange={handleChange("address")}
+                    ref={addressRef}
                     required
+                    defaultValue={userInfo.address}
                   />
                   <p className={styles.warning}>*</p>
                 </li>
@@ -129,8 +146,9 @@ const ProfileChangeInformation = () => {
                   <label>Tel: </label>
                   <input
                     name="text"
-                    onChange={handleChange("phoneNumber")}
+                    ref={phoneNumberRef}
                     required
+                    defaultValue={userInfo.phoneNumber}
                   />
                   <p className={styles.warning}>*</p>
                 </li>

@@ -1,5 +1,6 @@
 tensorflow
 keras
+pandas
 imutils
 numpy
 opencv-python

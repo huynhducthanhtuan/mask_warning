@@ -1,14 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./UsersManager.module.css";
 import { Link } from "react-router-dom";
+import { Avatar } from "../../../assets/ExportImages";
+import { deleteUser, viewUserList } from "../../../apis";
+import { toast } from "react-toastify";
 import LeftControl from "../AdminLeftControl";
 import ShowBox from "../ShowBox";
 import TableUsers from "../TableUsers";
-import { Avatar } from "../../../assets/ExportImages";
-import { deleteUser, viewUserList } from "../../../apis";
 import Loading from "../../Helper/Loading";
 import Modal from "./../../Helper/Modal/index";
-import { toast } from "react-toastify";
+
 const UsersManagerAdmin = () => {
   const [users, setUsers] = useState();
   const [OpenModal, setOpenModal] = useState(false);
@@ -30,13 +31,13 @@ const UsersManagerAdmin = () => {
       loadUsersManage();
     });
   };
-  console.log(users);
+
   return (
     <div className="container">
       {OpenModal && userIdToDelete && (
         <Modal
           setOpenModal={setOpenModal}
-          title="DELETE USER "
+          title="Delete user account "
           body="Are you sure you want to delete this user?"
           action={handleDeleteUser}
           userDeleteId={userIdToDelete}

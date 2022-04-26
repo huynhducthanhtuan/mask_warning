@@ -10,8 +10,6 @@ function Modal({
   isCss = false,
   userDeleteId = undefined,
 }) {
-  // action();
-
   return (
     <div
       className={styles.modalBackground}

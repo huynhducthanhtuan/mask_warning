@@ -1,32 +1,27 @@
 import React, { useState } from "react";
 import styles from "./TableUsers.module.css";
-import { Avatar } from "../../../assets/ExportImages";
-import homIcon from "../../../assets/icons/home.png";
-import {
-  AvatarThanhTuan,
-  AvatarNgocHieu,
-  AvatarTrungHieu,
-} from "../../../assets/ExportImages";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
-  console.log(users);
+  const navigate = useNavigate();
+
   return (
     <div>
       <table className={`table ${styles.tableUsers}`}>
         <thead className={styles.theadUser}>
           <tr className={styles.nameCol}>
-            <th scope="col">Customer name</th>
+            <th scope="col">Fullname</th>
             <th scope="col">Store name</th>
-            <th scope="col">Date</th>
-            <th scope="col">Action</th>
+            <th scope="col">Created date</th>
+            <th scope="col" style={{ textAlign: "center" }}>
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
           {users.map((user, index) => {
-            // console.log(user.createdDate);
             return (
-              <tr className={styles.rowValueUser} key={user.userId}>
+              <tr className={styles.rowValueUser} key={index}>
                 <Link to={`/admin/users-manager/user-detail/${user.userId}`}>
                   <td className={styles.customerName}>
                     <div
@@ -38,7 +33,7 @@ const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
                 </Link>
 
                 <td>{user.storeName}</td>
-                {/* <td>{user.createdDate.split("T")[0]}</td> */}
+                <td>{user.createdDate.slice(0, 10)}</td>
                 <td>
                   <button
                     className={`btn btn-danger ${styles.actionDelete}`}
@@ -50,6 +45,16 @@ const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
                     }}
                   >
                     Delete
+                  </button>
+                  <button
+                    className={`btn btn-primary ${styles.actionEdit}`}
+                    onClick={() => {
+                      navigate(
+                        `/admin/users-manager/update-user/${user.userId}`
+                      );
+                    }}
+                  >
+                    Edit
                   </button>
                 </td>
               </tr>

@@ -1,30 +1,21 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useContext } from "react";
 import styles from "./Home.module.css";
-import { Link } from "react-router-dom";
 import StatisticCard from "../AdminStatisticCard";
 import LeftControl from "../AdminLeftControl";
 import ShowBox from "../ShowBox";
-// import { showNewUser } from "../../../apis";
-import Loading from "../../Helper/Loading";
-import { ellipse, averageHours, newUsers } from "../../../assets/ExportImages";
+import { Loading } from "../../Helper";
+import {
+  ellipse,
+  averageHours,
+  newUsers as newUsersImage,
+} from "../../../assets/ExportImages";
+
 const HomeAdmin = () => {
   const newUser = [null, null, null];
   const [toggle, setToggle] = useState("home");
   const [newUsers, setNewUsers] = useState({ newUser });
   const [statisticToggle, setStatisticToggle] = useState("m");
   const [loading, setLoading] = useState(true);
-
-  // const loadDataNewUsers = () => {
-  //   showNewUser().then((result) => {
-  //     console.log(result);
-  //     setNewUsers(result);
-  //     setLoading(false);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   loadDataNewUsers();
-  // }, []);
 
   var dataUsersStatistic = {
     w: newUsers.newUser[0],
@@ -40,9 +31,6 @@ const HomeAdmin = () => {
 
   return (
     <div className="container" style={{ height: "107vh" }}>
-      {/* {loading ? (
-        <Loading />
-      ) : ( */}
       <div className="row">
         <LeftControl />
         <div className="col-10">
@@ -89,7 +77,7 @@ const HomeAdmin = () => {
                   cardName={"User(s)"}
                   data={dataUsersStatistic[statisticToggle]}
                   dataType={" new user(s)"}
-                  iconLink={newUsers}
+                  iconLink={newUsersImage}
                 />
                 <StatisticCard
                   cardName={"Average hour(s) per day"}

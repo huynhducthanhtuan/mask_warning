@@ -1,42 +1,46 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./ReportDetail.module.css";
-import { toast } from "react-toastify";
-import { Link, useParams } from "react-router-dom";
-import { CompleteIcon } from "../../../assets/ExportImages";
-import { viewReportDetail, confirmSolvedReportAPI } from "../../../apis";
 import LeftControl from "../AdminLeftControl";
 import Loading from "../../Helper/Loading";
 import Modal from "../../Helper/Modal";
+import { toast } from "react-toastify";
+import { Link, useParams } from "react-router-dom";
+import { CompleteIcon, reportImageDefault } from "../../../assets/ExportImages";
+import { viewReportDetail, confirmSolvedReportAPI } from "../../../apis";
+import { ModalStatusContext } from "../../../contexts/ModalStatusContext";
+import { ImageModal } from "../../Helper";
 
 const ReportDetailAdmin = () => {
   const { reportId } = useParams();
   const [report, setReport] = useState({});
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+  const [isSolved, setIsSolved] = useState();
+
+  const modalStatusContext = useContext(ModalStatusContext);
+  const { showModal, setShowModal } = modalStatusContext;
 
   const loadReportDetail = async () => {
-    await viewReportDetail({ reportId }).then((data) => {
-      setReport(data);
-      setLoading(false);
-    });
+    const data = await viewReportDetail({ reportId });
+
+    setReport(data);
+    setIsSolved(data.isSolved);
+    setLoading(false);
   };
 
   const handleConfirmSolvedReport = async () => {
     const data = await confirmSolvedReportAPI({ reportId });
 
     if (data.status === "success") {
+      setIsSolved(true);
       toast.success("Confirm Solved Report Success".toLocaleUpperCase());
     } else {
       toast.success("Confirm Solved Report Failed".toLocaleUpperCase());
     }
   };
 
-  useEffect(() => {
-    loadReportDetail();
-  }, []);
-
-  const solved = () => {
-    if (!report.isSolved)
+  const renderButtonConfirmSolved = () => {
+    if (!isSolved) {
       return (
         <button
           className={`mt-4 ${styles.detailComplete}`}
@@ -45,10 +49,26 @@ const ReportDetailAdmin = () => {
           <img src={CompleteIcon} /> Confirm Solved
         </button>
       );
+    }
   };
+
+  const handleShowImageModal = () => {
+    setShowModal(true);
+  };
+
+  useEffect(async () => {
+    await loadReportDetail();
+  }, []);
 
   return (
     <section className={styles.homeMain}>
+      {showModal && (
+        <ImageModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          imageUrl={report.image}
+        />
+      )}
       {openModal && (
         <Modal
           setOpenModal={setOpenModal}
@@ -63,7 +83,7 @@ const ReportDetailAdmin = () => {
       ) : (
         <div
           className={
-            report.isSolved
+            isSolved
               ? `${styles.detailRightContent} ${styles.active}`
               : styles.detailRightContent
           }
@@ -80,10 +100,13 @@ const ReportDetailAdmin = () => {
             </Link>
           </div>
           <div className={styles.detailImageAndTitle}>
-            <img src={report.image} />
+            <img
+              src={report.image === "" ? reportImageDefault : report.image}
+              onClick={() => handleShowImageModal(report.image)}
+            />
             <div>
               <h2 className={report.isSolved ? "d-block" : "d-none"}>
-                You have done this task
+                You had solve this report.
               </h2>
               <h5>{report.title}</h5>
             </div>
@@ -91,7 +114,7 @@ const ReportDetailAdmin = () => {
           <div className={styles.detailReport}>
             <p>{report.description}</p>
           </div>
-          {solved()}
+          {renderButtonConfirmSolved()}
         </div>
       )}
     </section>

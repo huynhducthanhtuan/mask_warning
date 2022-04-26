@@ -4,7 +4,7 @@ import LeftControl from "../AdminLeftControl";
 import { BackButton, ReportUserImage } from "../../../assets/ExportImages";
 import { useParams } from "react-router-dom";
 import { viewDetailUser } from "../../../apis";
-import Loading from "../../Helper/Loading";
+import { Loading } from "../../Helper";
 
 const ReportUserDetailAdmin = () => {
   const [userInfo, setUserInfo] = useState();
@@ -17,8 +17,7 @@ const ReportUserDetailAdmin = () => {
       setLoading(false);
     });
   };
-  
-  console.log("user detail ", userInfo);
+
   useEffect(() => {
     loadReportDetailUser();
   }, []);

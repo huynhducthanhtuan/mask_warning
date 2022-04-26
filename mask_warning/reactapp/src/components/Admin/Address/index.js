@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "./Province.module.css";
-const Address = ({ setCity, setDistrict }) => {
+import styles from "./Address.module.css";
+
+const Address = ({ setCity, setDistrict, setWard, defaultValue }) => {
   const [cities, setCities] = useState([]);
   const [cityCode, setCityCode] = useState(0);
   const [districts, setDistricts] = useState([]);
+  const [districtCode, setDistrictCode] = useState(0);
+  const [wards, setWards] = useState([]);
+
+  const districtRef = useRef();
+  const cityRef = useRef();
 
   useEffect(() => {
     const getCities = async () => {
@@ -18,14 +24,7 @@ const Address = ({ setCity, setDistrict }) => {
   }, []);
 
   const handleCityCode = async (event) => {
-    setDistrict("");
     const getCityCode = event.target.value;
-    const resDistrict = await fetch(
-      `https://provinces.open-api.vn/api/p/${getCityCode}?depth=2`
-    );
-    const res = await resDistrict.json();
-
-    setCity(res.name);
     setCityCode(getCityCode);
   };
 
@@ -36,27 +35,46 @@ const Address = ({ setCity, setDistrict }) => {
           `https://provinces.open-api.vn/api/p/${cityCode}?depth=2`
         );
         const res = await resDistrict.json();
-
+        setCity(res.name);
         setDistricts(await res.districts);
       }
     };
     getDistrict();
   }, [cityCode]);
 
-  const handleDistrict = (event) => {
-    const getDistrict = event.target.value;
-    setDistrict(getDistrict);
-    // setData({ ...data, district: getDistrict });
+  const handleDistrictCode = (event) => {
+    const getDistrictCode = event.target.value;
+    setDistrictCode(getDistrictCode);
+  };
+
+  useEffect(() => {
+    const getWards = async () => {
+      if (districtCode !== 0) {
+        const resWards = await fetch(
+          `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`
+        );
+        const res = await resWards.json();
+        setWards(await res.wards);
+        setDistrict(res.name);
+      }
+    };
+    getWards();
+  }, [districtCode]);
+
+  const handleWard = (e) => {
+    const getWard = e.target.value;
+    setWard(getWard);
   };
 
   return (
     <React.Fragment>
       <li className={`d-flex ${styles.item}`}>
-        <label>Province/City: </label>
+        <label className="">City </label>
         <select
           name="city"
-          onChange={(e) => handleCityCode(e)}
           className="form-select"
+          onChange={(e) => handleCityCode(e)}
+          ref={cityRef}
         >
           <option value="">--Select City--</option>
           {cities.map((city, index) => (
@@ -67,19 +85,33 @@ const Address = ({ setCity, setDistrict }) => {
         </select>
       </li>
       <li className={`d-flex ${styles.item}`}>
-        <label>District: </label>
+        <label>District</label>
         <select
           className="form-select"
           name="district"
-          onChange={(e) => handleDistrict(e)}
+          onChange={(e) => handleDistrictCode(e)}
+          ref={districtRef}
         >
           <option value="">--Select District--</option>
           {districts.map((district, index) => (
-            <option key={index} value={district.name}>
+            <option key={index} value={district.code}>
               {district.name}{" "}
             </option>
           ))}
         </select>
+      </li>
+      <li className={`d-flex ${styles.item}`}>
+        <div className={`d-flex ${styles.boxContent}`}>
+          <label className="">Ward</label>
+          <select className="form-select" onChange={(e) => handleWard(e)}>
+            <option value="">--Select Ward--</option>
+            {wards.map((ward, index) => (
+              <option key={index} value={ward.name}>
+                {ward.name}{" "}
+              </option>
+            ))}
+          </select>
+        </div>
       </li>
     </React.Fragment>
   );

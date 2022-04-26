@@ -30,6 +30,7 @@ import {
   AdminReportDetail,
   AdminReportUserDetail,
   AdminCreateUser,
+  AdminUpdateUser,
   UserDetail,
 } from "../components/Admin";
 
@@ -76,6 +77,10 @@ const ScreensRoot = () => {
       <Route
         path="/admin/users-manager/create-user"
         element={<AdminCreateUser />}
+      />
+      <Route
+        path="/admin/users-manager/update-user/:userId"
+        element={<AdminUpdateUser />}
       />
       <Route
         path="/admin/users-manager/user-detail/:userId"

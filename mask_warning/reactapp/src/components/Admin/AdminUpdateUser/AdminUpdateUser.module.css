@@ -1,0 +1,107 @@
+.containerCreateAccount {
+  margin: 150px 50px 20px 50px;
+}
+
+.containerCreateAccount ul li {
+  margin-bottom: 40px;
+}
+
+.containerCreateAccount h2 {
+  color: #22242c;
+  font-size: 24px;
+  padding-bottom: 50px;
+}
+
+.containerCreateAccount label {
+  font-size: 16px;
+  font-weight: 500;
+  padding-bottom: 5px;
+}
+
+.containerCreateAccount span {
+  font-size: 16px;
+  color: red;
+}
+
+.boxContent {
+  width: 90px;
+}
+
+.containerCreateAccount input {
+  width: 86%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.slectOption {
+  width: 85%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  font-size: 14px;
+}
+
+.containerCreateAccount button {
+  border-radius: 28px;
+  margin: 0 auto;
+  padding: 12px 70px;
+  font-size: 16px;
+  color: white;
+  background: #6160dc;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.containerCreateAccount button:hover {
+  opacity: 0.6;
+}
+
+.genderCheckbox {
+  width: 80%;
+}
+
+.genderCheckbox .form-check {
+  display: flex !important;
+  justify-content: space-between !important;
+  flex-flow: wrap-reverse !important;
+}
+
+.genderCheckbox .form-check-input {
+  margin-top: 0.8rem !important;
+  margin-left: 3.75rem !important;
+}
+
+.genderCheckbox .form-check-label {
+  margin-top: 20px !important;
+  margin-left: 10px !important;
+}
+
+.confirmPassword {
+  margin-bottom: 60px !important;
+}
+
+.submitButtonPart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.genderItemPart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.formCheckInput {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.genderItemPart > span {
+  color: #000;
+}
+
+.genderItemPart > span:nth-child(2) {
+  margin-left: 8px;
+}

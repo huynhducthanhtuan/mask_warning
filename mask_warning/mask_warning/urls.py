@@ -5,7 +5,7 @@ from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, ChangeAvata
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
 from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl
-from .apis import GenerateUserName, GeneratePassword, SearchUser
+from .apis import GenerateUserName, GeneratePassword, SearchUser, UpdateUser
 
 
 urlpatterns = [
@@ -32,6 +32,7 @@ urlpatterns = [
     # Role Admin
     path('auth/admin/signin/', HandleSigninAdmin),
     path('admin/search-user/', SearchUser),
+    path('admin/update-user/', UpdateUser),
     path('admin/create-new-user/', CreateNewUser),
     path('admin/create-new-user/generate-username/', GenerateUserName),
     path('admin/create-new-user/generate-password/', GeneratePassword),
