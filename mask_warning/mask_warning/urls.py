@@ -5,7 +5,7 @@ from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleC
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
 from .apis import HandleSigninAdmin
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, ListOfUsers
-from .apis import addUser, searchUsers, getRevenue, countNewUser
+from .apis import addUser, searchUsers, countNewUser
 from .views import video_feed
 
 urlpatterns = [
@@ -43,7 +43,6 @@ urlpatterns = [
     path('list', ListOfUsers),
     path('addUser', addUser),
     path('searchUsers/', searchUsers),
-    path('revenue', getRevenue),
     path('admin/countnewuser', countNewUser),
     # Trang admin mặc định của Django, mình ko dùng
     # path('admin/', admin.site.urls),

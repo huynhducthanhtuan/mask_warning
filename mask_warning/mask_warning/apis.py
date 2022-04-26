@@ -406,22 +406,6 @@ def countNewUserInRange(startTime, endTime, users):
 
     return newUser
 
-def getRevenueInRange(startTime, endTime, users):
-    newAccountPrice = 500000  
-
-    return newAccountPrice*countNewUserInRange(startTime, endTime, users)
-
-
-import random
-def getRevenueByDay(users):
-    currentDay = date.today()
-    revenueByDay = {}
-
-    for i in range(-6,1):
-        iDayAgo = currentDay + timedelta(days=i)
-        revenueByDay[iDayAgo.strftime('%a')] = getRevenueInRange(iDayAgo, iDayAgo,users)
-
-    return revenueByDay
 
 def leap_year(year):
     if year % 400 == 0:
@@ -441,108 +425,78 @@ def days_in_month(month, year):
         return 28
     return 30
 
-def getRevenueByMonth(users):
+def countNewUserDaily(users):
+    currentDay = date.today()
+    revenueByDay = {}
+
+    for i in range(-6,1):
+        iDayAgo = currentDay + timedelta(days=i)
+        revenueByDay[iDayAgo.strftime('%a')] = countNewUserInRange(iDayAgo, iDayAgo,users)
+
+    return revenueByDay
+
+
+
+def countNewUserWeekly(users):
+    currentDay = date.today()
+    fourWeekAgo = date(currentDay.year, currentDay.month, currentDay.day) - timedelta(days=currentDay.weekday(), weeks=3)
+
+    newUserWeekly = {}
+
+    for i in range(1,5):
+        passWeek = fourWeekAgo + timedelta(weeks=i-1)
+        weekRange = passWeek.strftime('%d') + '/' + passWeek.strftime('%m')
+
+        newUserInWeek = countNewUserInRange(
+            passWeek,
+            passWeek + timedelta(days=6),
+            users
+            )
+
+        passWeek = fourWeekAgo + timedelta(weeks=i)
+        weekRange += '->' + passWeek.strftime('%d') + '/' + passWeek.strftime('%m')
+        
+        newUserWeekly[weekRange] = newUserInWeek
+
+        
+
+    return newUserWeekly
+    
+def countNewUserMonthly(users):
     currentDay = date.today()
     middleDay = date(currentDay.year, currentDay.month, 15)
-    revenueByMonth = {}
+    newUserMonthly = {}
+
 
     for i in range(-12,1):
         i4TimesDayAgo = middleDay + timedelta(weeks=4*i)
         pastYears = i4TimesDayAgo.year
         pastMonth = i4TimesDayAgo.month
-        revenueByMonth[i4TimesDayAgo.strftime('%b')] = getRevenueInRange(
-            date(pastYears, pastMonth, 1),
-            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears)),
-            users
-            )
+        monthString = i4TimesDayAgo.strftime('%b') + '/' + str(pastYears)
+        newUserMonthly[monthString]= countNewUserInRange(date(pastYears, pastMonth, 1),
+                                                date(pastYears, pastMonth, days_in_month(pastMonth,pastYears)),
+                                                users
+                                                )
 
-    return revenueByMonth
-    
-def getRevenueByYear(users):
-    currentDay = date.today()
-    revenueByYear = {}
+    return newUserMonthly
 
-    for i in range(-12,1):
-        iYearsAgo = currentDay.year + i
-        revenueByYear[iYearsAgo] = getRevenueInRange(
-            date(iYearsAgo, 1, 1),
-            date(iYearsAgo, 12, 31),
-            users
-            )
-
-    return revenueByYear
-
-def getRevenue(request):
+def countNewUser(request):
    
     users = db.collection(f"users").get()
-    revenueByDay = getRevenueByDay(users)
-    revenueByMonth = getRevenueByMonth(users)
-    revenueByYear = getRevenueByYear(users)
-    revenue = {
-        'revenueByDay' : revenueByDay,
-        'revenueByMonth' : revenueByMonth,
-        'revenueByYear' : revenueByYear
+    newUserDaily  = countNewUserDaily(users)
+    newUserWeekly  = countNewUserWeekly(users)
+    newUserMonthly  = countNewUserMonthly(users)
+    countNewUser = {
+        'newUserDaily ' : newUserDaily ,
+        'newUserWeekly ' : newUserWeekly ,
+        'newUserMonthly ' : newUserMonthly 
     }
 
     
     return JsonResponse({
         'message' : 'Succesfully',
-        'revenue' :  revenue,
+        'countNewUser' :  countNewUser,
     })
-
-def totalNewUserByWeek(users):
-    currentDay = date.today()
-    newUser = 0
-
-    for i in range(-6,1):
-        iDayAgo = currentDay + timedelta(days=i)
-        newUser += countNewUserInRange(iDayAgo, iDayAgo, users)
-
-    return newUser
-
-def totalNewUserByMonth(users):
-    currentDay = date.today()
-    middleDay = date(currentDay.year, currentDay.month, 15)
-    newUser = 0
-
-    for i in range(-12,1):
-        i4TimesDayAgo = middleDay + timedelta(weeks=4*i)
-        pastYears = i4TimesDayAgo.year
-        pastMonth = i4TimesDayAgo.month
-        newUser += countNewUserInRange(date(pastYears, pastMonth, 1),
-            date(pastYears, pastMonth, days_in_month(pastMonth,pastYears)),
-            users
-            )
-
-    return newUser
-
-def totalNewUserByYear(users):
-    currentDay = date.today()
-    newUser = 0
-
-    for i in range(-12,1):
-        iYearsAgo = currentDay.year + i
-        newUser += countNewUserInRange(
-            date(iYearsAgo, 1, 1),
-            date(iYearsAgo, 12, 31),
-            users
-            )
-
-    return newUser
-    
-def countNewUser(request):
-    users = db.collection(f"users").get()
-    newUserByWeek = totalNewUserByWeek(users)
-    newUserByMonth = totalNewUserByMonth(users)
-    newUserByYear = totalNewUserByYear(users)
-    newUser = [newUserByWeek, newUserByMonth, newUserByYear]
-
-    
-    return JsonResponse({
-        'message' : 'Succesfully',
-        'newUser' :  newUser
-    })
-
 
 # (Tuấn) Phần code này là khi học cách làm việc với Firestore - Firebase
 # [ADD] data
