@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./AdminCreateUser.module.css";
 import Frame from "../Frame";
-import Province from "../Province";
 import { toast } from "react-toastify";
 import {
   validateFullName,
@@ -10,6 +9,7 @@ import {
   validatePhoneNumber,
   validateAddress,
 } from "../../../helpers/validator";
+import Address from "../Address/Address";
 import {
   createNewUserAPI,
   generateUserNameAPI,
@@ -19,6 +19,7 @@ import {
 const AdminCreateUser = () => {
   const [district, setDistrict] = useState("");
   const [city, setCity] = useState("");
+  const [ward, setWard] = useState("");
   const [gender, setGender] = useState("");
 
   const fullNameRef = useRef();
@@ -137,7 +138,11 @@ const AdminCreateUser = () => {
                 ></input>
               </li>
 
-              <Province setDistrict={setDistrict} setCity={setCity} />
+              <Address
+                setDistrict={setDistrict}
+                setCity={setCity}
+                setWard={setWard}
+              />
 
               <li>
                 <div className="d-flex">

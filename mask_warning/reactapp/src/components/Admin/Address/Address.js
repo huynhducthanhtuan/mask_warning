@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "../AdminCreateUser/AdminCreateUser.module.css";
+import styles from "./Province.module.css";
 
-const Province = ({ setCity, setDistrict, setWard }) => {
+const Address = ({ setCity, setDistrict, setWard, defaultValue }) => {
   const [cities, setCities] = useState([]);
   const [cityCode, setCityCode] = useState(0);
   const [districts, setDistricts] = useState([]);
@@ -21,15 +21,9 @@ const Province = ({ setCity, setDistrict, setWard }) => {
     };
     getCities();
   }, []);
-  // https://provinces.open-api.vn/api/d/461?depth=2
+
   const handleCityCode = async (event) => {
-    // setDistrict();
     const getCityCode = event.target.value;
-    const resDistrict = await fetch(
-      `https://provinces.open-api.vn/api/p/${getCityCode}?depth=2`
-    );
-    const res = await resDistrict.json();
-    setCity(res.name);
     setCityCode(getCityCode);
   };
 
@@ -40,18 +34,18 @@ const Province = ({ setCity, setDistrict, setWard }) => {
           `https://provinces.open-api.vn/api/p/${cityCode}?depth=2`
         );
         const res = await resDistrict.json();
-
+        setCity(res.name);
         setDistricts(await res.districts);
       }
     };
     getDistrict();
   }, [cityCode]);
 
-  const handleDistrict = (event) => {
+  const handleDistrictCode = (event) => {
     const getDistrictCode = event.target.value;
-    // console.log(getDistrictCode);
     setDistrictCode(getDistrictCode);
   };
+
   useEffect(() => {
     const getWards = async () => {
       if (districtCode !== 0) {
@@ -71,18 +65,16 @@ const Province = ({ setCity, setDistrict, setWard }) => {
     const getWard = e.target.value;
     setWard(getWard);
   };
+
   return (
     <React.Fragment>
-      <li>
-        <div className={`d-flex ${styles.boxContent}`}>
-          <label>City</label>
-          <span>*</span>
-        </div>
+      <li className={`d-flex ${styles.item}`}>
+        <label className="">City </label>
         <select
           name="city"
-          required={true}
+          className="form-select"
           onChange={(e) => handleCityCode(e)}
-          className={styles.slectOption}
+          ref={cityRef}
         >
           <option value="">--Select City--</option>
           {cities.map((city, index) => (
@@ -93,50 +85,27 @@ const Province = ({ setCity, setDistrict, setWard }) => {
         </select>
       </li>
       <li className={`d-flex ${styles.item}`}>
-        <div className={`d-flex ${styles.boxContent}`}>
-          <label className="">City </label>
-          <select
-            name="city"
-            onChange={(e) => handleCityCode(e)}
-            className={styles.slectOption}
-          >
-            <option defaultValue="">--Select City--</option>
-            {cities.map((city, index) => (
-              <option key={index} value={city.code}>
-                {city.name}{" "}
-              </option>
-            ))}
-          </select>
-        </div>
-      </li>
-      <li className={`d-flex ${styles.item}`}>
-        <div className={`d-flex ${styles.boxContent}`}>
-          <label>District</label>
-          <select
-            className={styles.slectOption}
-            name="district"
-            onChange={(e) => handleDistrict(e)}
-          >
-            <option defaultValue="">--Select District--</option>
-            {districts.map((district, index) => (
-              <option key={index} value={district.code}>
-                {district.name}{" "}
-              </option>
-            ))}
-            s
-          </select>
-        </div>
+        <label>District</label>
+        <select
+          className="form-select"
+          name="district"
+          onChange={(e) => handleDistrictCode(e)}
+          ref={districtRef}
+        >
+          <option value="">--Select District--</option>
+          {districts.map((district, index) => (
+            <option key={index} value={district.code}>
+              {district.name}{" "}
+            </option>
+          ))}
+          s
+        </select>
       </li>
       <li className={`d-flex ${styles.item}`}>
         <div className={`d-flex ${styles.boxContent}`}>
           <label className="">Wards</label>
-          <select
-            className={styles.slectOption}
-            // name="district"
-            onChange={(e) => handleWard(e)}
-            // ref={districtRef}
-          >
-            <option defaultValue="">--Select Ward--</option>
+          <select className="form-select" onChange={(e) => handleWard(e)}>
+            <option value="">--Select Ward--</option>
             {wards.map((ward, index) => (
               <option key={index} value={ward.name}>
                 {ward.name}{" "}
@@ -149,4 +118,4 @@ const Province = ({ setCity, setDistrict, setWard }) => {
   );
 };
 
-export default Province;
+export default Address;

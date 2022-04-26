@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import ProfileSidebar from "../ProfileSidebar";
 import styles from "./ProfileChangeInformation.module.css";
 import Header from "../Header";
-import Address from "../Helper/Province/Address";
+import Address from "../Admin/Address/Address";
 import { isAuthenticated } from "./../Auth/index";
 import { updateProfile, viewProfile } from "../../apis";
 import { toast } from "react-toastify";
@@ -62,7 +62,7 @@ const ProfileChangeInformation = () => {
     loadViewProfile();
   }, []);
 
-  console.log(userInfo);
+  // console.log(userInfo);
   return (
     <section>
       <Header />
