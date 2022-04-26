@@ -178,38 +178,31 @@ def CalculateTimestampDifferent(timestampInDB):
 
 
 def Notifications(request, quantity = 4):
-    docs = db.collection(f'reports').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
+    docs = db.collection(f'reports').order_by(u'createdDate', direction=firestore.Query.DESCENDING).limit(quantity).get()
     notifications = []
-    notificationQuantity = 0
 
     for doc in docs:
-        if notificationQuantity >= quantity:
-            break
-        else:
-            # Get report document
-            notification = doc.to_dict()
+        # Get report document
+        notification = doc.to_dict()
 
-            # Get user's fullName and avatar
-            userId = doc.to_dict().get("userId")
-            user = db.collection(f"users").document(userId)
-            userFullName = user.get().to_dict().get("fullName")
-            userImage = user.get().to_dict().get("avatar")
+        # Get user's fullName and avatar
+        userId = doc.to_dict().get("userId")
+        user = db.collection(f"users").document(userId)
+        userFullName = user.get().to_dict().get("fullName")
+        userImage = user.get().to_dict().get("avatar")
 
-            # Calculate timestamp different and report id
-            timestampDifferent = CalculateTimestampDifferent(notification.get("createdDate"))
-            reportId = doc.id
+        # Calculate timestamp different and report id
+        timestampDifferent = CalculateTimestampDifferent(notification.get("createdDate"))
+        reportId = doc.id
 
-            # Hook data
-            notification["reportId"] = reportId
-            notification["userFullName"] = userFullName
-            notification["userImage"] = userImage
-            notification["timestampDifferent"] = timestampDifferent
+        # Hook data
+        notification["reportId"] = reportId
+        notification["userFullName"] = userFullName
+        notification["userImage"] = userImage
+        notification["timestampDifferent"] = timestampDifferent
 
-            # Append notification into notifications
-            notifications.append(notification)
-
-            # Auto increase notificationQuantity
-            notificationQuantity = notificationQuantity + 1
+        # Append notification into notifications
+        notifications.append(notification)
         
     return JsonResponse({ 'notifications': notifications })
 
@@ -842,20 +835,20 @@ def ViewReportDetailUser(request):
 
 def ViewReportHistory(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userId = body_data["userId"]
         
-        # Xử lí
         try:
-            docs = db.collection(f"reports").where(u"userId", u"==", f"{userId}").stream()
-
+            docs = db.collection(f"reports").order_by(u"createdDate", direction=firestore.Query.DESCENDING).stream()
             result = []
+
             for doc in docs:
                 report = doc.to_dict()
-                report["reportId"] = doc.id
-                result.append(report)
+
+                if report.get("userId") == userId:
+                    report["reportId"] = doc.id
+                    result.append(report)
                 
             return JsonResponse({"result": result})
         except:
@@ -864,12 +857,10 @@ def ViewReportHistory(request):
 
 def ViewReportDetail(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         reportId = body_data["reportId"]
         
-        # Xử lí
         try:
             report_ref = db.collection(f"reports").document(reportId)
             report = report_ref.get().to_dict()
@@ -883,8 +874,8 @@ def ViewReportDetail(request):
 def ViewUserList(request):
     try:
         docs = db.collection(f"users").stream()
-
         result = []
+
         for doc in docs:
             user = doc.to_dict()
             user["userId"] = doc.id
@@ -897,12 +888,10 @@ def ViewUserList(request):
 
 def DeleteUser(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userId = body_data["userId"]
         
-        # Xử lí
         try:
             if CheckUserIdExist(userId):
                 db.collection(f"users").document(userId).delete()
@@ -915,12 +904,10 @@ def DeleteUser(request):
 
 def ConfirmSolvedReport(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         reportId = body_data["reportId"]
 
-        # Xử lí
         try:
             doc = db.collection(f"reports").document(reportId)
             doc.update({ 'isSolved': True })
@@ -938,7 +925,6 @@ def ValidateReport(image, title, description):
 
 def SendReport(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userId = body_data["userId"]

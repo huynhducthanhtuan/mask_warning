@@ -1,13 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styles from "./ReportHistory.module.css";
+import { Link } from "react-router-dom";
+
 const CardReport = ({ reports }) => {
   return reports.map((report, index) => {
     return (
-      <Link to={`/report-history-detail/${report.reportId}`}>
+      <Link to={`/report-history-detail/${report.reportId}`} key={index}>
         <div className={`row ${styles.reportHistoryItem}`}>
           <div className={`col-4 ${styles.reportHistoryLeft}`}>
-            <h3>#{index + 1}</h3>
+            <h4>Report #{index + 1}</h4>
             <p>{report.title}</p>
           </div>
           <div className={`col-5 ${styles.reportHistoryMiddle}`}>
