@@ -21,7 +21,7 @@ const Guide = () => {
           <Link to="/guide-connect-camera">
             <div className={styles.item}>
               <p className={styles.contentString}>
-                1. How to connect camera IP with Mask Warning Website
+                1. How to connect camera IP with Mask Warning Website?
               </p>
             </div>
           </Link>
@@ -29,7 +29,7 @@ const Guide = () => {
           <Link to="/guide-report-defect">
             <div className={styles.item}>
               <p className={styles.contentString}>
-                2. How to send the report to the admin
+                2. How to send the report to the admin?
               </p>
             </div>
           </Link>

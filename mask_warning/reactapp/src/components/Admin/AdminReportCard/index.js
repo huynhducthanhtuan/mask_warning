@@ -6,6 +6,12 @@ const ReportCard = ({ reports }) => {
 
   return (
     <div>
+      <div className={styles.cardMainFields}>
+        <p>Error Id</p>
+        <p>Error Date</p>
+        <p>Error Description</p>
+        <p>Action</p>
+      </div>
       {reports.map((report, index) => {
         return (
           <Link

@@ -51,65 +51,67 @@ const Report = () => {
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />
-      <div className={`row ${styles.camera__header}`}>
-        <div className={`col-3 ${styles.sideBar}`}>
-          <Link to="/report">
-            <div className={`d-flex ${styles.sideBar__home}`}>
-              <img src="./icons/home.png"></img>
-              <p>Report</p>
-            </div>
-          </Link>
-          <Link to="/report-history">
-            <div className={`d-flex ${styles.sideBar__home}`}>
-              <img src="./icons/report__history.png"></img>
-              <p>Report history</p>
-            </div>
-          </Link>
-        </div>
-        <div className={`col-3 ${styles.chooseImage}`}>
-          <h5>Choose image</h5>
-          <img
-            src={previewUrl ? previewUrl : "./img/imageDefault.jpg"}
-            alt="preview"
-          />
+      <div className={`container ${styles.cameraContainer}`}>
+        <div className={`row ${styles.camera__header}`}>
+          <div className={`col-3 ${styles.sideBar}`}>
+            <Link to="/report">
+              <div className={`d-flex ${styles.sideBar__home}`}>
+                <img src="./icons/home.png"></img>
+                <p>Report</p>
+              </div>
+            </Link>
+            <Link to="/report-history">
+              <div className={`d-flex ${styles.sideBar__home}`}>
+                <img src="./icons/report__history.png"></img>
+                <p>Report history</p>
+              </div>
+            </Link>
+          </div>
+          <div className={`col-3 ${styles.chooseImage}`}>
+            <h5>Choose image</h5>
+            <img
+              src={previewUrl ? previewUrl : "./img/imageDefault.jpg"}
+              alt="preview"
+            />
 
-          <p className={styles.textInstruction}>
-            Click "Choose File" button to upload an image:
-          </p>
-          <input
-            type="file"
-            className="input"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
-        </div>
-        <div className={`col-3 ${styles.chooseImage}`}>
-          <h5>Title bug</h5>
-          <div className="form-group">
+            <p className={styles.textInstruction}>
+              Click "Choose File" button to upload an image:
+            </p>
             <input
-              type="text"
-              className={`form-control ${styles.titleBug}`}
-              style={{ height: "40px" }}
-              ref={inputTitleRef}
-              placeholder="Title bug"
+              type="file"
+              className="input"
+              onChange={(e) => setImage(e.target.files[0])}
             />
           </div>
-        </div>
-        <div className={`col-3 ${styles.reportDescription}`}>
-          <div className="form-group">
-            <p>Description</p>
-            <textarea
-              className={`form-control ${styles.descBug}`}
-              style={{ height: "123px" }}
-              ref={descriptionRef}
-              placeholder="Description bug"
-            ></textarea>
+          <div className={`col-3 ${styles.chooseImage}`}>
+            <h5>Title bug</h5>
+            <div className="form-group">
+              <input
+                type="text"
+                className={`form-control ${styles.titleBug}`}
+                style={{ height: "40px" }}
+                ref={inputTitleRef}
+                placeholder="Title bug"
+              />
+            </div>
           </div>
-          <button
-            className={`btn btn-outline-primary ${styles.reportBtn}`}
-            onClick={formHandler}
-          >
-            Send Report
-          </button>
+          <div className={`col-3 ${styles.reportDescription}`}>
+            <div className="form-group">
+              <p>Description</p>
+              <textarea
+                className={`form-control ${styles.descBug}`}
+                style={{ height: "123px" }}
+                ref={descriptionRef}
+                placeholder="Description bug"
+              ></textarea>
+            </div>
+            <button
+              className={`btn btn-outline-primary ${styles.reportBtn}`}
+              onClick={formHandler}
+            >
+              Send Report
+            </button>
+          </div>
         </div>
       </div>
     </section>

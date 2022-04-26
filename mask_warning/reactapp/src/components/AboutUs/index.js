@@ -24,7 +24,6 @@ const AboutUs = () => {
       <Header />
       <div className={`container ${styles.aboutUs}`}>
         <div className="container">
-          <h2 className={styles.heading}>About Us</h2>
           <div className={`${styles.myTeam}`}>
             <h4 className={styles.headingMyTeam}>
               We’re here to guarantee your success

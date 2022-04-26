@@ -45,10 +45,6 @@ input {
   color: red;
 }
 
-.btnChangePassword {
-  margin-left: 300px;
-}
-
 .btnChangePassword button {
   font-size: 14px;
   padding: 5px 25px;

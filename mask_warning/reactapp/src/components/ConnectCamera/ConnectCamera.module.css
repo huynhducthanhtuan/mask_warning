@@ -3,6 +3,13 @@
   align-items: center;
 }
 
+.cameraConnect {
+  background: url(/src/assets/img/connectCamera.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
 .buttonLink {
   margin-left: 80%;
   background-color: #7877b9;
@@ -50,7 +57,7 @@
 }
 
 .formButton:hover {
-  opacity: 0.6;
+  opacity: 0.9;
 }
 
 .buttonConnect {

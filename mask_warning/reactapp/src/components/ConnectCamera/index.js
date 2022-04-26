@@ -31,24 +31,26 @@ const ConnectCamera = ({ setVideoStreamUrl }) => {
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />
-      <h1 className={`${styles.headerString} d-flex`}>Connect Camera</h1>
-      <div className={styles.formContentPart}>
-        <h2>Enter your camera video stream</h2>
-        <div className={styles.inputPart}>
-          <input
-            className={styles.formControl}
-            id="video-stream-input"
-            placeholder="Example: rtsp://admin:admin@192.168.11.105:8080/onvif13"
-            ref={videoStreamInputRef}
-          />
-        </div>
-        <div className={styles.formButton}>
-          <button
-            className={styles.buttonConnect}
-            onClick={handleConnectCamera}
-          >
-            Connect Camera
-          </button>
+      <div className={styles.cameraConnect}>
+        <h1 className={`${styles.headerString} d-flex`}>Connect Camera</h1>
+        <div className={styles.formContentPart}>
+          <h2>Enter your camera video stream</h2>
+          <div className={styles.inputPart}>
+            <input
+              className={styles.formControl}
+              id="video-stream-input"
+              placeholder="Example: rtsp://admin:admin@192.168.11.105:8080/onvif13"
+              ref={videoStreamInputRef}
+            />
+          </div>
+          <div className={styles.formButton}>
+            <button
+              className={styles.buttonConnect}
+              onClick={handleConnectCamera}
+            >
+              Connect Camera
+            </button>
+          </div>
         </div>
       </div>
     </section>

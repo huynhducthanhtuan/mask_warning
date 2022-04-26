@@ -22,23 +22,25 @@ const ReportHistory = () => {
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />
-      <div className={`row ${styles.camera__header}`}>
-        <div className={`col-3 ${styles.sideBar}`}>
-          <Link to="/report">
-            <div className={`d-flex ${styles.sideBar__home}`}>
-              <img src="./icons/home.png"></img>
-              <p>Report</p>
-            </div>
-          </Link>
-          <Link to="/report-history">
-            <div className={`d-flex ${styles.sideBar__home}`}>
-              <img src="./icons/report__history.png"></img>
-              <p>Report history</p>
-            </div>
-          </Link>
-        </div>
-        <div className={`col-9 ${styles.reportHistory}`}>
-          {reports && <CardReport reports={reports} />}
+      <div className="container">
+        <div className={`row ${styles.camera__header}`}>
+          <div className={`col-3 ${styles.sideBar}`}>
+            <Link to="/report">
+              <div className={`d-flex ${styles.sideBar__home}`}>
+                <img src="./icons/home.png"></img>
+                <p>Report</p>
+              </div>
+            </Link>
+            <Link to="/report-history">
+              <div className={`d-flex ${styles.sideBar__home}`}>
+                <img src="./icons/report__history.png"></img>
+                <p>Report history</p>
+              </div>
+            </Link>
+          </div>
+          <div className={`col-9 ${styles.reportHistory}`}>
+            {reports && <CardReport reports={reports} />}
+          </div>
         </div>
       </div>
     </section>

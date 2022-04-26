@@ -15,6 +15,11 @@
   height: unset;
   line-height: 18px;
   -webkit-box-shadow: none;
+  font-weight: 500;
+}
+
+.authenticated {
+  font-weight: 500;
 }
 
 .headerNavigation a {
@@ -73,8 +78,8 @@
   cursor: pointer;
 }
 
-.headerLogin:hover  {
-    cursor: pointer;
+.headerLogin:hover {
+  cursor: pointer;
 }
 
 .headerLogin a:hover {

@@ -60,92 +60,94 @@ const ProfileChangeInformation = () => {
   return (
     <section>
       <Header />
-      <div className="d-flex">
-        <ProfileSidebar userInfo={userInfo} />
-        {loadingPage ? (
-          <Loading />
-        ) : (
-          <section className={` col-9 ${styles.boxPersonalInformation}`}>
-            <div className={`d-flex ${styles.personalInformation}`}>
-              <img src="./icons/personalInformationImage.png"></img>
-              <span>Personal Information</span>
-            </div>
-            <ul className={styles.boxInformation}>
-              <li className={`d-flex ${styles.item}`}>
-                <label>Name: </label>
-                <p>{userInfo.fullName}</p>
-              </li>
-
-              <li className={`d-flex ${styles.item}`}>
-                <label>Email: </label>
-                <p>{userInfo.email}</p>
-              </li>
-            </ul>
-            <div className={styles.fillText}>
-              <span>
-                Please fill in all the fields marked with a red * below
-              </span>
-            </div>
-            <div className={styles.fillText}>
-              <span>Personal information</span>
-            </div>
-
-            <form>
+      <div className="container">
+        <div className="row">
+          <ProfileSidebar userInfo={userInfo} />
+          {loadingPage ? (
+            <Loading />
+          ) : (
+            <section className={` col-9 ${styles.boxPersonalInformation}`}>
+              <div className={`d-flex ${styles.personalInformation}`}>
+                <img src="./icons/personalInformationImage.png"></img>
+                <span>Personal Information</span>
+              </div>
               <ul className={styles.boxInformation}>
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Gender: </label>
-                  <select onChange={handleChange("gender")}>
-                    <option>Male</option>
-                    <option>Female</option>
-                    <option>Other</option>
-                  </select>
-                  <p className={styles.warning}>*</p>
+                  <label>Name: </label>
+                  <p>{userInfo.fullName}</p>
                 </li>
+
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Store name: </label>
-                  <input
-                    name="text"
-                    onChange={handleChange("storeName")}
-                    required
-                  />
-                  <p className={styles.warning}>*</p>
+                  <label>Email: </label>
+                  <p>{userInfo.email}</p>
                 </li>
               </ul>
               <div className={styles.fillText}>
-                <span>Contract Information</span>
+                <span>
+                  Please fill in all the fields marked with a red * below
+                </span>
               </div>
-              <ul className={styles.boxInformation}>
-                <Address setDistrict={setDistrict} setCity={setCity} />
-                <li className={`d-flex ${styles.item}`}>
-                  <label>Address: </label>
-                  <input
-                    name="text"
-                    onChange={handleChange("address")}
-                    required
-                  />
-                  <p className={styles.warning}>*</p>
-                </li>
-                <li className={`d-flex ${styles.item}`}>
-                  <label>Tel: </label>
-                  <input
-                    name="text"
-                    onChange={handleChange("phoneNumber")}
-                    required
-                  />
-                  <p className={styles.warning}>*</p>
-                </li>
-              </ul>
-              <div
-                className={` d-flex justify-content-center ${styles.btnChangePassword}`}
-              >
-                <button onClick={submitUpdateProfile}>Update</button>
-                <Link to="/profile">
-                  <button>Cancel</button>
-                </Link>
+              <div className={styles.fillText}>
+                <span>Personal information</span>
               </div>
-            </form>
-          </section>
-        )}
+
+              <form>
+                <ul className={styles.boxInformation}>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Gender: </label>
+                    <select onChange={handleChange("gender")}>
+                      <option>Male</option>
+                      <option>Female</option>
+                      <option>Other</option>
+                    </select>
+                    <p className={styles.warning}>*</p>
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Store name: </label>
+                    <input
+                      name="text"
+                      onChange={handleChange("storeName")}
+                      required
+                    />
+                    <p className={styles.warning}>*</p>
+                  </li>
+                </ul>
+                <div className={styles.fillText}>
+                  <span>Contract Information</span>
+                </div>
+                <ul className={styles.boxInformation}>
+                  <Address setDistrict={setDistrict} setCity={setCity} />
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Address: </label>
+                    <input
+                      name="text"
+                      onChange={handleChange("address")}
+                      required
+                    />
+                    <p className={styles.warning}>*</p>
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Tel: </label>
+                    <input
+                      name="text"
+                      onChange={handleChange("phoneNumber")}
+                      required
+                    />
+                    <p className={styles.warning}>*</p>
+                  </li>
+                </ul>
+                <div
+                  className={` col-8 d-flex justify-content-center ${styles.btnChangePassword}`}
+                >
+                  <button onClick={submitUpdateProfile}>Update</button>
+                  <Link to="/profile">
+                    <button>Cancel</button>
+                  </Link>
+                </div>
+              </form>
+            </section>
+          )}
+        </div>
       </div>
     </section>
   );

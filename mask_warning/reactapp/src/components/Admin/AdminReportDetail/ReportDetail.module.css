@@ -61,11 +61,21 @@
   display: flex;
   align-items: flex-end;
   margin: 20px 12px 20px;
+  transition: 0.5s;
 }
 .detailImageAndTitle img {
   width: 400px;
   height: 200px;
+  transform: scale(0.8);
+  scroll-behavior: smooth;
 }
+
+.detailImageAndTitle img:hover {
+  transform: scale(1);
+  width: 600px;
+  height: 400px;
+}
+
 .detailImageAndTitle h2 {
   margin-left: 50px;
   margin-bottom: 30px;

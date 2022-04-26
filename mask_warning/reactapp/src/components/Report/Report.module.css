@@ -1,9 +1,15 @@
 .camera__header {
   max-width: 1500px;
 }
+
+.cameraContainer {
+  background-color: #fefefe;
+}
+
 .sideBar {
   text-align: center;
   border-right: 1px solid #4444;
+  border-left: 1px solid #4444;
   height: 1000px;
   padding: 0;
 }
@@ -12,12 +18,13 @@
   justify-content: start;
   align-items: center;
   padding: 15px 0 15px 60px;
+  border-bottom: 1px solid #4444;
   width: 100%;
   transition: 0.5s;
 }
 
 .sideBar__home:hover {
-  background: #0075ff;
+  background: #a3f0fe;
   cursor: pointer;
 }
 
@@ -27,12 +34,12 @@
 }
 
 .sideBar__home p {
-  color: #0075ff;
+  color: #5d5fef;
   padding-left: 15px;
 }
 
 .chooseImage {
-  margin-top: 15px;
+  padding-top: 15px;
 }
 
 .chooseImage img {
@@ -77,7 +84,7 @@
 }
 
 .reportDescription {
-  margin-top: 15px;
+  padding-top: 15px;
 }
 
 .reportDescription p {
@@ -104,6 +111,7 @@
 .reportBtn {
   padding: 10px 35px;
   font-size: 16px;
+  transition: 0.6s;
 }
 .titleBug {
   height: "40px";

@@ -5,5 +5,6 @@ export const AboutUsSlick = styled.div`
     content: "←";
     background-color: #5d5fef;
     border-radius: 12px;
+    display: none;
   }
 `;

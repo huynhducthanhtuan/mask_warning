@@ -11,7 +11,8 @@
 }
 
 .avatarName {
-  width: 100%;
+  width: 70%;
+  margin-left: calc((100% - 70%) / 2);
 }
 .uploadBtn {
   margin: 0;
@@ -20,7 +21,7 @@
   font-size: 16px;
 }
 .formUploadImage button {
-  margin-left: calc((100% - 182) / 2);
+  margin-left: calc((100% - 182px) / 2);
   color: #595d7b;
   background: #b5befb;
   padding: 5px 40px;

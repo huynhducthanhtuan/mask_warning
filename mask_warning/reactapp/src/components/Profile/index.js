@@ -30,64 +30,66 @@ const Profile = () => {
   return (
     <section>
       <Header />
-      <div className="d-flex">
-        <ProfileSidebar userInfo={userInfo} />
-        <section className="col-9">
-          <div className={styles.personalInformation}>
-            <img src="./icons/personalInformationImage.png"></img>
-            <span>Personal Information</span>
-          </div>
-          {loadingPage ? (
-            <Loading />
-          ) : (
-            <>
-              <ul className={styles.boxInformation}>
-                <li className={`d-flex ${styles.item}`}>
-                  <p>Name: </p>
-                  <p>{userInfo.fullName}</p>
-                </li>
+      <div className="container">
+        <div className="row">
+          <ProfileSidebar userInfo={userInfo} />
+          <section className="col-9">
+            <div className={styles.personalInformation}>
+              <img src="./icons/personalInformationImage.png"></img>
+              <span>Personal Information</span>
+            </div>
+            {loadingPage ? (
+              <Loading />
+            ) : (
+              <>
+                <ul className={styles.boxInformation}>
+                  <li className={`d-flex ${styles.item}`}>
+                    <p>Name: </p>
+                    <p>{userInfo.fullName}</p>
+                  </li>
 
-                <li className={`d-flex ${styles.item}`}>
-                  <p>Email: </p>
-                  <p>{userInfo.email}</p>
-                </li>
-                <li className={`d-flex ${styles.item}`}>
-                  <p>Gender: </p>
-                  <p>{userInfo.gender}</p>
-                </li>
-                <li className={`d-flex ${styles.item}`}>
-                  <p>Store: </p>
-                  <p>{userInfo.storeName}</p>
-                </li>
-              </ul>
-              <div className={styles.personalInformation}>
-                <span>Contract Information</span>
-              </div>
-              <ul className={styles.boxInformation}>
-                <li className={`d-flex ${styles.item}`}>
-                  <p>Address: </p>
-                  <p>{userInfo.address}</p>
-                </li>
-                <li className={`d-flex ${styles.item}`}>
-                  <p>District: </p>
-                  <p>{userInfo.district}</p>
-                </li>
-                <li className={`d-flex ${styles.item}`}>
-                  <p>Province/City: </p>
-                  <p>{userInfo.hometown}</p>
-                </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <p>Email: </p>
+                    <p>{userInfo.email}</p>
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <p>Gender: </p>
+                    <p>{userInfo.gender}</p>
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <p>Store: </p>
+                    <p>{userInfo.storeName}</p>
+                  </li>
+                </ul>
+                <div className={styles.personalInformation}>
+                  <span>Contract Information</span>
+                </div>
+                <ul className={styles.boxInformation}>
+                  <li className={`d-flex ${styles.item}`}>
+                    <p>Address: </p>
+                    <p>{userInfo.address}</p>
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <p>District: </p>
+                    <p>{userInfo.district}</p>
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <p>Province/City: </p>
+                    <p>{userInfo.hometown}</p>
+                  </li>
 
-                <li className={`d-flex ${styles.item}`}>
-                  <p>Tell: </p>
-                  <p>{userInfo.phoneNumber}</p>
-                </li>
-              </ul>
-              <Link to="/profile-change-information">
-                <button className={styles.btnUpdate}>Update</button>
-              </Link>
-            </>
-          )}
-        </section>
+                  <li className={`d-flex ${styles.item}`}>
+                    <p>Tell: </p>
+                    <p>{userInfo.phoneNumber}</p>
+                  </li>
+                </ul>
+                <Link to="/profile-change-information">
+                  <button className={styles.btnUpdate}>Update</button>
+                </Link>
+              </>
+            )}
+          </section>
+        </div>
       </div>
     </section>
   );

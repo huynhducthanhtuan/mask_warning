@@ -1,5 +1,7 @@
 .aboutUs {
-  margin-bottom: 80px;
+  padding-bottom: 80px;
+  background-color: #eaeaea;
+  height: 100vh;
 }
 .heading {
   color: #3751fe;
@@ -18,6 +20,7 @@
   line-height: 88px;
   color: #0075ff;
   text-align: center;
+  padding: 35px;
 }
 .descMyTeam {
   background: #3182ce;

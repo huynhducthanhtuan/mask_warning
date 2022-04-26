@@ -48,7 +48,7 @@ const Header = () => {
   const render = () => {
     if (isAuthenticated()) {
       return (
-        <>
+        <div className={` d-flex ${styles.authenticated}`}>
           <Link to="/profile">
             <div className={styles.headerLogin}>
               <img src={UserAvatar} alt="" />
@@ -59,7 +59,7 @@ const Header = () => {
             <img src={LogOutIcon} alt="" />
             <p>Sign Out</p>
           </div>
-        </>
+        </div>
       );
     } else
       return (

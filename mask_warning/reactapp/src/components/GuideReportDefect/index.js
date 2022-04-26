@@ -17,7 +17,7 @@ const GuideReportDefect = () => {
     <section>
       <Header />
       <h2 className={styles.contentString}>
-        2. How to send the report to the admin
+        2. How to send the report to the admin?
       </h2>
 
       <div className={styles.headerGuide}>

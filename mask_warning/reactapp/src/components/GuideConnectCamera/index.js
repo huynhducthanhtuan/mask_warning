@@ -14,7 +14,7 @@ const GuideConnectCamera = () => {
   return (
     <section>
       <Header />
-      <h2 className={styles.contentString}>1.How to connect Camera</h2>
+      <h2 className={styles.contentString}>1.How to connect Camera?</h2>
 
       <div className={styles.headerGuide}>
         <div>
@@ -39,16 +39,6 @@ const GuideConnectCamera = () => {
             </p>
             <img className={styles.image} src={ButtonConnectCamera}></img>
           </div>
-        </div>
-
-        <div className={styles.item}>
-          <p className={styles.text}>
-            4. Fill Username and Password of Camera and click “Connect” button
-          </p>
-          <img
-            className={styles.image2}
-            src="./img/connect_camera_step4.png"
-          ></img>
         </div>
       </div>
 
