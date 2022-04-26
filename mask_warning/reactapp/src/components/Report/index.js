@@ -41,11 +41,15 @@ const Report = () => {
     };
     console.log(dataUpload);
     sendReport(dataUpload).then((result) => {
-      toast.success(result.status);
-      inputTitleRef.current.value = "";
-      descriptionRef.current.value = "";
-      setPreviewUrl(undefined);
-      console.log(result);
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        toast.success(result.status);
+        inputTitleRef.current.value = "";
+        descriptionRef.current.value = "";
+        setPreviewUrl(undefined);
+        // console.log(result);
+      }
     });
   };
   return (

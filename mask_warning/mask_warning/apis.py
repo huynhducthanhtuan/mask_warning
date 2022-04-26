@@ -106,11 +106,12 @@ def ViewProfile(request):
                 "email": doc.get("email"),
                 "gender": doc.get("gender"),
                 "address": doc.get("address").split(",")[0].strip(),
-                "district": doc.get("address").split(",")[1].strip(),
-                "hometown": doc.get("address").split(",")[2].strip(),
+                "ward": doc.get("address").split(",")[1].strip(),
+                "district": doc.get("address").split(",")[2].strip(),
+                "hometown": doc.get("address").split(",")[3].strip(),
                 "phoneNumber": doc.get("phoneNumber"),
                 "avatar": doc.get("avatar")
-            }
+            }git 
             return JsonResponse(result)
         except:
             return JsonResponse({"error": "User not found"})
@@ -124,6 +125,7 @@ def UpdateProfile(request):
         userId = body_data["userId"]
         hometown = body_data["hometown"]
         district = body_data["district"]
+        ward = body_data["ward"]
         address = body_data["address"]
         storeName = body_data["storeName"]
         phoneNumber = body_data["phoneNumber"]
@@ -133,7 +135,7 @@ def UpdateProfile(request):
         try:
             doc = db.collection(f"users").document(userId)
             doc.update({
-                'address': f'{address}, {district}, {hometown}',
+                'address': f'{address},{ward}, {district}, {hometown} ',
                 'phoneNumber': phoneNumber,
                 'storeName': storeName,
                 'gender': gender

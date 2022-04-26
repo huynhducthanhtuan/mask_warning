@@ -46,3 +46,9 @@ export { default as LoadingReport } from "../../assets/Gif/loadingReport.gif";
 
 //icons
 export { default as ArrowBack } from "../../assets/icons/arrow_back.png";
+
+//profile
+export { default as PersonalInformationImage } from "../../assets/icons/personalInformationImage.png";
+
+//sidebar
+export { default as iconProfilebar } from "../../assets/icons/iconProfilebar.png";
