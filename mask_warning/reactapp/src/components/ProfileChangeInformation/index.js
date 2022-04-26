@@ -44,7 +44,7 @@ const ProfileChangeInformation = () => {
     console.log(dataSubmit);
     updateProfile(dataSubmit).then((result) => {
       console.log(result);
-      toast.success(result.status);
+      toast.success("Update profile success".toLocaleUpperCase());
       navigate("/profile");
     });
   };

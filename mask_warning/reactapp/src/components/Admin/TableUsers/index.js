@@ -40,7 +40,7 @@ const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
               </td>
 
               <td>{user.storeName}</td>
-              {/* <td>{user.createdDate.split("T")[0]}</td> */}
+              <td>{user.createdDate.split("T")[0]}</td>
               <td>
                 <button
                   className={`btn btn-danger ${styles.actionDelete}`}

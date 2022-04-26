@@ -73,6 +73,7 @@ const ShowBox = () => {
     if (data.message === "Sign out success !!") {
       toast.success(data.message.toLocaleUpperCase());
       navigate("/admin/signin");
+      localStorage.removeItem("isAdminLoggedIn");
     }
   };
 
@@ -93,7 +94,13 @@ const ShowBox = () => {
           See More
         </button>
       </div>
-  </div>
+      <img
+        className={styles.homeIconTopRight}
+        src={LogOutIcon}
+        onClick={handleSignout}
+        alt=""
+      />
+    </div>
   );
 };
 
