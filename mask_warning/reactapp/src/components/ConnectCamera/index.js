@@ -4,16 +4,10 @@ import Header from "../Header";
 import { toast } from "react-toastify";
 import { isAuthenticated } from "../Auth";
 import { saveVideoStreamUrlAPI } from "../../apis";
+import { validateVideoStreamUrl } from "../../helpers/validator";
 
 const ConnectCamera = ({ setVideoStreamUrl }) => {
   const videoStreamInputRef = useRef();
-
-  const validateVideoStreamUrl = (videoStreamUrl) => {
-    const regex = new RegExp(
-      /(rtsp):\/\/([^\s@/]+)@([^\s/:]+)(?::([0-9]+))?(\/.*)/gm
-    );
-    return regex.test(videoStreamUrl);
-  };
 
   const handleConnectCamera = async () => {
     const videoStreamUrl = videoStreamInputRef.current.value.trim();
@@ -44,7 +38,7 @@ const ConnectCamera = ({ setVideoStreamUrl }) => {
           <input
             className={styles.formControl}
             id="video-stream-input"
-            placeholder="Ex: rtsp://admin:123@192.168.11.105:8080/onvif13"
+            placeholder="Example: rtsp://admin:admin@192.168.11.105:8080/onvif13"
             ref={videoStreamInputRef}
           />
         </div>

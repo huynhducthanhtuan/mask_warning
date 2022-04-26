@@ -7,6 +7,8 @@ from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewR
 from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl,searchUsers
 from .views import showCamera
 from .apis import GenerateUserName, GeneratePassword
+from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl
+from .apis import GenerateUserName, GeneratePassword, SearchUser
 
 
 urlpatterns = [
@@ -32,6 +34,7 @@ urlpatterns = [
 
     # Role Admin
     path('auth/admin/signin/', HandleSigninAdmin),
+    path('admin/search-user/', SearchUser),
     path('admin/create-new-user/', CreateNewUser),
     path('admin/create-new-user/generate-username/', GenerateUserName),
     path('admin/create-new-user/generate-password/', GeneratePassword),

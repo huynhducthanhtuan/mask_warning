@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./ReportDetail.module.css";
+import { toast } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
-import LeftControl from "../AdminLeftControl";
 import { CompleteIcon } from "../../../assets/ExportImages";
-import { viewReportDetail } from "../../../apis";
+import { viewReportDetail, confirmSolvedReportAPI } from "../../../apis";
+import LeftControl from "../AdminLeftControl";
 import Loading from "../../Helper/Loading";
 import Modal from "../../Helper/Modal";
 
@@ -20,6 +21,16 @@ const ReportDetailAdmin = () => {
     });
   };
 
+  const handleConfirmSolvedReport = async () => {
+    const data = await confirmSolvedReportAPI({ reportId });
+
+    if (data.status === "success") {
+      toast.success("Confirm Solved Report Success".toLocaleUpperCase());
+    } else {
+      toast.success("Confirm Solved Report Failed".toLocaleUpperCase());
+    }
+  };
+
   useEffect(() => {
     loadReportDetail();
   }, []);
@@ -31,7 +42,7 @@ const ReportDetailAdmin = () => {
           className={`mt-4 ${styles.detailComplete}`}
           onClick={() => setOpenModal(!openModal)}
         >
-          <img src={CompleteIcon} /> Complete
+          <img src={CompleteIcon} /> Confirm Solved
         </button>
       );
   };
@@ -42,8 +53,8 @@ const ReportDetailAdmin = () => {
         <Modal
           setOpenModal={setOpenModal}
           Dialog="Question?"
-          body="Are you sure this problem has been solved?
-          (You can’t not change back)"
+          body="Are you sure this problem has been solved ?"
+          action={handleConfirmSolvedReport}
         />
       )}
       <LeftControl toggle="reports" />
@@ -58,7 +69,7 @@ const ReportDetailAdmin = () => {
           }
         >
           <div className={styles.detailTopInformation}>
-            <h3 className={styles.detailId}>ID#{reportId}</h3>
+            <h3 className={styles.detailId}>Report ID: {reportId}</h3>
             <p>{report.createdDate.split("T")[0]}</p>
           </div>
           <div className={styles.detailUserInformation}>

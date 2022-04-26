@@ -8,7 +8,6 @@
 .cardBox {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
 }
 .cardBox img {
   width: 56px;
@@ -34,4 +33,8 @@
   font-weight: 400;
   margin-left: 10px;
   color: #2d9cdb;
+}
+
+.newNotification {
+  background-color: #ffcbc9;
 }

@@ -1,5 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../App";
+import { AboutUsIcon } from "../../assets/ExportImages";
+import { ToastContainer, toast } from "react-toastify";
+import { isAuthenticated } from "./../Auth/index";
 import styles from "./Home.module.css";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -7,15 +11,11 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./sliderDot.css";
-import { UserContext } from "../../App";
-import { AboutUsIcon } from "../../assets/ExportImages";
-import { ToastContainer, toast } from "react-toastify";
-import { isAuthenticated } from "./../Auth/index";
 
 const Home = () => {
   const { state, payload } = useContext(UserContext);
-  console.log(state, payload);
   const { token } = isAuthenticated();
+  
   var settings = {
     dots: true,
     infinite: true,

@@ -11,7 +11,6 @@ import {
   HomeIcon,
   GuideIcon,
   CameraIcon,
-  StatisticIcon,
   ReportIcon,
   LogoImage,
   SigninIcon,
@@ -101,15 +100,6 @@ const Header = () => {
             <Link to={token ? "/camera" : "/signin"} onClick={!token && notify}>
               <img alt="" src={CameraIcon} />
               <p>Camera</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to={token ? "/statistic" : "/signin"}
-              onClick={!token && notify}
-            >
-              <img alt="" src={StatisticIcon} />
-              <p>Statistic</p>
             </Link>
           </li>
           <li>

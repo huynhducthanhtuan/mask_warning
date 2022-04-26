@@ -9,5 +9,7 @@ const firebaseConfig = {
   messagingSenderId: "496830122240",
   appId: "1:496830122240:web:3505a9bc2f1cc8efd94be5",
 };
+
 export const app = initializeApp(firebaseConfig);
+
 export const storage = getStorage();

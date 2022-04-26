@@ -14,6 +14,7 @@ const ProfileChangeInformation = () => {
   const [userInfo, setUserInfo] = useState();
   const [district, setDistrict] = useState("");
   const [city, setCity] = useState("");
+  const [ward, setWard] = useState("");
 
   // const { userId } = useParams();
 
@@ -37,6 +38,7 @@ const ProfileChangeInformation = () => {
       gender: genderRef.current.value,
       hometown: city ? city : userInfo.hometown,
       district: district ? district : userInfo.district,
+      ward: ward ? ward : userInfo.ward,
       userId: user.userId,
     };
     console.log(dataSubmit);
@@ -123,6 +125,7 @@ const ProfileChangeInformation = () => {
                 <Address
                   setDistrict={setDistrict}
                   setCity={setCity}
+                  setWard={setWard}
                   defaultValue={{
                     district: userInfo.district,
                     hometown: userInfo.hometown,

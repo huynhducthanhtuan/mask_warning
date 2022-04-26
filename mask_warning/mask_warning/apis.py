@@ -1,18 +1,15 @@
 from tabnanny import check
 from tkinter.tix import Tree
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
-from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
 from datetime import datetime
 from googletrans import Translator
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
-import firebase_admin, smtplib, math, random, smtplib, ssl
-import string, pytz, json, os, jwt, re, pandas
 from numpy import true_divide
 from datetime import datetime, timedelta, date
+import firebase_admin, smtplib, math, random, smtplib, ssl
+import string, pytz, json, os, jwt, re, pandas
 DEFAULT_USER_AVATAR = "https://firebasestorage.googleapis.com/v0/b/mask-warning.appspot.com/o/user-avatars%2Fdefault-avatar.png?alt=media&token=5c74e841-ff74-43f3-a65d-583a35a5d98c"
 
 
@@ -111,7 +108,7 @@ def ViewProfile(request):
                 "hometown": doc.get("address").split(",")[3].strip(),
                 "phoneNumber": doc.get("phoneNumber"),
                 "avatar": doc.get("avatar")
-            }git 
+            }
             return JsonResponse(result)
         except:
             return JsonResponse({"error": "User not found"})
@@ -145,6 +142,56 @@ def UpdateProfile(request):
             return JsonResponse({"status": "fail"})
 
 
+def searchUsers(request):
+
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        pageSize = body_data['pageSize']
+        pageIndex = body_data['pageIndex']
+        query = body_data['query']
+
+        users_ref = db.collection(u'users').get()
+        usersList = []
+        startIndex = (pageIndex-1)*pageSize
+        endIndex = startIndex + pageSize
+
+        # find user match in through phone, full name, store and username
+        attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
+        for user in users_ref:
+            for atb in attributeFind:
+                if query.lower() in user.to_dict()[atb].lower():
+                    usersList.append({
+                    'fullName': user.to_dict()['fullName'],
+                    'storeName': user.to_dict()['storeName'],
+                    'createdDate': user.to_dict()['createdDate']
+                    })
+                    break
+                
+                
+        if usersList == []:
+            return JsonResponse({
+            'message' : 'There is no user match you query!',
+            'usersList': usersList
+            })
+
+        if startIndex >= len(usersList) or startIndex < 0:
+            return JsonResponse({
+                "error": "Index out of bound."
+            })
+        
+        return JsonResponse({
+            'message' : 'Search succesfully',
+            'pageIndex': pageIndex,
+            'pageSize': pageSize,
+            'startIndex': startIndex,
+            'endIndex' : endIndex,
+            # 'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex:]
+            'usersList': usersList
+        })
+
+
 def ChangeAvatar(request):
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
@@ -156,9 +203,7 @@ def ChangeAvatar(request):
         # Xử lí
         try:
             doc = db.collection(f"users").document(userId)
-            doc.update({
-                'avatar': avatar
-            })
+            doc.update({ 'avatar': avatar })
             return JsonResponse({"status": "success"})
         except:
             return JsonResponse({"status": "fail"})
@@ -178,29 +223,48 @@ def CalculateTimestampDifferent(timestampInDB):
     # Tính khoảng cách giữa timestamp ngay thời điểm hiện tại và timestamp trong DB
     timestamp_diff = abs(pandas.Timestamp(current_timestamp) - pandas.Timestamp(timestampInDB))
 
-    # Trả về số ngày
+    # Trả về số ngày chênh lệch
     return timestamp_diff.days
 
 
-def Notifications(request, quantity = 0):
-    docs = db.collection(f'notifications').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
+def Notifications(request, quantity = 4):
+    docs = db.collection(f'reports').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
     notifications = []
+    notificationQuantity = 0
 
     for doc in docs:
-        result = doc.to_dict()
-    
-        # CalculateTimestampDifferent
-        notification = doc.to_dict()
-        notification["timestampDifferent"] = CalculateTimestampDifferent(notification.get("createdDate"))
-        notifications.append(notification)
+        if notificationQuantity >= quantity:
+            break
+        else:
+            # Get report document
+            notification = doc.to_dict()
+
+            # Get user's fullName and avatar
+            userId = doc.to_dict().get("userId")
+            user = db.collection(f"users").document(userId)
+            userFullName = user.get().to_dict().get("fullName")
+            userImage = user.get().to_dict().get("avatar")
+
+            # Calculate timestamp different and report id
+            timestampDifferent = CalculateTimestampDifferent(notification.get("createdDate"))
+            reportId = doc.id
+
+            # Hook data
+            notification["reportId"] = reportId
+            notification["userFullName"] = userFullName
+            notification["userImage"] = userImage
+            notification["timestampDifferent"] = timestampDifferent
+
+            # Append notification into notifications
+            notifications.append(notification)
+
+            # Auto increase notificationQuantity
+            notificationQuantity = notificationQuantity + 1
         
-    return JsonResponse({
-        'notifications': notifications[:quantity] if quantity else notifications
-    })
+    return JsonResponse({ 'notifications': notifications })
 
 
 def ListOfUsers(request):
-
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
@@ -328,65 +392,7 @@ def checkExistAttributeValue(collection, attribute, value):
     return len(query_ref) > 0
 
 
-def addUser(request):
-    if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
-        body_unicode = request.body.decode('utf-8')
-        body_data = json.loads(body_unicode)
-        firstName = body_data['firstName']
-        lastName = body_data['lastName']
-        phoneNumber = body_data['phoneNumber']
-        storeName = body_data['storeName']
-        email = body_data['email']
-        dateOfBirth = body_data['dateOfBirth'] 
-        gender = body_data['gender'] 
-        address = body_data['address'] 
-        province = body_data['province'] 
-        district = body_data['district'] 
-        userName = body_data['userName'] 
-        password = body_data['password'] 
-        confirm_password = body_data['re_password']
-
-        try:
-            newUser = {
-                'address': f'{address}, {district}, {province}',
-                'createdDate': datetime.now(tz=datetime),
-                'email': email,
-                'fullName': f'{firstName} {lastName}',
-                'gender': gender,
-                'password': password,
-                'confirm_password': confirm_password,
-                'phoneNumber': phoneNumber,
-                'storeName': storeName,
-                'userName': userName,
-                'dateOfBirth': dateOfBirth
-            }
-
-
-            # Validate new user
-            validUser_Response = validateNewUser(newUser)
-            if(validUser_Response['isValid']):
-
-                del newUser['confirm_password']
-                user_ref = db.collection('users')
-
-                user_ref.add(newUser)
-                
-                validUser_Response['newUser'] = newUser
-
-                return JsonResponse(
-                    validUser_Response
-                )
-
-            
-            return JsonResponse(validUser_Response)
-        except:
-            return JsonResponse({
-                'error': 'error'
-            }) 
-        
-
-def searchUsers(request):
+def SearchUser(request):
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
@@ -604,8 +610,11 @@ def countNewUser(request):
 
 def CountNewNotificationsQuantity(request):
     quantity = 0
+    index = 0
+    newNotificationIndexList = []
+
     try:
-        docs = db.collection(f'notifications').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
+        docs = db.collection(f'reports').order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
 
         for doc in docs:
             notification = doc.to_dict()
@@ -613,8 +622,15 @@ def CountNewNotificationsQuantity(request):
 
             if timestampDifferent == 0:
                 quantity = quantity + 1
+
+                # Lấy ra index của các notification mới
+                newNotificationIndexList.append(index)
+                index = index + 1
             
-        return JsonResponse({'quantity': quantity})
+        return JsonResponse({
+            'quantity': quantity, 
+            'newNotificationIndexList': newNotificationIndexList
+        })
     except:
         return JsonResponse({'quantity': 0})
 
@@ -918,7 +934,7 @@ def HandleCreateNewPassword(request):
 
 def ViewReportList(request):
     try:
-        docs = db.collection(f"reports").stream()
+        docs = db.collection(f"reports").order_by(u'createdDate', direction=firestore.Query.DESCENDING).stream()
 
         result = []
         for doc in docs:
@@ -1047,9 +1063,7 @@ def ConfirmSolvedReport(request):
         # Xử lí
         try:
             doc = db.collection(f"reports").document(reportId)
-            doc.update({
-                'isSolved': True
-            })
+            doc.update({ 'isSolved': True })
             return JsonResponse({"status": "success"})
         except:
             return JsonResponse({"status": "fail"})
@@ -1198,7 +1212,6 @@ def CreateNewUser(request):
             return JsonResponse({"status": "fail"})
 
 
-# fire when onchange fullName
 def GenerateUserName(request):
     if request.method == "POST":
         # Lấy dữ liệu client gởi lên
@@ -1221,7 +1234,6 @@ def GenerateUserName(request):
             return JsonResponse({"userName": userName})
 
 
-# fire when load "Create new user" page
 def GeneratePassword(request):
     if request.method == "POST":
         randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=15))

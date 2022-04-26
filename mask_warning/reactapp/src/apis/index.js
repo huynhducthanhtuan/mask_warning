@@ -222,14 +222,21 @@ export const reportsHistory = (userId) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
-export const viewNotificationAPI = (quantity = 0) => {
-  return fetch(`/admin/notifications/${quantity}`)
+
+export const confirmSolvedReportAPI = (data) => {
+  return fetch("/admin/reports-manager/confirm-solved/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
     .then((res) => res.json())
     .catch((err) => err);
 };
 
-export const notifications = (userId) => {
-  return fetch("/admin/notifications/4")
+export const viewNotificationAPI = (quantity = 0) => {
+  return fetch(`/admin/notifications/${quantity}`)
     .then((res) => res.json())
     .catch((err) => err);
 };
@@ -241,7 +248,9 @@ export const deleteUser = (userId) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(userId),
-  });
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
 };
 
 export const countNewNotificationsQuantityAPI = () => {
@@ -252,6 +261,41 @@ export const countNewNotificationsQuantityAPI = () => {
 
 export const searchUsers = (data) => {
   return fetch("/searchUsers/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+export const createNewUserAPI = (data) => {
+  return fetch("/admin/create-new-user/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const generateUserNameAPI = (data) => {
+  return fetch("/admin/create-new-user/generate-username/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const generatePasswordAPI = (data) => {
+  return fetch("/admin/create-new-user/generate-password/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
