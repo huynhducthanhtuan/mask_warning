@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
+import styles from "./ProfileSidebar.module.css";
 import { Link } from "react-router-dom";
 import { updateAvatar } from "../../apis";
 import { isAuthenticated } from "../Auth";
 import { UploadImageToFirebase } from "../Helper/UploadImageToFirebase";
-import styles from "./ProfileSidebar.module.css";
-
 const path = "user-avatars";
 
 const ProfileSidebar = ({ userInfo }) => {
@@ -19,26 +18,29 @@ const ProfileSidebar = ({ userInfo }) => {
     if (!image) {
       return;
     }
+
     const fileReader = new FileReader();
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
     };
     fileReader.readAsDataURL(image);
+
     //upload image report to firebase storage
     UploadImageToFirebase(image, setProgress, setUrlImage, path);
   }, [image]);
 
   const upLoadChangeAvatar = async () => {
-    console.log("change avatar");
     await updateAvatar({ userId: user.userId, avatar: urlImage }).then(
       (result) => {
         console.log(result);
       }
     );
   };
+
   useEffect(() => {
     upLoadChangeAvatar();
   }, [urlImage]);
+
   return (
     <section className={`col-3 ${styles.profileSidebar}`}>
       <h2>Profile</h2>
@@ -54,7 +56,7 @@ const ProfileSidebar = ({ userInfo }) => {
           <button className={`${styles.uploadBtn} btn btn-primary`}>
             {" "}
             <label for="files" className={` btn`} style={{ fontSize: "12px" }}>
-              Upload Avatar
+              Change Avatar
             </label>
           </button>
 

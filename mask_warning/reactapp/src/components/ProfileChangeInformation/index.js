@@ -1,22 +1,21 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { isAuthenticated } from "./../Auth/index";
+import { updateProfile, viewProfile } from "../../apis";
+import { toast } from "react-toastify";
 import ProfileSidebar from "../ProfileSidebar";
 import styles from "./ProfileChangeInformation.module.css";
 import Header from "../Header";
 import Address from "../Admin/Address";
-import { isAuthenticated } from "./../Auth/index";
-import { updateProfile, viewProfile } from "../../apis";
-import { toast } from "react-toastify";
 import Loading from "../Helper/Loading";
 
 const ProfileChangeInformation = () => {
+  // const { userId } = useParams();
   const [loadingPage, setLoadingPage] = useState(true);
   const [userInfo, setUserInfo] = useState();
   const [district, setDistrict] = useState("");
   const [city, setCity] = useState("");
   const [ward, setWard] = useState("");
-
-  // const { userId } = useParams();
 
   const addressRef = useRef();
   const storeNameRef = useRef();
@@ -26,11 +25,11 @@ const ProfileChangeInformation = () => {
   const cityRef = useRef();
 
   const { user } = isAuthenticated();
-
   const navigate = useNavigate();
 
   const submitUpdateProfile = (e) => {
     e.preventDefault();
+
     const dataSubmit = {
       address: addressRef.current.value,
       storeName: storeNameRef.current.value,
@@ -41,16 +40,16 @@ const ProfileChangeInformation = () => {
       ward: ward ? ward : userInfo.ward,
       userId: user.userId,
     };
-    console.log(dataSubmit);
+
     updateProfile(dataSubmit).then((result) => {
-      console.log(result);
       toast.success("Update profile success".toLocaleUpperCase());
       navigate("/profile");
     });
   };
-  // console.log(cityRef.current.value);
+
   const loadViewProfile = async () => {
     const data = await viewProfile({ userId: user.userId });
+
     if (data.error === "User not found") {
       toast.error("User not found !!!".toLocaleUpperCase());
     } else {
@@ -58,11 +57,11 @@ const ProfileChangeInformation = () => {
       setLoadingPage(false);
     }
   };
+
   useEffect(() => {
     loadViewProfile();
   }, []);
 
-  // console.log(userInfo);
   return (
     <section>
       <Header />
