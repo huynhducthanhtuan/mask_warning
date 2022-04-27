@@ -1099,7 +1099,6 @@ def UpdateUser(request):
         storeName = body_data["storeName"]
         email = body_data["email"]
         
-        # Xử lí
         try:
             updateUser = {
                 'address': f'{address}, {ward}, {district}, {hometown}',
