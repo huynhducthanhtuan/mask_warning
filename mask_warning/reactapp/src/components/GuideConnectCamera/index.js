@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import styles from "./GuideConnectCamera.module.css";
 import Header from "../Header";
 import { Link } from "react-router-dom";
-// import { PictureConnectCamera } from "../../assets/ExportImages";
-// import { ButtonConnectCamera } from "../../assets/ExportImages";
-// import { ArrowRight } from "../../assets/ExportImages";
+import { PictureConnectCamera } from "../../assets/ExportImages";
+import { ButtonConnectCamera } from "../../assets/ExportImages";
+import { ArrowRight } from "../../assets/ExportImages";
 
 const GuideConnectCamera = () => {
   useEffect(() => {
@@ -30,21 +30,21 @@ const GuideConnectCamera = () => {
 
           <div className={styles.item}>
             <p className={styles.text}>2. Fill in your video stream </p>
-            {/* <img className={styles.image} src={PictureConnectCamera}></img> */}
+            <img className={styles.image} src={PictureConnectCamera}></img>
           </div>
 
           <div className={styles.item}>
             <p className={styles.text}>
               3. click on “connect camera” button in Camera page
             </p>
-            {/* <img className={styles.image} src={ButtonConnectCamera}></img> */}
+            <img className={styles.image} src={ButtonConnectCamera}></img>
           </div>
         </div>
       </div>
 
       <Link to="/guide-report-defect" className={styles.button}>
         <p className={styles.text}>Next guide 2</p>
-        {/* <img src={ArrowRight}></img> */}
+        <img src={ArrowRight}></img>
       </Link>
     </section>
   );

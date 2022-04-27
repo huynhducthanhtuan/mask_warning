@@ -50,11 +50,11 @@ export { default as LoadingReport } from "../../assets/Gif/loadingReport.gif";
 export { default as ArrowBack } from "../../assets/icons/arrow_back.png";
 
 //guide
-// export { default as PictureConnectCamera } from "../../assets/img/connect-camera.jpg";
-// export { default as ButtonConnectCamera } from "../../assets/img/btnConnectCamera.jpg";
-// export { default as ArrowRight } from "../../assets/img/arrowRight.png";
-// export { default as ArrowLeft } from "../../assets/img/arrowLeft.png";
-// export { default as ChooseImage } from "../../assets/img/chooseImage.jpg";
-// export { default as TitleBug } from "../../assets/img/titleBug.jpg";
-// export { default as Description } from "../../assets/img/description.jpg";
-// export { default as SendReport1 } from "../../assets/img/sendReport1.jpg";
+export { default as PictureConnectCamera } from "../../assets/img/connect-camera.jpg";
+export { default as ButtonConnectCamera } from "../../assets/img/btnConnectCamera.jpg";
+export { default as ArrowRight } from "../../assets/img/arrowRight.png";
+export { default as ArrowLeft } from "../../assets/img/arrowLeft.png";
+export { default as ChooseImage } from "../../assets/img/chooseImage.jpg";
+export { default as TitleBug } from "../../assets/img/titleBug.jpg";
+export { default as Description } from "../../assets/img/description.jpg";
+export { default as SendReport1 } from "../../assets/img/sendReport1.jpg";

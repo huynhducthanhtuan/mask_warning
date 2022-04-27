@@ -180,11 +180,11 @@ const Home = () => {
               what you met.
             </p>
           </div>
-          <div className={styles.homeButton}>
-            <Link to={state ? "/about-us" : "/signin"} onClick={notify}>
+          <Link to={state ? "/report" : "/signin"} onClick={notify}>
+            <div className={styles.homeButton}>
               <p>View more</p>
-            </Link>
-          </div>
+            </div>
+          </Link>
         </div>
       </section>
       <Footer />
