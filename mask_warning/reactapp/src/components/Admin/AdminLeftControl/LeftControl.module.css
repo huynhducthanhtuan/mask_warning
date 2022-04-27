@@ -48,9 +48,10 @@
   color: #0075ff;
 }
 .reportTitle {
-  font-weight: 300;
+  font-weight: 700;
   font-size: 16px;
   margin: 22px;
+  color: #0075ff;
 }
 .homeDecs {
   /* margin-top: 100px; */
