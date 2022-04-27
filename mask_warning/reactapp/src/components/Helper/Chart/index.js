@@ -1,17 +1,23 @@
-import React, {useEffect, useRef} from "react";
-import { Line, Bar } from "react-chartjs-2";
-import { Chart, registerables } from "chart.js";
-Chart.register(...registerables);
-
-const ChartAdmin= ({ newUsers = {} }) => {
-
-  const chartData = {
-    labels: [],
+export const data = {
+    labels: [
+      "Jan",
+      "Mar",
+      "May",
+      "July",
+      "Oct",
+      "a",
+      "a",
+      "a",
+      "a",
+      "b",
+      "b",
+      "c",
+    ],
   
     datasets: [
       {
-        label: "new user(s)",
-        data: newUsers,
+        label: "Iphone sales",
+        data: [65, 59, 80, 81, 56, 55, 40, 10, 60, 7, 6, 3],
         maxBarThickness: 50,
         fill: true,
         backgroundColor: "#6160DC",
@@ -25,8 +31,9 @@ const ChartAdmin= ({ newUsers = {} }) => {
         },
       },
     ],
-  };
-  const options = {
+};
+  
+export  const options = {
     plugins: { legend: { display: false } },
     layout: { padding: { bottom: 100 } },
     scales: {
@@ -36,10 +43,9 @@ const ChartAdmin= ({ newUsers = {} }) => {
           font: {
             size: 14,
           },
-          
         },
         grid: {
-          color: "rgba(75, 192, 192, 0.2)",
+          color: "#243240",
           font: {
             size: "12",
           },
@@ -53,17 +59,5 @@ const ChartAdmin= ({ newUsers = {} }) => {
           },
         },
       },
-
     },
   };
- 
-  
-  return (
-    <div className="mt-4">
-      <h2>Chart of new user</h2>
-      <Bar data={chartData} options={options} />
-    </div>
-  );
-}
-
-export default ChartAdmin;

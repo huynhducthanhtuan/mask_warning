@@ -305,3 +305,9 @@ export const generatePasswordAPI = (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 };
+
+export const countNewUsers = () => {
+  return fetch("/admin/countnewuser")
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};

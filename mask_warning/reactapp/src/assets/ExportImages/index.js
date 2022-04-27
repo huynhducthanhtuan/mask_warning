@@ -25,7 +25,7 @@ export { default as CompleteIcon } from "../../assets/icons/complete.png";
 export { default as reportManager } from "../../assets/icons/reports_manager.png";
 export { default as useManager } from "../../assets/icons/users_manager.png";
 export { default as averageHours } from "../../assets/icons/average_hours.png";
-export { default as newUsers } from "../../assets/icons/new_users.png";
+export { default as newUsersIcon } from "../../assets/icons/new_users.png";
 
 //report user detail
 export { default as BackButton } from "../icons/arrow.png";

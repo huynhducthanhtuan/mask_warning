@@ -8,7 +8,7 @@ from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantit
 from .views import showCamera
 from .apis import GenerateUserName, GeneratePassword
 from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl
-from .apis import GenerateUserName, GeneratePassword, SearchUser
+from .apis import GenerateUserName, GeneratePassword, SearchUser, countNewUser
 
 
 urlpatterns = [
@@ -50,4 +50,5 @@ urlpatterns = [
     path('admin/reports-manager/', ViewReportList),
     path('api-auth/', include('rest_framework.urls')),
     path('searchUsers/', searchUsers),
+    path('admin/countnewuser', countNewUser),
 ]
