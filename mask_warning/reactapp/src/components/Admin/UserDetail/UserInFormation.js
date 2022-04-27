@@ -30,7 +30,10 @@ const UserInFormation = ({ data }) => {
               <img src={Address} />
               <div>
                 <span>Address</span>
-                <p> {data.address}</p>
+                <p>
+                  {" "}
+                  {data.district}, {data.hometown}
+                </p>
               </div>
             </div>
             <div
@@ -58,8 +61,8 @@ const UserInFormation = ({ data }) => {
             >
               <img src={Boat} />
               <div>
-                <span>Day of birth</span>
-                <p> {data.DayOfBirth}</p>
+                <span>Gender</span>
+                <p> {data.gender}</p>
               </div>
             </div>
             <div

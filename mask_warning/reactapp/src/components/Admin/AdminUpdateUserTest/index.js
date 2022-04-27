@@ -1,27 +1,26 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import ProfileSidebar from "../ProfileSidebar";
-import styles from "./ProfileChangeInformation.module.css";
-import Header from "../Header";
-import Address from "../Admin/Address/Address";
-import { isAuthenticated } from "./../Auth/index";
-import { updateProfile, viewProfile } from "../../apis";
 import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { updateProfile, viewProfile } from "../../../apis";
 import {
   validateFullName,
   validateStoreName,
   validateEmail,
   validatePhoneNumber,
   validateAddress,
-} from "../../helpers/validator";
-import Loading from "../Helper/Loading";
+} from "../../../helpers/validator";
+import Header from "../../Header";
+import Loading from "../../Helper/Loading";
+import Address from "../../Admin/Address/Address";
+import LeftControl from "../AdminLeftControl";
+import styles from "./AdminUpdateUserTest.module.css";
 
-const ProfileChangeInformation = () => {
+const AdminUpdateUserTest = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const [userInfo, setUserInfo] = useState();
   const [cities, setCities] = useState([]);
-  const { user } = isAuthenticated();
   const navigate = useNavigate();
+  const { userId } = useParams();
 
   const addressRef = useRef();
   const storeNameRef = useRef();
@@ -74,26 +73,19 @@ const ProfileChangeInformation = () => {
           ? districtRef.current.value
           : userInfo.district,
         ward: wardRef.current.value ? wardRef.current.value : userInfo.ward,
-        userId: user.userId,
+        userId: userId,
       };
 
       updateProfile(dataSubmit).then((result) => {
         toast.success("Update profile success".toLocaleUpperCase());
-        navigate("/profile");
       });
     } else {
       toast.error(validateResult.error.toLocaleUpperCase());
     }
   };
 
-  const loadViewProfile = async () => {
-    const data = await viewProfile({ userId: user.userId });
-    if (data.error === "User not found") {
-      toast.error("User not found !!!".toLocaleUpperCase());
-    } else {
-      setUserInfo(data);
-      setLoadingPage(false);
-    }
+  const cancelUpdateProfile = () => {
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -109,6 +101,16 @@ const ProfileChangeInformation = () => {
   }, []);
 
   useEffect(() => {
+    const loadViewProfile = async () => {
+      const data = await viewProfile({ userId });
+      if (data.error === "User not found") {
+        toast.error("User not found !!!".toLocaleUpperCase());
+      } else {
+        setUserInfo(data);
+        setLoadingPage(false);
+      }
+    };
+
     loadViewProfile();
   }, []);
 
@@ -116,39 +118,30 @@ const ProfileChangeInformation = () => {
     <section>
       <Header />
       <div className="d-flex">
-        <ProfileSidebar userInfo={userInfo} />
+        <LeftControl toggle="reports" />
         {loadingPage ? (
           <Loading />
         ) : (
           <section className={` col-9 ${styles.boxPersonalInformation}`}>
             <div className={`d-flex ${styles.personalInformation}`}>
-              <img src="./icons/personalInformationImage.png"></img>
-              <span>Personal Information</span>
+              <span>Update user account</span>
             </div>
             <ul className={styles.boxInformation}>
               <li className={`d-flex ${styles.item}`}>
-                <label>Name: </label>
+                <label>Fullname </label>
                 <p>{userInfo.fullName}</p>
               </li>
 
               <li className={`d-flex ${styles.item}`}>
-                <label>Email: </label>
+                <label>Email </label>
                 <p>{userInfo.email}</p>
               </li>
             </ul>
-            <div className={styles.fillText}>
-              <span>
-                Please fill in all the fields marked with a red * below
-              </span>
-            </div>
-            <div className={styles.fillText}>
-              <span>Personal information</span>
-            </div>
 
             <form>
               <ul className={styles.boxInformation}>
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Gender: </label>
+                  <label>Gender</label>
                   <select ref={genderRef}>
                     {["Male", "Female", "Other"].map((gender, index) => {
                       if (gender === userInfo.gender) {
@@ -169,7 +162,7 @@ const ProfileChangeInformation = () => {
                   <p className={styles.warning}>*</p>
                 </li>
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Store name: </label>
+                  <label>Store name </label>
                   <input
                     name="text"
                     ref={storeNameRef}
@@ -179,9 +172,7 @@ const ProfileChangeInformation = () => {
                   <p className={styles.warning}>*</p>
                 </li>
               </ul>
-              <div className={styles.fillText}>
-                <span>Contract Information</span>
-              </div>
+
               <ul className={styles.boxInformation}>
                 {userInfo && (
                   <Address
@@ -197,7 +188,7 @@ const ProfileChangeInformation = () => {
                   />
                 )}
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Address: </label>
+                  <label>Address </label>
                   <input
                     name="text"
                     ref={addressRef}
@@ -207,7 +198,7 @@ const ProfileChangeInformation = () => {
                   <p className={styles.warning}>*</p>
                 </li>
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Phone number: </label>
+                  <label>Phone number </label>
                   <input
                     name="text"
                     ref={phoneNumberRef}
@@ -220,15 +211,8 @@ const ProfileChangeInformation = () => {
               <div
                 className={` d-flex justify-content-center ${styles.btnChangePassword}`}
               >
-                <button
-                  onClick={submitUpdateProfile}
-                  className={styles.updateBtn}
-                >
-                  Update
-                </button>
-                <Link to="/profile">
-                  <button className={styles.cancelBtn}>Cancel</button>
-                </Link>
+                <button onClick={submitUpdateProfile}>Update</button>
+                <button onClick={cancelUpdateProfile}>Cancel</button>
               </div>
             </form>
           </section>
@@ -238,4 +222,4 @@ const ProfileChangeInformation = () => {
   );
 };
 
-export default ProfileChangeInformation;
+export default AdminUpdateUserTest;

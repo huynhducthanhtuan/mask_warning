@@ -15,7 +15,7 @@
 }
 
 .boxInformation {
-  padding: 30px 40px;
+  padding: 20px 60px;
 }
 
 .boxInformation li {
@@ -47,7 +47,6 @@ input {
 
 .btnChangePassword {
   margin-left: 300px;
-  margin-bottom: 40px;
 }
 
 .btnChangePassword button {
@@ -62,8 +61,4 @@ input {
 
 .btnChangePassword button:hover {
   opacity: 0.7;
-}
-
-.cancelBtn {
-  background-color: #d81f1f !important;
 }

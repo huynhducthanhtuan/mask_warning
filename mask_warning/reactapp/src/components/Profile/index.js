@@ -69,6 +69,10 @@ const Profile = () => {
                   <p>{userInfo.address}</p>
                 </li>
                 <li className={`d-flex ${styles.item}`}>
+                  <p>Ward: </p>
+                  <p>{userInfo.ward}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
                   <p>District: </p>
                   <p>{userInfo.district}</p>
                 </li>
@@ -78,7 +82,7 @@ const Profile = () => {
                 </li>
 
                 <li className={`d-flex ${styles.item}`}>
-                  <p>Tell: </p>
+                  <p>Phone number: </p>
                   <p>{userInfo.phoneNumber}</p>
                 </li>
               </ul>

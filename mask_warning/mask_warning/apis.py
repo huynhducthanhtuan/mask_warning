@@ -123,6 +123,7 @@ def UpdateProfile(request):
         userId = body_data["userId"]
         hometown = body_data["hometown"]
         district = body_data["district"]
+        ward = body_data["ward"]
         address = body_data["address"]
         storeName = body_data["storeName"]
         phoneNumber = body_data["phoneNumber"]
@@ -132,7 +133,7 @@ def UpdateProfile(request):
         try:
             doc = db.collection(f"users").document(userId)
             doc.update({
-                'address': f'{address}, {district}, {hometown}',
+                'address': f'{address}, {ward}, {district}, {hometown}',
                 'phoneNumber': phoneNumber,
                 'storeName': storeName,
                 'gender': gender

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./AdminUpdateUser.module.css";
 import Frame from "../Frame";
-import Address from "../Address";
+import Address from "../Address/Address";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import {
@@ -15,16 +15,10 @@ import { viewProfile, updateUserAPI } from "../../../apis";
 
 const AdminUpdateUser = () => {
   const { userId } = useParams();
-  const [city, setCity] = useState("");
-  const [district, setDistrict] = useState("");
-  const [ward, setWard] = useState("");
   const [gender, setGender] = useState("");
   const [genderCheckedField, setGenderCheckedField] = useState("");
-  // const [oldAddress, setOldAddress] = useState({
-  //   hometown: "",
-  //   district: "",
-  //   ward: "",
-  // });
+  const [cities, setCities] = useState([]);
+  const [userInfo, setUserInfo] = useState();
 
   const genderRef = useRef();
   const fullNameRef = useRef();
@@ -32,35 +26,41 @@ const AdminUpdateUser = () => {
   const storeNameRef = useRef();
   const phoneNumberRef = useRef();
   const addressRef = useRef();
+  const wardRef = useRef();
+  const districtRef = useRef();
+  const cityRef = useRef();
   const userNameRef = useRef();
   const passwordRef = useRef();
 
-  const handleGetAndFillOldDatas = async () => {
-    const userInfo = await viewProfile({ userId });
-    const {
-      address,
-      ward,
-      district,
-      hometown,
-      fullName,
-      storeName,
-      email,
-      gender,
-      phoneNumber,
-      userName,
-      password,
-    } = userInfo;
+  const handleFillOldDatas = () => {
+    if (userInfo) {
+      const {
+        address,
+        ward,
+        district,
+        hometown,
+        fullName,
+        storeName,
+        email,
+        gender,
+        phoneNumber,
+        userName,
+        password,
+      } = userInfo;
 
-    fullNameRef.current.value = fullName;
-    emailRef.current.value = email;
-    addressRef.current.value = address;
-    phoneNumberRef.current.value = phoneNumber;
-    storeNameRef.current.value = storeName;
-    userNameRef.current.value = userName;
-    passwordRef.current.value = password;
+      fullNameRef.current.value = fullName;
+      emailRef.current.value = email;
+      addressRef.current.value = address;
+      wardRef.current.value = ward;
+      districtRef.current.value = district;
+      cityRef.current.value = hometown;
+      phoneNumberRef.current.value = phoneNumber;
+      storeNameRef.current.value = storeName;
+      userNameRef.current.value = userName;
+      passwordRef.current.value = password;
 
-    setGenderCheckedField(gender);
-    // setOldAddress({ hometown, district, ward });
+      setGenderCheckedField(gender);
+    }
   };
 
   const handleChangeGender = (e) => {
@@ -82,9 +82,10 @@ const AdminUpdateUser = () => {
     if (!isValidEmail.isValid) return { error: isValidEmail.error };
     if (!isValidStoreName.isValid) return { error: isValidStoreName.error };
     if (!isValidPhoneNumber.isValid) return { error: isValidPhoneNumber.error };
-    if (city === "") return { error: "Please select city" };
-    if (district === "") return { error: "Please select district" };
-    // if (wards === "") return { error: "Please select wards" };
+    if (cityRef.current.value === "") return { error: "Please select city" };
+    if (districtRef.current.value === "")
+      return { error: "Please select district" };
+    if (wardRef.current.value === "") return { error: "Please select ward" };
     if (!isValidAddress.isValid) return { error: isValidAddress.error };
     if (gender === "") return { error: "Please select gender" };
 
@@ -105,9 +106,9 @@ const AdminUpdateUser = () => {
         phoneNumber: phoneNumberRef.current.value,
         userName: userNameRef.current.value,
         password: passwordRef.current.value,
-        hometown: city,
-        district: district,
-        ward: ward,
+        hometown: cityRef.current.value,
+        district: districtRef.current.value,
+        ward: wardRef.current.value,
         address: addressRef.current.value,
       };
 
@@ -123,8 +124,26 @@ const AdminUpdateUser = () => {
     }
   };
 
+  useEffect(() => {
+    const getCities = async () => {
+      const resCities = await fetch(
+        "https://provinces.open-api.vn/api/?depth=3"
+      );
+      const res = await resCities.json();
+      setCities(await res);
+    };
+    getCities();
+  }, []);
+
   useEffect(async () => {
-    await handleGetAndFillOldDatas();
+    const handleGetUserInfo = async () => {
+      const userInfo = await viewProfile({ userId });
+      setUserInfo(userInfo);
+    };
+
+    await handleGetUserInfo();
+
+    handleFillOldDatas();
   }, []);
 
   return (
@@ -158,10 +177,15 @@ const AdminUpdateUser = () => {
               </li>
 
               <Address
-                setCity={setCity}
-                setDistrict={setDistrict}
-                setWard={setWard}
-                // defaultValue={oldAddress}
+                wardRef={wardRef}
+                districtRef={districtRef}
+                cityRef={cityRef}
+                cities={cities}
+                defaultValue={{
+                  district: (userInfo && userInfo.district) || "",
+                  hometown: (userInfo && userInfo.hometown) || "",
+                  ward: (userInfo && userInfo.ward) || "",
+                }}
               />
 
               <li>

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./AdminCreateUser.module.css";
 import Frame from "../Frame";
-import Address from "../Address";
+import Address from "../Address/Address";
 import { toast } from "react-toastify";
 import {
   validateFullName,
@@ -17,16 +17,19 @@ import {
 } from "../../../apis";
 
 const AdminCreateUser = () => {
+  const [cities, setCities] = useState([]);
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [ward, setWard] = useState("");
   const [gender, setGender] = useState("");
-
   const fullNameRef = useRef();
   const emailRef = useRef();
   const storeNameRef = useRef();
   const phoneNumberRef = useRef();
   const addressRef = useRef();
+  const wardRef = useRef();
+  const districtRef = useRef();
+  const cityRef = useRef();
   const userNameRef = useRef();
   const passwordRef = useRef();
 
@@ -105,6 +108,18 @@ const AdminCreateUser = () => {
     }
   };
 
+  useEffect(() => {
+    const getCities = async () => {
+      const resCities = await fetch(
+        "https://provinces.open-api.vn/api/?depth=3"
+      );
+      const res = await resCities.json();
+      setCities(await res);
+    };
+
+    getCities();
+  }, []);
+
   useEffect(async () => {
     await handleGeneratePassword();
   }, []);
@@ -140,12 +155,19 @@ const AdminCreateUser = () => {
                 ></input>
               </li>
 
-              <Address
-                setCity={setCity}
-                setDistrict={setDistrict}
-                setWard={setWard}
-                defaultValue={{ hometown: "", district: "", ward: "" }}
-              />
+              {cities != [] && (
+                <Address
+                  wardRef={wardRef}
+                  districtRef={districtRef}
+                  cityRef={cityRef}
+                  cities={cities}
+                  defaultValue={{
+                    district: "",
+                    hometown: "",
+                    ward: "",
+                  }}
+                />
+              )}
 
               <li>
                 <div className="d-flex">
