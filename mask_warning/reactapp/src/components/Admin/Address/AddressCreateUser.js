@@ -1,10 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Address.module.css";
 
-const Address = ({ wardRef, districtRef, cityRef, cities, defaultValue }) => {
+const AddressCreateUser = ({
+  wardRef,
+  districtRef,
+  cityRef,
+  cities,
+  defaultValue,
+}) => {
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
-  const [isSelect, setIsSelect] = useState(true);
 
   const handleChangeCity = async (event) => {
     setDistricts([]);
@@ -24,19 +29,6 @@ const Address = ({ wardRef, districtRef, cityRef, cities, defaultValue }) => {
   };
 
   const readDistrict = () => {};
-
-  useEffect(() => {
-    const getDistricts = cities.filter((city) => {
-      return city.name === defaultValue.hometown;
-    });
-
-    const getWards = getDistricts[0].districts.filter((district) => {
-      return district.name === defaultValue.district;
-    });
-
-    setDistricts(getDistricts[0].districts);
-    setWards(getWards[0].wards);
-  }, [defaultValue.hometown]);
 
   return (
     <React.Fragment>
@@ -117,4 +109,4 @@ const Address = ({ wardRef, districtRef, cityRef, cities, defaultValue }) => {
   );
 };
 
-export default Address;
+export default AddressCreateUser;

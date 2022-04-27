@@ -14,13 +14,13 @@
   margin-bottom: 20px;
 }
 
-.boxInformation {
-  padding: 30px 40px;
-}
-
 .boxInformation li {
   border-top: 1px solid #d9d9d9;
   padding: 15px 0px;
+}
+
+.boxPersonalInformation {
+  padding: 30px 80px !important;
 }
 
 .item label {
@@ -46,7 +46,6 @@ input {
 }
 
 .btnChangePassword {
-  margin-left: 300px;
   margin-bottom: 40px;
 }
 

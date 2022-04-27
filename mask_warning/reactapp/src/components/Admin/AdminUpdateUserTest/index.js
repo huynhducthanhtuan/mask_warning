@@ -212,7 +212,12 @@ const AdminUpdateUserTest = () => {
                 className={` d-flex justify-content-center ${styles.btnChangePassword}`}
               >
                 <button onClick={submitUpdateProfile}>Update</button>
-                <button onClick={cancelUpdateProfile}>Cancel</button>
+                <button
+                  onClick={cancelUpdateProfile}
+                  className={styles.btnCancel}
+                >
+                  Cancel
+                </button>
               </div>
             </form>
           </section>

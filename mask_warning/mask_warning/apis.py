@@ -1035,9 +1035,8 @@ def GenerateUserName(request):
 
 
 def GeneratePassword(request):
-    if request.method == "POST":
-        randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=15))
-        return JsonResponse({"password": randomString})
+    randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=15))
+    return JsonResponse({"password": randomString})
 
 
 def CreateNewUser(request):
@@ -1057,33 +1056,31 @@ def CreateNewUser(request):
         userName = body_data["userName"]
         password = body_data["password"]
         
-        # Xử lí
         try:
-            # Check email có đã tồn tại trong DB ?
             if CheckEmailExist(email):
-                return JsonResponse({"error": "Email already exists"})
+                return JsonResponse({"message": "Email is already exists"})
             else:
-                # Create new user
-                current_timestamp = GetCurrentTimestamp()
-                
-                newUser = {
-                    'address': f'{address}, {ward}, {district}, {hometown}',
-                    'avatar': DEFAULT_USER_AVATAR,
-                    'email': email,
-                    'createdDate': current_timestamp,
-                    'fullName': fullName,
-                    'gender': gender,
-                    'phoneNumber': phoneNumber,
-                    'storeName': storeName,
-                    'userName': userName,
-                    'password': password
-                }
-                randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
-                db.collection(f"users").document(f'{randomString}').set(newUser)
+                if CheckUserNameExist(userName):
+                    return JsonResponse({"message": "Username is already exists"})
+                else:
+                    newUser = {
+                        'address': f'{address}, {ward}, {district}, {hometown}',
+                        'avatar': DEFAULT_USER_AVATAR,
+                        'email': email,
+                        'createdDate': GetCurrentTimestamp(),
+                        'fullName': fullName,
+                        'gender': gender,
+                        'phoneNumber': phoneNumber,
+                        'storeName': storeName,
+                        'userName': userName,
+                        'password': password
+                    }
+                    randomString = "".join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=20))
+                    db.collection(f"users").document(f'{randomString}').set(newUser)
 
-                return JsonResponse({"status": "success"})
+                    return JsonResponse({"message": "success"})
         except:
-            return JsonResponse({"status": "fail"})
+            return JsonResponse({"message": "failed"})
 
 
 def UpdateUser(request):

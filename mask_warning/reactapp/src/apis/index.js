@@ -271,14 +271,8 @@ export const generateUserNameAPI = (data) => {
     .catch((err) => err);
 };
 
-export const generatePasswordAPI = (data) => {
-  return fetch("/admin/create-new-user/generate-password/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
+export const generatePasswordAPI = () => {
+  return fetch("/admin/create-new-user/generate-password/")
     .then((res) => res.json())
     .catch((err) => err);
 };

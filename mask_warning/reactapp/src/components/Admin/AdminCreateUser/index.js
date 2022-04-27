@@ -1,8 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
-import styles from "./AdminCreateUser.module.css";
-import Frame from "../Frame";
-import Address from "../Address/Address";
+import React, { useRef, useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import {
+  createNewUserAPI,
+  generateUserNameAPI,
+  generatePasswordAPI,
+} from "../../../apis";
 import {
   validateFullName,
   validateStoreName,
@@ -10,39 +13,28 @@ import {
   validatePhoneNumber,
   validateAddress,
 } from "../../../helpers/validator";
-import {
-  createNewUserAPI,
-  generateUserNameAPI,
-  generatePasswordAPI,
-} from "../../../apis";
+import Header from "../../Header";
+import Loading from "../../Helper/Loading";
+import LeftControl from "../AdminLeftControl";
+import AddressCreateUser from "../../Admin/Address/AddressCreateUser";
+import styles from "./AdminCreateUser.module.css";
 
-const AdminCreateUser = () => {
+const AdminUpdateUser = () => {
+  const [loadingPage, setLoadingPage] = useState(true);
   const [cities, setCities] = useState([]);
-  const [city, setCity] = useState("");
-  const [district, setDistrict] = useState("");
-  const [ward, setWard] = useState("");
-  const [gender, setGender] = useState("");
+  const navigate = useNavigate();
+
   const fullNameRef = useRef();
   const emailRef = useRef();
   const storeNameRef = useRef();
   const phoneNumberRef = useRef();
+  const genderRef = useRef();
   const addressRef = useRef();
   const wardRef = useRef();
   const districtRef = useRef();
   const cityRef = useRef();
   const userNameRef = useRef();
   const passwordRef = useRef();
-
-  const handleChangeGender = (e) => {
-    setGender(e.target.value);
-  };
-
-  const handleGeneratePassword = async () => {
-    const data = await generatePasswordAPI();
-
-    // auto fill into password input
-    passwordRef.current.value = data.password;
-  };
 
   const handleGenerateUserName = async (e) => {
     const data = await generateUserNameAPI({
@@ -51,6 +43,15 @@ const AdminCreateUser = () => {
 
     // auto fill into user name input
     userNameRef.current.value = data.userName;
+  };
+
+  const handleGeneratePassword = async () => {
+    const data = await generatePasswordAPI();
+
+    // auto fill into password input
+    if (data && data.password) {
+      passwordRef.current.value = data.password;
+    }
   };
 
   const handleValidateFields = () => {
@@ -67,207 +68,173 @@ const AdminCreateUser = () => {
     if (!isValidFullName.isValid) return { error: isValidFullName.error };
     if (!isValidEmail.isValid) return { error: isValidEmail.error };
     if (!isValidStoreName.isValid) return { error: isValidStoreName.error };
-    if (!isValidPhoneNumber.isValid) return { error: isValidPhoneNumber.error };
-    if (city === "") return { error: "Please select city" };
-    if (district === "") return { error: "Please select district" };
-    if (ward === "") return { error: "Please select ward" };
+    if (cityRef.current.value === "") return { error: "Please select city" };
+    if (districtRef.current.value === "")
+      return { error: "Please select district" };
+    if (wardRef.current.value === "") return { error: "Please select ward" };
     if (!isValidAddress.isValid) return { error: isValidAddress.error };
-    if (gender === "") return { error: "Please select gender" };
+    if (genderRef.current.value === "")
+      return { error: "Please select gender" };
+    if (!isValidPhoneNumber.isValid) return { error: isValidPhoneNumber.error };
 
     return { message: "success" };
   };
 
-  const handleCreateUser = async () => {
+  const submitCreateUser = async (e) => {
+    e.preventDefault();
     const validateResult = handleValidateFields();
 
     if (validateResult.message === "success") {
-      // Gather data
-      const newUser = {
+      const dataSubmit = {
         fullName: fullNameRef.current.value,
         email: emailRef.current.value,
-        gender: gender,
         storeName: storeNameRef.current.value,
         phoneNumber: phoneNumberRef.current.value,
+        gender: genderRef.current.value,
+        hometown: cityRef.current.value,
+        district: districtRef.current.value,
+        ward: wardRef.current.value,
+        address: addressRef.current.value,
         userName: userNameRef.current.value,
         password: passwordRef.current.value,
-        hometown: city,
-        district: district,
-        ward: ward,
-        address: addressRef.current.value,
       };
 
-      // Call API
-      const data = await createNewUserAPI(newUser);
-      if (data.status === "success") {
-        toast.success("Create new user success".toLocaleUpperCase());
-      } else {
-        toast.error("Create new user failed".toLocaleUpperCase());
+      const data = await createNewUserAPI(dataSubmit);
+      switch (data.message) {
+        case "Email is already exists":
+          toast.error("Email is already exists".toLocaleUpperCase());
+          break;
+        case "Username is already exists":
+          toast.error("Username is already exists".toLocaleUpperCase());
+          break;
+        case "failed":
+          toast.success("Create new user failed".toLocaleUpperCase());
+          break;
+        case "success":
+          toast.success("Create new user success".toLocaleUpperCase());
+          break;
       }
     } else {
       toast.error(validateResult.error.toLocaleUpperCase());
     }
   };
 
-  useEffect(() => {
+  const cancelCreateUser = () => {
+    navigate(-1);
+  };
+
+  useEffect(async () => {
     const getCities = async () => {
       const resCities = await fetch(
         "https://provinces.open-api.vn/api/?depth=3"
       );
       const res = await resCities.json();
-      setCities(await res);
+      setCities(res);
+      setLoadingPage(false);
     };
 
-    getCities();
-  }, []);
-
-  useEffect(async () => {
+    await getCities();
     await handleGeneratePassword();
   }, []);
 
   return (
     <section>
-      <Frame>
-        <section className={styles.containerCreateAccount}>
-          <h2>Create new user account</h2>
-          <div className="row">
-            <ul className="col-6">
-              <li>
-                <div className="d-flex">
-                  <label>Full name</label>
-                  <span>*</span>
-                </div>
+      <Header />
+      <div className="d-flex">
+        <LeftControl toggle="reports" />
+        {loadingPage ? (
+          <Loading />
+        ) : (
+          <section className={` col-9 ${styles.boxPersonalInformation}`}>
+            <div className={`d-flex ${styles.personalInformation}`}>
+              <span>Create new user account</span>
+            </div>
+            <ul className={styles.boxInformation}>
+              <li className={`d-flex ${styles.item}`}>
+                <label>Fullname </label>
                 <input
-                  type="text"
-                  placeholder="Enter full name"
-                  onBlur={handleGenerateUserName}
+                  name="text"
                   ref={fullNameRef}
-                ></input>
-              </li>
-              <li>
-                <div className="d-flex">
-                  <label>Store name</label>
-                  <span>*</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter store name"
-                  ref={storeNameRef}
-                ></input>
-              </li>
-
-              {cities != [] && (
-                <Address
-                  wardRef={wardRef}
-                  districtRef={districtRef}
-                  cityRef={cityRef}
-                  cities={cities}
-                  defaultValue={{
-                    district: "",
-                    hometown: "",
-                    ward: "",
-                  }}
+                  required
+                  onBlur={handleGenerateUserName}
                 />
-              )}
+              </li>
 
-              <li>
-                <div className="d-flex">
-                  <label>Address</label>
-                  <span>*</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter address"
-                  ref={addressRef}
-                ></input>
+              <li className={`d-flex ${styles.item}`}>
+                <label>Email </label>
+                <input name="email" ref={emailRef} required />
               </li>
             </ul>
-            <ul className="col-6">
-              <li>
-                <div className="d-flex">
-                  <label>Email</label>
-                  <span>*</span>
-                </div>
-                <input
-                  type="email"
-                  placeholder="Enter email"
-                  ref={emailRef}
-                ></input>
-              </li>
-              <li>
-                <div className="d-flex">
-                  <label>Phone number</label>
-                  <span>*</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter phone number"
-                  ref={phoneNumberRef}
-                ></input>
-              </li>
-              <li>
-                <div className="d-flex">
+
+            <form>
+              <ul className={styles.boxInformation}>
+                <li className={`d-flex ${styles.item}`}>
                   <label>Gender</label>
-                  <span>*</span>
-                </div>
-                <div
-                  className={`d-flex justify-content-between ${styles.genderCheckbox}`}
-                >
-                  <div className="form-check" onChange={handleChangeGender}>
-                    <div className={styles.genderItemPart}>
-                      <input
-                        className={`${styles.formCheckInput}`}
-                        type="radio"
-                        value="male"
-                        name="gender"
-                      />{" "}
-                      <span>Male</span>
-                    </div>
-                    <div className={styles.genderItemPart}>
-                      <input
-                        className={`${styles.formCheckInput}`}
-                        type="radio"
-                        value="female"
-                        name="gender"
-                      />{" "}
-                      <span>Female</span>
-                    </div>
-                    <div className={styles.genderItemPart}>
-                      <input
-                        className={`${styles.formCheckInput}`}
-                        type="radio"
-                        value="other"
-                        name="gender"
-                      />{" "}
-                      <span>Other</span>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="d-flex">
-                  <label>User name</label>
-                  <span>*</span>
-                </div>
-                <input type="text" disabled={true} ref={userNameRef}></input>
-              </li>
-              <li>
-                <div className="d-flex">
-                  <label>Password</label>
-                  <span>*</span>
-                </div>
-                <input type="text" disabled={true} ref={passwordRef}></input>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.submitButtonPart}>
-            <button type="submit" onClick={handleCreateUser}>
-              Submit
-            </button>
-          </div>
-        </section>
-      </Frame>
+                  <select ref={genderRef}>
+                    <option value={"Male"}>Male</option>
+                    <option value={"Female"}>Female</option>
+                    <option value={"Other"}>Other</option>
+                  </select>
+                  <p className={styles.warning}>*</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Store name </label>
+                  <input name="text" ref={storeNameRef} required />
+                  <p className={styles.warning}>*</p>
+                </li>
+              </ul>
+
+              <ul className={styles.boxInformation}>
+                {cities !== [] && (
+                  <AddressCreateUser
+                    wardRef={wardRef}
+                    districtRef={districtRef}
+                    cityRef={cityRef}
+                    cities={cities}
+                    defaultValue={{
+                      ward: "",
+                      district: "",
+                      hometown: "",
+                    }}
+                  />
+                )}
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Address </label>
+                  <input name="text" ref={addressRef} required />
+                  <p className={styles.warning}>*</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Phone number </label>
+                  <input name="text" ref={phoneNumberRef} required />
+                  <p className={styles.warning}>*</p>
+                </li>
+              </ul>
+              <ul className={styles.boxInformation}>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Username </label>
+                  <input name="text" ref={userNameRef} required />
+                  <p className={styles.warning}>*</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Password </label>
+                  <input name="text" ref={passwordRef} required />
+                  <p className={styles.warning}>*</p>
+                </li>
+              </ul>
+              <div
+                className={` d-flex justify-content-center ${styles.btnChangePassword}`}
+              >
+                <button onClick={submitCreateUser}>Create</button>
+                <button onClick={cancelCreateUser} className={styles.btnCancel}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </section>
+        )}
+      </div>
     </section>
   );
 };
 
-export default AdminCreateUser;
+export default AdminUpdateUser;
