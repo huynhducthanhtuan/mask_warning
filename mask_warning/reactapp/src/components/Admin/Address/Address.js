@@ -1,70 +1,50 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./Address.module.css";
 
-const Address = ({ setCity, setDistrict, setWard, defaultValue }) => {
-  const [cities, setCities] = useState([]);
-  const [cityCode, setCityCode] = useState(0);
+const Address = ({ wardRef, districtRef, cityRef, cities, defaultValue }) => {
   const [districts, setDistricts] = useState([]);
-  const [districtCode, setDistrictCode] = useState(0);
   const [wards, setWards] = useState([]);
+  const [isSelect, setIsSelect] = useState(true);
+  const handleChangeCity = async (event) => {
+    setDistricts([]);
+    setWards([]);
+    // console.log(cityRef.current.value);
+    const dis = cities.filter((city) => {
+      return city.name === cityRef.current.value;
+    });
+    setDistricts(dis[0].districts);
+  };
 
-  const districtRef = useRef();
-  const cityRef = useRef();
-  useEffect(() => {
-    const getCities = async () => {
-      const resCities = await fetch(
-        "https://provinces.open-api.vn/api/?depth=2"
-      );
-      const res = await resCities.json();
+  const handleChangeDistrict = async (event) => {
+    const ward = districts.filter((district) => {
+      return district.name === districtRef.current.value;
+    });
+    setWards(ward[0].wards);
+  };
 
-      setCities(await res);
-    };
-    getCities();
-  }, []);
-
-  const handleCityCode = async (event) => {
-    const getCityCode = event.target.value;
-    setCityCode(getCityCode);
+  const readDistrict = () => {
+    // const getDistricts = cities.filter((city) => {
+    //   return city.name === defaultValue.hometown;
+    // });
+    // setDistricts(getDistricts[0].districts);
+    // setIsSelect(false);
+    // console.log(getDistricts[0].districts);
+    // console.log(isSelect);
   };
 
   useEffect(() => {
-    const getDistrict = async () => {
-      if (cityCode !== 0) {
-        const resDistrict = await fetch(
-          `https://provinces.open-api.vn/api/p/${cityCode}?depth=2`
-        );
-        const res = await resDistrict.json();
-        setCity(res.name);
-        setDistricts(await res.districts);
-      }
-    };
-    getDistrict();
-  }, [cityCode]);
+    const getDistricts = cities.filter((city) => {
+      return city.name === defaultValue.hometown;
+    });
 
-  const handleDistrictCode = (event) => {
-    const getDistrictCode = event.target.value;
-    setDistrictCode(getDistrictCode);
-  };
+    // console.log(getDistricts[0].districts);
+    const getWards = getDistricts[0].districts.filter((district) => {
+      return district.name === defaultValue.district;
+    });
 
-  useEffect(() => {
-    const getWards = async () => {
-      if (districtCode !== 0) {
-        const resWards = await fetch(
-          `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`
-        );
-        const res = await resWards.json();
-        // console.log(res);
-        setWards(await res.wards);
-        setDistrict(res.name);
-      }
-    };
-    getWards();
-  }, [districtCode]);
-
-  const handleWard = (e) => {
-    const getWard = e.target.value;
-    setWard(getWard);
-  };
+    setDistricts(getDistricts[0].districts);
+    setWards(getWards[0].wards);
+  }, [defaultValue.hometown]);
 
   return (
     <React.Fragment>
@@ -73,15 +53,24 @@ const Address = ({ setCity, setDistrict, setWard, defaultValue }) => {
         <select
           name="city"
           className="form-select"
-          onChange={(e) => handleCityCode(e)}
+          onChange={(e) => handleChangeCity(e)}
           ref={cityRef}
         >
-          <option value="">--Select City--</option>
-          {cities.map((city, index) => (
-            <option key={index} value={city.code}>
-              {city.name}{" "}
-            </option>
-          ))}
+          {cities.map((city, index) => {
+            if (defaultValue.hometown === city.name) {
+              return (
+                <option key={index} value={city.name} selected>
+                  {city.name}{" "}
+                </option>
+              );
+            } else {
+              return (
+                <option key={index} value={city.name}>
+                  {city.name}{" "}
+                </option>
+              );
+            }
+          })}
         </select>
       </li>
       <li className={`d-flex ${styles.item}`}>
@@ -89,28 +78,46 @@ const Address = ({ setCity, setDistrict, setWard, defaultValue }) => {
         <select
           className="form-select"
           name="district"
-          onChange={(e) => handleDistrictCode(e)}
+          onChange={(e) => handleChangeDistrict(e)}
           ref={districtRef}
+          onClick={readDistrict}
         >
-          <option value="">--Select District--</option>
-          {districts.map((district, index) => (
-            <option key={index} value={district.code}>
-              {district.name}{" "}
-            </option>
-          ))}
-          s
+          {districts.map((district, index) => {
+            if (defaultValue.district === district.name) {
+              return (
+                <option key={index} value={district.name} selected>
+                  {district.name}{" "}
+                </option>
+              );
+            } else {
+              return (
+                <option key={index} value={district.name}>
+                  {district.name}{" "}
+                </option>
+              );
+            }
+          })}
         </select>
       </li>
       <li className={`d-flex ${styles.item}`}>
         <div className={`d-flex ${styles.boxContent}`}>
           <label className="">Wards</label>
-          <select className="form-select" onChange={(e) => handleWard(e)}>
-            <option value="">--Select Ward--</option>
-            {wards.map((ward, index) => (
-              <option key={index} value={ward.name}>
-                {ward.name}{" "}
-              </option>
-            ))}
+          <select className="form-select" ref={wardRef}>
+            {wards.map((ward, index) => {
+              if (defaultValue.ward === ward.name) {
+                return (
+                  <option key={index} value={ward.name} selected>
+                    {ward.name}{" "}
+                  </option>
+                );
+              } else {
+                return (
+                  <option key={index} value={ward.name}>
+                    {ward.name}{" "}
+                  </option>
+                );
+              }
+            })}
           </select>
         </div>
       </li>

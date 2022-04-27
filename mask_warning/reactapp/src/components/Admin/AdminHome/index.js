@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
-import styles from "./Home.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
+
 import StatisticCard from "../AdminStatisticCard";
 import LeftControl from "../AdminLeftControl";
 import ShowBox from "../ShowBox";
-// import { showNewUser } from "../../../apis";
+import styles from "./Home.module.css";
+
 import Loading from "../../Helper/Loading";
 import { ellipse, averageHours, newUsers } from "../../../assets/ExportImages";
 const HomeAdmin = () => {
@@ -12,9 +13,10 @@ const HomeAdmin = () => {
   const [toggle, setToggle] = useState("home");
   const [newUsers, setNewUsers] = useState({ newUser });
   const [statisticToggle, setStatisticToggle] = useState("m");
-  const isAdminLoggedIn = localStorage.getItem("isAdminLoggedIn") || false;
+  const isAdminLoggedIn = localStorage.getItem("isAdminLoggedIn");
 
   const navigate = useNavigate();
+
   // const loadDataNewUsers = () => {
   //   showNewUser().then((result) => {
   //     console.log(result);
@@ -103,7 +105,7 @@ const HomeAdmin = () => {
         </div>
       );
     } else {
-      navigate("/admin/signin");
+      return <Navigate to="/admin/signin" replace />;
     }
   };
 

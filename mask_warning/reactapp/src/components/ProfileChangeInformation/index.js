@@ -12,18 +12,25 @@ import Loading from "../Helper/Loading";
 const ProfileChangeInformation = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const [userInfo, setUserInfo] = useState();
-  const [district, setDistrict] = useState("");
-  const [city, setCity] = useState("");
-  const [ward, setWard] = useState("");
-
+  const [cities, setCities] = useState([]);
   // const { userId } = useParams();
-
+  useEffect(() => {
+    const getCities = async () => {
+      const resCities = await fetch(
+        "https://provinces.open-api.vn/api/?depth=3"
+      );
+      const res = await resCities.json();
+      setCities(await res);
+    };
+    getCities();
+  }, []);
   const addressRef = useRef();
   const storeNameRef = useRef();
   const phoneNumberRef = useRef();
   const genderRef = useRef();
   const districtRef = useRef();
   const cityRef = useRef();
+  const wardRef = useRef();
 
   const { user } = isAuthenticated();
 
@@ -36,9 +43,13 @@ const ProfileChangeInformation = () => {
       storeName: storeNameRef.current.value,
       phoneNumber: phoneNumberRef.current.value,
       gender: genderRef.current.value,
-      hometown: city ? city : userInfo.hometown,
-      district: district ? district : userInfo.district,
-      ward: ward ? ward : userInfo.ward,
+      hometown: cityRef.current.value
+        ? cityRef.current.value
+        : userInfo.hometown,
+      district: districtRef.current.value
+        ? districtRef.current.value
+        : userInfo.district,
+      ward: wardRef.current.value ? wardRef.current.value : userInfo.ward,
       userId: user.userId,
     };
     console.log(dataSubmit);
@@ -122,16 +133,19 @@ const ProfileChangeInformation = () => {
                 <span>Contract Information</span>
               </div>
               <ul className={styles.boxInformation}>
-                <Address
-                  setDistrict={setDistrict}
-                  setCity={setCity}
-                  setWard={setWard}
-                  defaultValue={{
-                    district: userInfo.district,
-                    hometown: userInfo.hometown,
-                    ward: userInfo.ward,
-                  }}
-                />
+                {userInfo && (
+                  <Address
+                    wardRef={wardRef}
+                    districtRef={districtRef}
+                    cityRef={cityRef}
+                    cities={cities}
+                    defaultValue={{
+                      district: userInfo.district,
+                      hometown: userInfo.hometown,
+                      ward: userInfo.ward,
+                    }}
+                  />
+                )}
                 <li className={`d-flex ${styles.item}`}>
                   <label>Address: </label>
                   <input
