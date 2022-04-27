@@ -37,6 +37,15 @@
   background: #f7fafc;
 }
 
+.solved{
+  width: 80%;
+  border-radius: 5px;
+  background: #66bb6a;
+  padding: 10px 25px;
+  margin: 15px auto;
+  justify-content: space-between;
+}
+
 .reportHistoryItem {
   width: 80%;
   border-radius: 5px;

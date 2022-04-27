@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./ReportHistory.module.css";
 const CardReport = ({ reports }) => {
+
   return reports.map((report, index) => {
     return (
       <Link to={`/report-history-detail/${report.reportId}`}>
-        <div className={`row ${styles.reportHistoryItem}`}>
+        <div className={report.isSolved ? `row ${styles.solved}` :
+          `row ${styles.reportHistoryItem}`}>
           <div className={`col-4 ${styles.reportHistoryLeft}`}>
             <h3>#{index + 1}</h3>
             <p>{report.title}</p>
