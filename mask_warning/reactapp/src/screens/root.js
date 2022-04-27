@@ -85,10 +85,10 @@ const ScreensRoot = () => {
         path="/admin/reports-manager/report-detail/:reportId"
         element={<AdminReportDetail />}
       />
-      <Route
+      {/* <Route
         path="/admin/reports-manager/user-detail/:userId"
         element={<AdminReportUserDetail />}
-      />
+      /> */}
       <Route
         path="/admin/user-manager/user-detail/:userId"
         element={<UserDetail />}

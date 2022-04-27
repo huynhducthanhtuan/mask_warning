@@ -8,6 +8,7 @@ import styles from "./Home.module.css";
 
 import Loading from "../../Helper/Loading";
 import { ellipse, averageHours, newUsers } from "../../../assets/ExportImages";
+import ChartAdmin from "../ChartAdmin";
 const HomeAdmin = () => {
   const newUser = [null, null, null];
   const [toggle, setToggle] = useState("home");
@@ -47,7 +48,7 @@ const HomeAdmin = () => {
         <div className="row">
           <LeftControl />
           <div className="col-10">
-            <div className={styles.homeTabContents}>
+            <div className={`${styles.homeTabContents} mb-4`}>
               <ShowBox />
               <div>
                 <div className={styles.homeStatisticButtonGroup}>
@@ -100,6 +101,7 @@ const HomeAdmin = () => {
                   />
                 </div>
               </div>
+              <ChartAdmin />
             </div>
           </div>
         </div>
