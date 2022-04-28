@@ -265,7 +265,7 @@ const AdminUpdateUserTest = () => {
                 </li>
               </ul>
               <div
-                className={` d-flex justify-content-center ${styles.btnChangePassword}`}
+                className={` d-flex justify-content-center ${styles.btnParts}`}
               >
                 <button onClick={submitUpdateUser}>Update</button>
                 <button onClick={cancelUpdateUser} className={styles.btnCancel}>

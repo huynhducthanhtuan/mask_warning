@@ -22,7 +22,7 @@ const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
           {users.map((user, index) => {
             return (
               <tr className={styles.rowValueUser} key={index}>
-                <Link to={`/admin/users-manager/user-detail/${user.userId}`}>
+                <Link to={`/admin/reports-manager/user-detail/${user.userId}`}>
                   <td className={styles.customerName}>
                     <div
                       className={styles.avatarUserManager}
@@ -39,8 +39,6 @@ const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
                     className={`btn btn-danger ${styles.actionDelete}`}
                     onClick={() => {
                       setOpenModal(!OpenModal);
-
-                      // setId user for Delete
                       setUserIdToDelete(user.userId);
                     }}
                   >
@@ -54,7 +52,7 @@ const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
                       );
                     }}
                   >
-                    Edit
+                    Update
                   </button>
                 </td>
               </tr>
