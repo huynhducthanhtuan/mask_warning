@@ -4,8 +4,11 @@ from .views import showCamera
 from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, ChangeAvatar, HandleChangePassword, CreateNewUser
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
+from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl,searchUsers
+from .views import showCamera
+from .apis import GenerateUserName, GeneratePassword
 from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl
-from .apis import GenerateUserName, GeneratePassword, SearchUser
+from .apis import GenerateUserName, GeneratePassword, SearchUser, countNewUser
 
 
 urlpatterns = [
@@ -46,4 +49,6 @@ urlpatterns = [
     path('admin/reports-manager/confirm-solved/', ConfirmSolvedReport),
     path('admin/reports-manager/', ViewReportList),
     path('api-auth/', include('rest_framework.urls')),
+    path('searchUsers/', searchUsers),
+    path('admin/countnewuser', countNewUser),
 ]

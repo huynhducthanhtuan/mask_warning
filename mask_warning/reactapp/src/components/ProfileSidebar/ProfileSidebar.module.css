@@ -11,8 +11,10 @@
 }
 
 .avatarName {
-  width: 70%;
-  margin-left: calc((100% - 70%) / 2);
+  width: 300px;
+  height: 300px;
+  border-radius: 4px;
+  margin-left: calc((100% - 82%) / 2);
 }
 .uploadBtn {
   margin: 0;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { updateAvatar } from "../../apis";
+import { iconProfilebar } from "../../assets/ExportImages";
 import { isAuthenticated } from "../Auth";
 import { UploadImageToFirebase } from "../Helper/UploadImageToFirebase";
 import styles from "./ProfileSidebar.module.css";
@@ -72,13 +73,13 @@ const ProfileSidebar = ({ userInfo }) => {
         <ul>
           <Link to="/profile">
             <li>
-              <img src="./icons/iconProfilebar.png"></img>
+              <img src={iconProfilebar}></img>
               <p>Personal information</p>
             </li>
           </Link>
           <Link to="/profile-password">
             <li>
-              <img src="./icons/iconProfilebar.png"></img>
+              <img src={iconProfilebar}></img>
               <p>Password</p>
             </li>
           </Link>

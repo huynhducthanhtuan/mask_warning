@@ -1,50 +1,70 @@
-
 .camera_header {
-    border-top: 1px solid #3333;
+  border-top: 1px solid #3333;
+}
+
+.reportHistoryDetail.solved {
+  background-color: #ccff90;
+  height: 100vh;
 }
 
 .reportHistoryDetail {
-    padding: 20px 65px;
+  padding: 20px 65px;
 }
 
 .reportHistoryLeft {
-    display: grid;
-    vertical-align: middle;
+  display: grid;
+  vertical-align: middle;
 }
 
 .reportHistoryDetailLeft h3 {
-    font-size: 36px;
-    font-weight: bold;
-    text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  color: #5d5fef;
 }
 
 .reportHistoryDetailLeft p {
-    font-size: 12px;
-    padding: 5px 15px;
-    font-weight: bold;
-    background: #C8C2EB;
-    text-align: center;
-    border-radius: 30px;
+  font-size: 15px;
+  padding: 5px 15px;
+  font-weight: bold;
+  background: #c8c2eb;
+  text-align: center;
+  border-radius: 30px;
 }
 
 .reportHistoryMiddle p {
-    font-size: 12px;
-    padding-top: 40px;
+  font-size: 12px;
+  padding-top: 40px;
 }
 
 .reportHistoryDetailText {
-    font-size: 12px;
-    padding: 5px 15px;
-    font-weight: 300;
-    background: #C8C2EB;
-    border-radius: 30px;
-    margin-top: 10px;
-    height: 140px;
+  font-size: 12px;
+  padding: 5px 15px;
+  font-weight: 300;
+  background: #c8c2eb;
+  border-radius: 30px;
+  margin-top: 10px;
+  height: 140px;
 }
 
 .reportHistoryBack {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.imgReport {
+  width: 20%;
+  height: 200px;
+  margin-top: 20px;
+}
+
+.reportHistoryDetailRight p {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.imgReport img {
+  width: 100%;
 }

@@ -31,7 +31,7 @@ const ReportsManagerAdmin = (onClick) => {
 
   return (
     <section className={` container ${styles.reportsMain}`}>
-      <div className="row">
+      <div className={`row ${styles.rowReport}`}>
         <LeftControl toggle="reports" />
         <div className={` col-10 ${styles.reportsRight}`}>
           <ShowBox />

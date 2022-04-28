@@ -137,15 +137,17 @@
 .homeStatisticButton p {
   cursor: pointer;
   margin-left: 5px;
-  opacity: 0.4;
+  opacity: 0.5;
+  transition: 0.2s;
 }
 .homeStatisticButton.active {
   font-weight: 700;
+  opacity: 1;
 }
 .homeStatisticCards {
   width: 500px;
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
 }
 
 .buttonSeeMore,

@@ -7,6 +7,7 @@ import { updateProfile, viewProfile } from "../../apis";
 import { isAuthenticated } from "../Auth";
 import { toast } from "react-toastify";
 import Loading from "../Helper/Loading";
+import { PersonalInformationImage } from "../../assets/ExportImages";
 
 const Profile = () => {
   const { user } = isAuthenticated();
@@ -15,6 +16,7 @@ const Profile = () => {
 
   const loadViewProfile = async () => {
     const data = await viewProfile({ userId: user.userId });
+    console.log(data);
     if (data.error === "User not found") {
       toast.error("User not found !!!".toLocaleUpperCase());
     } else {
@@ -22,11 +24,11 @@ const Profile = () => {
       setLoadingPage(false);
     }
   };
-
+  console.log(userInfo);
   useEffect(() => {
     loadViewProfile();
   }, []);
-  // console.log(userInfo);
+
   return (
     <section>
       <Header />
@@ -35,7 +37,7 @@ const Profile = () => {
           <ProfileSidebar userInfo={userInfo} />
           <section className="col-9">
             <div className={styles.personalInformation}>
-              <img src="./icons/personalInformationImage.png"></img>
+              <img src={PersonalInformationImage}></img>
               <span>Personal Information</span>
             </div>
             {loadingPage ? (
@@ -70,6 +72,10 @@ const Profile = () => {
                     <p>{userInfo.address}</p>
                   </li>
                   <li className={`d-flex ${styles.item}`}>
+                    <p>Ward: </p>
+                    <p>{userInfo.ward}</p>
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
                     <p>District: </p>
                     <p>{userInfo.district}</p>
                   </li>
@@ -83,7 +89,7 @@ const Profile = () => {
                     <p>{userInfo.phoneNumber}</p>
                   </li>
                 </ul>
-                <Link to="/profile-change-information">
+                <Link to={`/profile-change-information`}>
                   <button className={styles.btnUpdate}>Update</button>
                 </Link>
               </>

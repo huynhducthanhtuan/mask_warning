@@ -7,9 +7,16 @@ import { BellIcon, LogOutIcon } from "../../../assets/ExportImages";
 import {
   viewNotificationAPI,
   countNewNotificationsQuantityAPI,
+  signOutApi,
 } from "../../../apis";
 
+import { toast } from "react-toastify";
+import Modal from "../../Helper/Modal";
+
 const ShowBox = () => {
+  const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+
   const [showBox, setShowBox] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [newNotificationsQuantity, setNewNotificationsQuantity] = useState();
@@ -60,6 +67,16 @@ const ShowBox = () => {
     await getNewNotificationsQuantity();
   }, []);
 
+  const handleSignout = async () => {
+    const data = await signOutApi();
+    console.log(data);
+    if (data.message === "Sign out success !!") {
+      toast.success(data.message.toLocaleUpperCase());
+      navigate("/admin/signin");
+      localStorage.removeItem("isAdminLoggedIn");
+    }
+  };
+
   return (
     <div className={styles.homeTopRightControl}>
       <p>Admin</p>
@@ -77,7 +94,12 @@ const ShowBox = () => {
           See More
         </button>
       </div>
-      <img className={styles.homeIconTopRight} src={LogOutIcon} />
+      <img
+        className={styles.homeIconTopRight}
+        src={LogOutIcon}
+        onClick={handleSignout}
+        alt=""
+      />
     </div>
   );
 };

@@ -103,8 +103,9 @@ def ViewProfile(request):
                 "email": doc.get("email"),
                 "gender": doc.get("gender"),
                 "address": doc.get("address").split(",")[0].strip(),
-                "district": doc.get("address").split(",")[1].strip(),
-                "hometown": doc.get("address").split(",")[2].strip(),
+                "ward": doc.get("address").split(",")[1].strip(),
+                "district": doc.get("address").split(",")[2].strip(),
+                "hometown": doc.get("address").split(",")[3].strip(),
                 "phoneNumber": doc.get("phoneNumber"),
                 "avatar": doc.get("avatar")
             }
@@ -121,6 +122,7 @@ def UpdateProfile(request):
         userId = body_data["userId"]
         hometown = body_data["hometown"]
         district = body_data["district"]
+        ward = body_data["ward"]
         address = body_data["address"]
         storeName = body_data["storeName"]
         phoneNumber = body_data["phoneNumber"]
@@ -130,7 +132,7 @@ def UpdateProfile(request):
         try:
             doc = db.collection(f"users").document(userId)
             doc.update({
-                'address': f'{address}, {district}, {hometown}',
+                'address': f'{address},{ward}, {district}, {hometown} ',
                 'phoneNumber': phoneNumber,
                 'storeName': storeName,
                 'gender': gender
@@ -138,6 +140,56 @@ def UpdateProfile(request):
             return JsonResponse({"status": "success"})
         except:
             return JsonResponse({"status": "fail"})
+
+
+def searchUsers(request):
+
+    if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        pageSize = body_data['pageSize']
+        pageIndex = body_data['pageIndex']
+        query = body_data['query']
+
+        users_ref = db.collection(u'users').get()
+        usersList = []
+        startIndex = (pageIndex-1)*pageSize
+        endIndex = startIndex + pageSize
+
+        # find user match in through phone, full name, store and username
+        attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
+        for user in users_ref:
+            for atb in attributeFind:
+                if query.lower() in user.to_dict()[atb].lower():
+                    usersList.append({
+                    'fullName': user.to_dict()['fullName'],
+                    'storeName': user.to_dict()['storeName'],
+                    'createdDate': user.to_dict()['createdDate']
+                    })
+                    break
+                
+                
+        if usersList == []:
+            return JsonResponse({
+            'message' : 'There is no user match you query!',
+            'usersList': usersList
+            })
+
+        if startIndex >= len(usersList) or startIndex < 0:
+            return JsonResponse({
+                "error": "Index out of bound."
+            })
+        
+        return JsonResponse({
+            'message' : 'Search succesfully',
+            'pageIndex': pageIndex,
+            'pageSize': pageSize,
+            'startIndex': startIndex,
+            'endIndex' : endIndex,
+            # 'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex:]
+            'usersList': usersList
+        })
 
 
 def ChangeAvatar(request):
@@ -358,11 +410,13 @@ def SearchUser(request):
         attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
         for user in users_ref:
             for atb in attributeFind:
-                if query in user.to_dict()[atb].lower():
+                if query.lower() in user.to_dict()[atb].lower():
                     usersList.append({
                     'fullName': user.to_dict()['fullName'],
-                    'storeName': user.to_dict()['storeName'],
-                    'createdDate': user.to_dict()['createdDate']
+                    'storeName': user.to_dict()['storeName'],   
+                    'createdDate': user.to_dict()['createdDate'],
+                    'avatar': user.to_dict()['avatar'],
+                    "userId": user.id
                     })
                     break
                 
@@ -376,6 +430,8 @@ def SearchUser(request):
         if startIndex >= len(usersList) or startIndex < 0:
             return JsonResponse({
                 "error": "Index out of bound."
+
+
             })
         
         return JsonResponse({
@@ -384,7 +440,8 @@ def SearchUser(request):
             'pageSize': pageSize,
             'startIndex': startIndex,
             'endIndex' : endIndex,
-            'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+            # 'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+            'usersList': usersList
         })
 
 
@@ -399,6 +456,79 @@ def countNewUserInRange(startTime, endTime, users):
             newUser += 1
 
     return newUser
+
+def countNewUserDaily(users):
+    currentDay = date.today()
+    revenueByDay = {}
+
+    for i in range(-6,1):
+        iDayAgo = currentDay + timedelta(days=i)
+        revenueByDay[iDayAgo.strftime('%a')] = countNewUserInRange(iDayAgo, iDayAgo,users)
+
+    return revenueByDay
+
+
+
+def countNewUserWeekly(users):
+    currentDay = date.today()
+    fourWeekAgo = date(currentDay.year, currentDay.month, currentDay.day) - timedelta(days=currentDay.weekday(), weeks=3)
+
+    newUserWeekly = {}
+
+    for i in range(1,5):
+        passWeek = fourWeekAgo + timedelta(weeks=i-1)
+        weekRange = passWeek.strftime('%d') + '/' + passWeek.strftime('%m')
+
+        newUserInWeek = countNewUserInRange(
+            passWeek,
+            passWeek + timedelta(days=6),
+            users
+            )
+
+        passWeek = fourWeekAgo + timedelta(weeks=i)
+        weekRange += '->' + passWeek.strftime('%d') + '/' + passWeek.strftime('%m')
+        
+        newUserWeekly[weekRange] = newUserInWeek
+
+        
+
+    return newUserWeekly
+    
+def countNewUserMonthly(users):
+    currentDay = date.today()
+    middleDay = date(currentDay.year, currentDay.month, 15)
+    newUserMonthly = {}
+
+
+    for i in range(-12,1):
+        i4TimesDayAgo = middleDay + timedelta(weeks=4*i)
+        pastYears = i4TimesDayAgo.year
+        pastMonth = i4TimesDayAgo.month
+        monthString = i4TimesDayAgo.strftime('%b') + '-' + str(pastYears)
+        newUserMonthly[monthString]= countNewUserInRange(date(pastYears, pastMonth, 1),
+                                                date(pastYears, pastMonth, days_in_month(pastMonth,pastYears)),
+                                                users
+                                                )
+
+    return newUserMonthly
+
+def countNewUser(request):
+   
+    users = db.collection(f"users").get()
+    newUserDaily  = countNewUserDaily(users)
+    newUserWeekly  = countNewUserWeekly(users)
+    newUserMonthly  = countNewUserMonthly(users)
+    countNewUser = {
+        'newUserDaily' : newUserDaily ,
+        'newUserWeekly' : newUserWeekly ,
+        'newUserMonthly' : newUserMonthly 
+    }
+
+    
+    return JsonResponse({
+        'message' : 'Succesfully',
+        'countNewUser' :  countNewUser,
+    })
 
 
 def getRevenueInRange(startTime, endTime):
@@ -537,18 +667,18 @@ def countNewUserByYear(users):
     return newUser
     
 
-def countNewUser(request):
-    users = db.collection(f"users").get()
-    newUserByWeek = countNewUserByWeek(users)
-    newUserByMonth = countNewUserByMonth(users)
-    newUserByYear = countNewUserByYear(users)
-    newUser = [newUserByWeek, newUserByMonth, newUserByYear]
+# def countNewUser(request):
+#     users = db.collection(f"users").get()
+#     newUserByWeek = countNewUserByWeek(users)
+#     newUserByMonth = countNewUserByMonth(users)
+#     newUserByYear = countNewUserByYear(users)
+#     newUser = [newUserByWeek, newUserByMonth, newUserByYear]
 
     
-    return JsonResponse({
-        'message' : 'Succesfully',
-        'newUser' :  newUser
-    })
+#     return JsonResponse({
+#         'message' : 'Succesfully',
+#         'newUser' :  newUser
+#     })
 
 
 def CountNewNotificationsQuantity(request):

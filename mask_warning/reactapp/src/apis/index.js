@@ -12,7 +12,7 @@ export const signInAPI = (data) => {
 };
 
 export const signOutApi = () => {
-  return fetch("/auth/signout")
+  return fetch("/auth/signout/")
     .then((res) => res.json())
     .catch((err) => err);
 };
@@ -259,6 +259,17 @@ export const countNewNotificationsQuantityAPI = () => {
     .catch((err) => err);
 };
 
+export const searchUsers = (data) => {
+  return fetch("/searchUsers/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
 export const createNewUserAPI = (data) => {
   return fetch("/admin/create-new-user/", {
     method: "POST",
@@ -293,4 +304,10 @@ export const generatePasswordAPI = (data) => {
   })
     .then((res) => res.json())
     .catch((err) => err);
+};
+
+export const countNewUsers = () => {
+  return fetch("/admin/countnewuser")
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
 };

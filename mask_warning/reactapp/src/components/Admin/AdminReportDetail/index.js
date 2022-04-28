@@ -33,7 +33,7 @@ const ReportDetailAdmin = () => {
 
   useEffect(() => {
     loadReportDetail();
-  }, []);
+  }, [report]);
 
   const solved = () => {
     if (!report.isSolved)
@@ -48,7 +48,7 @@ const ReportDetailAdmin = () => {
   };
 
   return (
-    <section className={styles.homeMain}>
+    <section className={` container ${styles.homeMain}`}>
       {openModal && (
         <Modal
           setOpenModal={setOpenModal}
@@ -57,43 +57,45 @@ const ReportDetailAdmin = () => {
           action={handleConfirmSolvedReport}
         />
       )}
-      <LeftControl toggle="reports" />
-      {loading ? (
-        <Loading />
-      ) : (
-        <div
-          className={
-            report.isSolved
-              ? `${styles.detailRightContent} ${styles.active}`
-              : styles.detailRightContent
-          }
-        >
-          <div className={styles.detailTopInformation}>
-            <h3 className={styles.detailId}>Report ID: {reportId}</h3>
-            <p>{report.createdDate.split("T")[0]}</p>
-          </div>
-          <div className={styles.detailUserInformation}>
-            <p>User ID:</p>
-            <h4>{report.userId}</h4>
-            <Link to={`/admin/reports-manager/user-detail/${report.userId}`}>
-              <button>Detail user</button>
-            </Link>
-          </div>
-          <div className={styles.detailImageAndTitle}>
-            <img src={report.image} />
-            <div>
-              <h2 className={report.isSolved ? "d-block" : "d-none"}>
-                You have done this task
-              </h2>
-              <h5>{report.title}</h5>
+      <div className="row">
+        <LeftControl toggle="reports" />
+        {loading ? (
+          <Loading />
+        ) : (
+          <div
+            className={
+              report.isSolved
+                ? `col-10 ${styles.detailRightContent} ${styles.active}`
+                : ` col-10 ${styles.detailRightContent}`
+            }
+          >
+            <div className={styles.detailTopInformation}>
+              <h3 className={styles.detailId}>Report ID: {reportId}</h3>
+              <p>{report.createdDate.split("T")[0]}</p>
             </div>
+            <div className={styles.detailUserInformation}>
+              <p>User ID:</p>
+              <h4>{report.userId}</h4>
+              <Link to={`/admin/reports-manager/user-detail/${report.userId}`}>
+                <button>Detail user</button>
+              </Link>
+            </div>
+            <div className={styles.detailImageAndTitle}>
+              <img src={report.image} />
+              <div>
+                <h2 className={report.isSolved ? "d-block" : "d-none"}>
+                  You have done this task
+                </h2>
+                <h5>{report.title}</h5>
+              </div>
+            </div>
+            <div className={styles.detailReport}>
+              <p>{report.description}</p>
+            </div>
+            {solved()}
           </div>
-          <div className={styles.detailReport}>
-            <p>{report.description}</p>
-          </div>
-          {solved()}
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 };

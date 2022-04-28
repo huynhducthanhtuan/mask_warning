@@ -7,9 +7,9 @@ const ReportCard = ({ reports }) => {
   return (
     <div>
       <div className={styles.cardMainFields}>
-        <p>Error Id</p>
-        <p>Error Date</p>
-        <p>Error Description</p>
+        <p>Id</p>
+        <p>Date</p>
+        <p>Description</p>
         <p>Action</p>
       </div>
       {reports.map((report, index) => {
@@ -28,16 +28,17 @@ const ReportCard = ({ reports }) => {
               <p>#{index + 1}</p>
               <p>{report.createdDate.split("T")[0]}</p>
               <p>{report.title}</p>
-              <Link to={`/admin/reports-manager/user-detail/${report.userId}`}>
+              <Link to={`/admin/users-manager/user-detail/${report.userId}`}>
+
                 <button
                   className={styles.cardButton}
                   onClick={() =>
                     navigate(
-                      `/admin/reports-manager/user-detail/${report.userId}`
+                      `/admin/users-manager/user-detail/${report.userId}`
                     )
                   }
                 >
-                  Detail user
+                  <span className={styles.cardSpan}>Detail user</span>
                 </button>
               </Link>
             </div>

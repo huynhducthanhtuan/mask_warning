@@ -17,6 +17,12 @@
   align-items: baseline;
   margin: 20px;
 }
+
+.detailTopInformation p {
+  font-weight: 700;
+  font-size: 20px;
+}
+
 .detailId {
   color: #6160dc;
   font-size: 19px;
@@ -31,8 +37,14 @@
   margin: 10px;
 }
 .detailUserInformation p {
-  font-weight: 400;
+  width: 100px;
+  font-weight: 700;
 }
+
+.detailUserInformation a {
+  margin-left: 55%;
+}
+
 .detailUserInformation h4 {
   font-size: 20px;
   font-weight: 700;
@@ -40,10 +52,9 @@
   padding: 10px;
   margin-left: 50px;
 }
-.detailUserInformation :nth-child(3) {
-  width: 144px;
-  height: 37px;
-  margin-left: 114vh;
+.detailUserInformation:nth-child(3) {
+  width: 224px;
+  margin-left: 55%;
   cursor: pointer;
 }
 .detailUserInformation button {
@@ -79,14 +90,14 @@
 .detailImageAndTitle h2 {
   margin-left: 50px;
   margin-bottom: 30px;
-  font-size: 50px;
   font-weight: 600;
+  font-size: 35px;
 }
 .detailImageAndTitle h5 {
   width: fit-content;
   background-color: #b099c7;
   margin-left: 25px;
-  padding: 12px;
+  padding: 8px;
   font-size: 18px;
   font-weight: 600;
 }
@@ -99,7 +110,7 @@
   margin: 0 auto;
   background-color: white;
   box-shadow: 27.2308px 13.6154px 81.6923px rgba(0, 0, 0, 0.03);
-  border-radius: 57px;
+  border-radius: 24px;
 }
 
 .detailComplete {

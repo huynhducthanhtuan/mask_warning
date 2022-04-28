@@ -37,22 +37,34 @@
   background: #f7fafc;
 }
 
-.solved{
+.solved {
   width: 80%;
   border-radius: 5px;
-  background: #66bb6a;
+  background: #ccff90;
+  opacity: 0.8;
   padding: 10px 25px;
   margin: 15px auto;
+  transition: 0.5s;
   justify-content: space-between;
+}
+
+.solved:hover {
+  opacity: 1;
 }
 
 .reportHistoryItem {
   width: 80%;
   border-radius: 5px;
   background: #d2c9c9;
+  opacity: 0.7;
   padding: 10px 25px;
   margin: 15px auto;
+  transition: 0.5s;
   justify-content: space-between;
+}
+
+.reportHistoryItem:hover {
+  opacity: 1;
 }
 
 .reportHistoryLeft {
@@ -76,6 +88,13 @@
 }
 
 .reportHistoryMiddle p {
-  font-size: 12px;
+  font-size: 13px;
   padding-top: 40px;
+  font-weight: 700;
+}
+
+.reportHistoryRight p {
+  font-size: 14px;
+  padding-top: 40px;
+  font-weight: 700;
 }

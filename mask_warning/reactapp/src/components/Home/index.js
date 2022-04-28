@@ -45,7 +45,7 @@ const Home = () => {
           <div className={styles.homeSlider}>
             <img className={styles.sliderImage} src="./icons/slider.png"></img>
             <Link to={state ? "/camera" : "/signin"}>
-              <div className={styles.homeSliderGettingStarted}>
+              <div className={`${styles.homeSliderGettingStarted}`}>
                 <p>Getting Started</p>
               </div>
             </Link>
@@ -84,7 +84,7 @@ const Home = () => {
         </Slider>
       </section>
       <section className={`container ${styles.homeOurService}`}>
-        <div className={styles.homeText}>
+        <div className={` ${styles.homeText}`}>
           <div>
             <h2>Our Services</h2>
             <img src="./icons/line.png"></img>
@@ -95,7 +95,7 @@ const Home = () => {
           </span>
         </div>
         <div className={styles.homeOurServiceListItems}>
-          <div className={styles.homeOurServiceItem}>
+          <div className={`${styles.homeOurServiceItem}`}>
             <img src="./icons/tracking.png"></img>
             <h3>Tracking through camera </h3>
             <p>Track customer information entering and leaving the store </p>

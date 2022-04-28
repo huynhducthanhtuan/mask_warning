@@ -18,6 +18,7 @@ import {
 } from "../../assets/ExportImages";
 import Modal from "../Helper/Modal";
 
+
 const Header = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(UserContext);
@@ -55,7 +56,7 @@ const Header = () => {
               <p>Profile</p>
             </div>
           </Link>
-          <div className={styles.headerLogin} onClick={handleClickSignout}>
+          <div className={`${styles.headerLogin}`} onClick={handleClickSignout}>
             <img src={LogOutIcon} alt="" />
             <p>Sign Out</p>
           </div>
@@ -63,7 +64,7 @@ const Header = () => {
       );
     } else
       return (
-        <div className={styles.headerLogin} onClick={() => navigate("/signin")}>
+        <div className={` ${styles.headerLogin}`} onClick={() => navigate("/signin")}>
           <img src={SigninIcon} alt="" />
           <p>Sign In</p>
         </div>
@@ -77,7 +78,7 @@ const Header = () => {
 
   return (
     <header className={`container ${styles.header}`}>
-      <div className={styles.headerLogo}>
+      <div className={`${styles.headerLogo}`}>
         <Link to="/">
           <img alt="" src={LogoImage} />
         </Link>

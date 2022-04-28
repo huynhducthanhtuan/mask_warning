@@ -22,23 +22,24 @@ const ReportHistoryDetail = () => {
     <section className={`container_fluid ${styles.camera}`}>
       <Header />
       {report && (
-        <div className={`container ${styles.reportHistoryDetail}`}>
+        <div className={report.isSolved ? `container ${styles.reportHistoryDetail} ${styles.solved}` : `container ${styles.reportHistoryDetail}`}>
           <Link to="/report-history">
             <div className={styles.reportHistoryBack}>
               <img src={ArrowBack}></img>
               <p>Back</p>
             </div>
           </Link>
-          <div
-            className={`d-flex justify-content-between ${styles.reportHistoryDetailContent}`}
-          >
+          <div className={`d-flex justify-content-between ${styles.reportHistoryDetailContent}`}>
             <div className={styles.reportHistoryDetailLeft}>
-              <h3>Report #1</h3>
+              <h3>Report</h3>
               <p>{report.title}</p>
             </div>
             <div className={styles.reportHistoryDetailRight}>
               <p>{report.createdDate.split("T")[0]}</p>
             </div>
+          </div>
+          <div className={styles.imgReport}>
+            <img src={report.image}></img>
           </div>
           <div className={styles.reportHistoryDetailText}>
             <p>{report.description}</p>
