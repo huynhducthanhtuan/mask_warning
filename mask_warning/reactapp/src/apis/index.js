@@ -12,7 +12,7 @@ export const signInAPI = (data) => {
 };
 
 export const signOutApi = () => {
-  return fetch("/auth/signout")
+  return fetch("/auth/signout/")
     .then((res) => res.json())
     .catch((err) => err);
 };
@@ -237,6 +237,18 @@ export const confirmSolvedReportAPI = (data) => {
 
 export const viewNotificationAPI = (quantity = 0) => {
   return fetch(`/admin/notifications/${quantity}`)
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const searchUsers = (data) => {
+  return fetch("/admin/search-user/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
     .then((res) => res.json())
     .catch((err) => err);
 };

@@ -4,12 +4,18 @@ import NotifyCard from "../AdminNotifyCard";
 import { useNavigate } from "react-router-dom";
 import { DEFAULT_NOTIFICATIONS_QUANTITY } from "../../../constants";
 import { BellIcon, LogOutIcon } from "../../../assets/ExportImages";
+import { toast } from "react-toastify";
+import Modal from "../../Helper/Modal";
 import {
   viewNotificationAPI,
   countNewNotificationsQuantityAPI,
+  signOutApi,
 } from "../../../apis";
 
 const ShowBox = () => {
+  const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+
   const [showBox, setShowBox] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [newNotificationsQuantity, setNewNotificationsQuantity] = useState();
@@ -60,25 +66,46 @@ const ShowBox = () => {
     await getNewNotificationsQuantity();
   }, []);
 
+  const handleSignout = async () => {
+    const data = await signOutApi();
+    console.log(data);
+    if (data.message === "Sign out success !!") {
+      toast.success(data.message.toLocaleUpperCase());
+      navigate("/admin/signin");
+    }
+  };
+
   return (
-    <div className={styles.homeTopRightControl}>
-      <p>Admin</p>
-      <div className={styles.homeNotify} onClick={() => setShowBox(!showBox)}>
-        <img className={styles.homeIconTopRight} src={BellIcon} />
-        {renderNewNotificationsQuantity()}
+    <>
+      {modalOpen && (
+        <Modal
+          body="Are you sure to sign out ??"
+          setOpenModal={setModalOpen}
+          action={handleSignout}
+          // isCss={true}
+        />
+      )}
+      <div className={styles.homeTopRightControl}>
+        <p>Admin</p>
+        <div className={styles.homeNotify} onClick={() => setShowBox(!showBox)}>
+          <img className={styles.homeIconTopRight} src={BellIcon} />
+          {renderNewNotificationsQuantity()}
+        </div>
+        <div
+          className={
+            showBox ? `${styles.homeNotifyBox} d-block` : styles.homeNotifyBox
+          }
+        >
+          {renderNotifications()}
+          <button className={styles.buttonSeeMore} onClick={handleClickSeeMore}>
+            See More
+          </button>
+        </div>
+        <div onClick={() => setModalOpen(true)}>
+          <img className={styles.homeIconTopRight} src={LogOutIcon} alt="" />
+        </div>
       </div>
-      <div
-        className={
-          showBox ? `${styles.homeNotifyBox} d-block` : styles.homeNotifyBox
-        }
-      >
-        {renderNotifications()}
-        <button className={styles.buttonSeeMore} onClick={handleClickSeeMore}>
-          See More
-        </button>
-      </div>
-      <img className={styles.homeIconTopRight} src={LogOutIcon} />
-    </div>
+    </>
   );
 };
 

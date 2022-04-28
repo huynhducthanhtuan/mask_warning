@@ -1,16 +1,17 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./UsersManager.module.css";
 import { Link } from "react-router-dom";
-import { Avatar } from "../../../assets/ExportImages";
-import { deleteUser, viewUserList } from "../../../apis";
-import { toast } from "react-toastify";
 import LeftControl from "../AdminLeftControl";
 import ShowBox from "../ShowBox";
 import TableUsers from "../TableUsers";
+import { Avatar } from "../../../assets/ExportImages";
+import { deleteUser, searchUsers, viewUserList } from "../../../apis";
 import Loading from "../../Helper/Loading";
 import Modal from "./../../Helper/Modal/index";
+import { toast } from "react-toastify";
 
 const UsersManagerAdmin = () => {
+  const querySearchRef = useRef();
   const [users, setUsers] = useState();
   const [OpenModal, setOpenModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState();
@@ -32,12 +33,28 @@ const UsersManagerAdmin = () => {
     });
   };
 
+  const loadUsersSearched = async () => {
+    const data = await searchUsers({
+      pageSize: 3,
+      pageIndex: 1,
+      query: querySearchRef.current.value,
+    });
+
+    console.log("data searched", data.usersList);
+    setUsers(data.usersList);
+  };
+
+  const submitSearch = async (event) => {
+    event.preventDefault();
+    await loadUsersSearched();
+  };
+
   return (
     <div className="container">
       {OpenModal && userIdToDelete && (
         <Modal
           setOpenModal={setOpenModal}
-          title="Delete user account "
+          title="DELETE USER "
           body="Are you sure you want to delete this user?"
           action={handleDeleteUser}
           userDeleteId={userIdToDelete}
@@ -46,12 +63,32 @@ const UsersManagerAdmin = () => {
       <div className="row">
         <LeftControl toggle="users" />
         <div className="col-10">
-          <div className={styles.usersManager}>
+          <div
+            className={styles.usersManager}
+            style={
+              !users
+                ? { backgroundColor: "#fff" }
+                : { backgroundColor: "#f0f7fd" }
+            }
+          >
             <div className="d-lex mb-4">
-              <div className={styles.box}>
-                <i className="fa fa-search" aria-hidden="true"></i>
-                <input type="text" name="" />
-              </div>
+              <form onSubmit={(e) => submitSearch(e)}>
+                <div className={styles.box}>
+                  <i
+                    className="fa fa-search"
+                    aria-hidden="true"
+                    onClick={submitSearch}
+                  ></i>
+                  <input
+                    type="text"
+                    name=""
+                    ref={querySearchRef}
+                    className={styles.searchInput}
+                    placeholder="Search..."
+                  />
+                </div>
+              </form>
+
               <ShowBox />
             </div>
 

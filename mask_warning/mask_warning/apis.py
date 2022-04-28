@@ -251,6 +251,7 @@ def checkExistAttributeValue(collection, attribute, value):
 
 def SearchUser(request):
     if request.method == "POST":
+        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         pageSize = body_data['pageSize']
@@ -266,11 +267,13 @@ def SearchUser(request):
         attributeFind = ['phoneNumber', 'fullName', 'storeName', 'userName']
         for user in users_ref:
             for atb in attributeFind:
-                if query in user.to_dict()[atb].lower():
+                if query.lower() in user.to_dict()[atb].lower():
                     usersList.append({
-                        'fullName': user.to_dict()['fullName'],
-                        'storeName': user.to_dict()['storeName'],
-                        'createdDate': user.to_dict()['createdDate']
+                    'fullName': user.to_dict()['fullName'],
+                    'storeName': user.to_dict()['storeName'],   
+                    'createdDate': user.to_dict()['createdDate'],
+                    'avatar': user.to_dict()['avatar'],
+                    "userId": user.id
                     })
                     break
                 
@@ -284,6 +287,8 @@ def SearchUser(request):
         if startIndex >= len(usersList) or startIndex < 0:
             return JsonResponse({
                 "error": "Index out of bound."
+
+
             })
         
         return JsonResponse({
@@ -292,7 +297,8 @@ def SearchUser(request):
             'pageSize': pageSize,
             'startIndex': startIndex,
             'endIndex' : endIndex,
-            'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+            # 'usersList': usersList[startIndex:endIndex] if endIndex < len(usersList) else usersList[startIndex]
+            'usersList': usersList
         })
 
 

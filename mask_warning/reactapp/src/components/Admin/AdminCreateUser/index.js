@@ -19,7 +19,7 @@ import LeftControl from "../AdminLeftControl";
 import AddressCreateUser from "../../Admin/Address/AddressCreateUser";
 import styles from "./AdminCreateUser.module.css";
 
-const AdminUpdateUser = () => {
+const AdminCreateUser = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const [cities, setCities] = useState([]);
   const navigate = useNavigate();
@@ -141,7 +141,7 @@ const AdminUpdateUser = () => {
     <section>
       <Header />
       <div className="d-flex">
-        <LeftControl toggle="reports" />
+        <LeftControl toggle="users" />
         {loadingPage ? (
           <Loading />
         ) : (
@@ -237,4 +237,4 @@ const AdminUpdateUser = () => {
   );
 };
 
-export default AdminUpdateUser;
+export default AdminCreateUser;
