@@ -31,9 +31,9 @@ const ConnectCamera = ({ setVideoStreamUrl }) => {
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />
-      <div className={styles.cameraConnect}>
-        <h1 className={`${styles.headerString} d-flex`}>Connect Camera</h1>
-        <div className={styles.formContentPart}>
+      <div className={`animate__animated animate__bounceIn animate__delay-1s  ${styles.cameraConnect}`}>
+        <h1 className={` ${styles.headerString} d-flex`}>Connect Camera</h1>
+        <div className={` ${styles.formContentPart}`}>
           <h2>Enter your camera video stream</h2>
           <div className={styles.inputPart}>
             <input

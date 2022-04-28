@@ -57,7 +57,7 @@ const Report = () => {
       <Header />
       <div className={`container ${styles.cameraContainer}`}>
         <div className={`row ${styles.camera__header}`}>
-          <div className={`col-3 ${styles.sideBar}`}>
+          <div className={`col-3 animate__animated animate__bounceIn animate__delay-1s ${styles.sideBar}`}>
             <Link to="/report">
               <div className={`d-flex ${styles.sideBar__home}`}>
                 <img src="./icons/home.png"></img>
@@ -71,7 +71,7 @@ const Report = () => {
               </div>
             </Link>
           </div>
-          <div className={`col-3 ${styles.chooseImage}`}>
+          <div className={`col-3 animate__animated animate__backInRight animate__delay-1s ${styles.chooseImage}`}>
             <h5>Choose image</h5>
             <img
               src={previewUrl ? previewUrl : "./img/imageDefault.jpg"}
@@ -87,7 +87,7 @@ const Report = () => {
               onChange={(e) => setImage(e.target.files[0])}
             />
           </div>
-          <div className={`col-3 ${styles.chooseImage}`}>
+          <div className={`col-3 animate__animated animate__backInRight animate__delay-2s ${styles.chooseImage}`}>
             <h5>Title bug</h5>
             <div className="form-group">
               <input
@@ -99,7 +99,7 @@ const Report = () => {
               />
             </div>
           </div>
-          <div className={`col-3 ${styles.reportDescription}`}>
+          <div className={`col-3 animate__animated animate__backInRight animate__delay-3s ${styles.reportDescription}`}>
             <div className="form-group">
               <p>Description</p>
               <textarea
