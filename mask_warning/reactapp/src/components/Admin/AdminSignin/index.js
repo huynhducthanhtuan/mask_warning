@@ -54,7 +54,7 @@ const SignInAdmin = () => {
         <div className={styles.formGroup}>
           <label className={styles.formLabel}>Username</label>
           <input
-            className={styles.formControl}
+            className={`${styles.formControl} ${styles.adminAuthInput}`}
             type="username"
             placeholder="Enter username"
             ref={userNameInputRef}
@@ -64,7 +64,7 @@ const SignInAdmin = () => {
         <div className={styles.formGroup}>
           <label className={styles.formLabel}>Password</label>
           <input
-            className={styles.formControl}
+            className={`${styles.formControl} ${styles.adminAuthInput}`}
             type="password"
             placeholder="Enter password"
             ref={passwordInputRef}

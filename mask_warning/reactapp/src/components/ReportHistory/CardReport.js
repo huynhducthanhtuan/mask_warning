@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import styles from "./ReportHistory.module.css";
+import { Link } from "react-router-dom";
+
 const CardReport = ({ reports }) => {
 
   return reports.map((report, index) => {
@@ -9,7 +10,7 @@ const CardReport = ({ reports }) => {
         <div className={report.isSolved ? `row ${styles.solved}` :
           `row ${styles.reportHistoryItem}`}>
           <div className={`col-4 ${styles.reportHistoryLeft}`}>
-            <h3>#{index + 1}</h3>
+            <h4>Report #{index + 1}</h4>
             <p>{report.title}</p>
           </div>
           <div className={`col-5 ${styles.reportHistoryMiddle}`}>

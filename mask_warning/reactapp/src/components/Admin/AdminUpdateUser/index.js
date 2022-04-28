@@ -1,42 +1,45 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import ProfileSidebar from "../ProfileSidebar";
-import styles from "./ProfileChangeInformation.module.css";
-import Header from "../Header";
-import Address from "../Admin/Address/Address";
-import { isAuthenticated } from "./../Auth/index";
-import { updateProfile, viewProfile } from "../../apis";
 import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { updateUserAPI, viewProfile } from "../../../apis";
 import {
   validateFullName,
   validateStoreName,
   validateEmail,
   validatePhoneNumber,
   validateAddress,
-} from "../../helpers/validator";
-import Loading from "../Helper/Loading";
-import { PersonalInformationImage } from "../../assets/ExportImages";
+  validatePassword,
+} from "../../../helpers/validator";
+import Header from "../../Header";
+import Loading from "../../Helper/Loading";
+import Address from "../../Admin/Address/Address";
+import LeftControl from "../AdminLeftControl";
+import styles from "./AdminUpdateUser.module.css";
+import UserAvatarFrame from "../UserAvatarFrame";
 
-const ProfileChangeInformation = () => {
+const AdminUpdateUserTest = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const [userInfo, setUserInfo] = useState();
   const [cities, setCities] = useState([]);
-  const { user } = isAuthenticated();
   const navigate = useNavigate();
+  const { userId } = useParams();
 
   const fullNameRef = useRef();
   const emailRef = useRef();
+  const addressRef = useRef();
   const storeNameRef = useRef();
   const phoneNumberRef = useRef();
   const genderRef = useRef();
-  const cityRef = useRef();
   const districtRef = useRef();
+  const cityRef = useRef();
   const wardRef = useRef();
-  const addressRef = useRef();
+  const userNameRef = useRef();
+  const passwordRef = useRef();
 
   const handleValidateFields = () => {
     const isValidFullName = validateFullName(fullNameRef.current.value.trim());
     const isValidEmail = validateEmail(emailRef.current.value.trim());
+    const isValidPassword = validatePassword(passwordRef.current.value.trim());
     const isValidAddress = validateAddress(addressRef.current.value.trim());
     const isValidPhoneNumber = validatePhoneNumber(
       phoneNumberRef.current.value.trim()
@@ -48,7 +51,6 @@ const ProfileChangeInformation = () => {
     if (!isValidFullName.isValid) return { error: isValidFullName.error };
     if (!isValidEmail.isValid) return { error: isValidEmail.error };
     if (!isValidStoreName.isValid) return { error: isValidStoreName.error };
-    if (!isValidPhoneNumber.isValid) return { error: isValidPhoneNumber.error };
     if (cityRef.current.value === "") return { error: "Please select city" };
     if (districtRef.current.value === "")
       return { error: "Please select district" };
@@ -56,22 +58,24 @@ const ProfileChangeInformation = () => {
     if (!isValidAddress.isValid) return { error: isValidAddress.error };
     if (genderRef.current.value === "")
       return { error: "Please select gender" };
+    if (!isValidPhoneNumber.isValid) return { error: isValidPhoneNumber.error };
+    if (!isValidPassword.isValid) return { error: isValidPassword.error };
 
     return { message: "success" };
   };
 
-  const submitUpdateProfile = async (e) => {
+  const submitUpdateUser = async (e) => {
     e.preventDefault();
     const validateResult = handleValidateFields();
 
     if (validateResult.message === "success") {
-      const dataSubmit = {
+      const updateUser = {
         fullName: fullNameRef.current.value.trim(),
         email: emailRef.current.value.trim(),
-        address: addressRef.current.value.trim(),
         storeName: storeNameRef.current.value.trim(),
         phoneNumber: phoneNumberRef.current.value.trim(),
         gender: genderRef.current.value.trim(),
+        address: addressRef.current.value.trim(),
         hometown: cityRef.current.value
           ? cityRef.current.value.trim()
           : userInfo.hometown,
@@ -81,35 +85,33 @@ const ProfileChangeInformation = () => {
         ward: wardRef.current.value
           ? wardRef.current.value.trim()
           : userInfo.ward,
-        userId: user.userId,
+        userName: userNameRef.current.value.trim(),
+        password: passwordRef.current.value.trim(),
+        userId: userId,
       };
 
-      const data = await updateProfile(dataSubmit);
+      const data = await updateUserAPI(updateUser);
       switch (data.message) {
         case "Email is already exists":
           toast.error("Email is already exists".toLocaleUpperCase());
           break;
+        case "Username is already exists":
+          toast.error("Username is already exists".toLocaleUpperCase());
+          break;
         case "failed":
-          toast.success("Update profile failed".toLocaleUpperCase());
+          toast.success("Update user account failed".toLocaleUpperCase());
           break;
         case "success":
-          toast.success("Update profile success".toLocaleUpperCase());
-          navigate("/profile");
+          toast.success("Update user account success".toLocaleUpperCase());
           break;
       }
     } else {
       toast.error(validateResult.error.toLocaleUpperCase());
     }
   };
-  // console.log(cityRef.current.value);
-  const loadViewProfile = async () => {
-    const data = await viewProfile({ userId: user.userId });
-    if (data.error === "User not found") {
-      toast.error("User not found !!!".toLocaleUpperCase());
-    } else {
-      setUserInfo(data);
-      setLoadingPage(false);
-    }
+
+  const cancelUpdateUser = () => {
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -125,6 +127,16 @@ const ProfileChangeInformation = () => {
   }, []);
 
   useEffect(() => {
+    const loadViewProfile = async () => {
+      const data = await viewProfile({ userId });
+      if (data.error === "User not found") {
+        toast.error("User not found !!!".toLocaleUpperCase());
+      } else {
+        setUserInfo(data);
+        setLoadingPage(false);
+      }
+    };
+
     loadViewProfile();
   }, []);
 
@@ -132,19 +144,17 @@ const ProfileChangeInformation = () => {
     <section>
       <Header />
       <div className="d-flex">
-        <ProfileSidebar userInfo={userInfo} />
+        <LeftControl toggle="reports" />
+        {userInfo && (
+          <UserAvatarFrame userInfo={userInfo} enableChangeAvatar={true} />
+        )}
         {loadingPage ? (
           <Loading />
         ) : (
           <section className={` col-9 ${styles.boxPersonalInformation}`}>
             <div className={`d-flex ${styles.personalInformation}`}>
-              <img src={PersonalInformationImage}></img>
-              <span>Personal Information</span>
+              <span>Update user account</span>
             </div>
-            <div className={styles.fillText}>
-              <span>Personal information</span>
-            </div>
-
             <form>
               <ul className={styles.boxInformation}>
                 <li className={`d-flex ${styles.item}`}>
@@ -170,7 +180,7 @@ const ProfileChangeInformation = () => {
               </ul>
               <ul className={styles.boxInformation}>
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Gender: </label>
+                  <label>Gender</label>
                   <select ref={genderRef}>
                     {["Male", "Female", "Other"].map((gender, index) => {
                       if (gender === userInfo.gender) {
@@ -190,9 +200,8 @@ const ProfileChangeInformation = () => {
                   </select>
                   <p className={styles.warning}>*</p>
                 </li>
-
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Store name: </label>
+                  <label>Store name </label>
                   <input
                     name="text"
                     ref={storeNameRef}
@@ -202,11 +211,6 @@ const ProfileChangeInformation = () => {
                   <p className={styles.warning}>*</p>
                 </li>
               </ul>
-              <div className={styles.fillText}>
-                <span>
-                  Please fill in all the fields marked with a red * below
-                </span>
-              </div>
               <ul className={styles.boxInformation}>
                 {userInfo && (
                   <Address
@@ -222,7 +226,7 @@ const ProfileChangeInformation = () => {
                   />
                 )}
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Address: </label>
+                  <label>Address </label>
                   <input
                     name="text"
                     ref={addressRef}
@@ -232,7 +236,7 @@ const ProfileChangeInformation = () => {
                   <p className={styles.warning}>*</p>
                 </li>
                 <li className={`d-flex ${styles.item}`}>
-                  <label>Phone number: </label>
+                  <label>Phone number </label>
                   <input
                     name="text"
                     ref={phoneNumberRef}
@@ -242,27 +246,42 @@ const ProfileChangeInformation = () => {
                   <p className={styles.warning}>*</p>
                 </li>
               </ul>
+              <ul className={styles.boxInformation}>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Username </label>
+                  <input
+                    name="text"
+                    ref={userNameRef}
+                    required
+                    defaultValue={userInfo.userName}
+                  />
+                  <p className={styles.warning}>*</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Password </label>
+                  <input
+                    name="text"
+                    ref={passwordRef}
+                    required
+                    defaultValue={userInfo.password}
+                  />
+                  <p className={styles.warning}>*</p>
+                </li>
+              </ul>
               <div
-                className={` d-flex justify-content-center ${styles.btnChangePassword}`}
+                className={` d-flex justify-content-center ${styles.btnParts}`}
               >
-                <button
-                  onClick={submitUpdateProfile}
-                  className={styles.updateBtn}
-                >
-                  Update
+                <button onClick={submitUpdateUser}>Update</button>
+                <button onClick={cancelUpdateUser} className={styles.btnCancel}>
+                  Cancel
                 </button>
-                <Link to="/profile">
-                  <button className={styles.cancelBtn}>Cancel</button>
-                </Link>
               </div>
-
             </form>
           </section>
         )}
       </div>
-
     </section>
   );
 };
 
-export default ProfileChangeInformation;
+export default AdminUpdateUserTest;

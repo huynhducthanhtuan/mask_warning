@@ -1,85 +1,112 @@
-import React, { useRef, useState, useEffect } from "react";
-import styles from "./ReportUserDetail.module.css";
-import LeftControl from "../AdminLeftControl";
-import { BackButton, ReportUserImage } from "../../../assets/ExportImages";
-import { useParams } from "react-router-dom";
-import { viewDetailUser } from "../../../apis";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { viewProfile } from "../../../apis";
+import Header from "../../Header";
 import Loading from "../../Helper/Loading";
+import LeftControl from "../AdminLeftControl";
+import UserAvatarFrame from "../UserAvatarFrame";
+import styles from "./AdminReportUserDetail.module.css";
 
-const ReportUserDetailAdmin = () => {
+const AdminReportUserDetail = () => {
+  const [loadingPage, setLoadingPage] = useState(true);
   const [userInfo, setUserInfo] = useState();
-  const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   const { userId } = useParams();
-  const loadReportDetailUser = async () => {
-    await viewDetailUser({ userId }).then((data) => {
-      setUserInfo(data);
-      setLoading(false);
-    });
+
+  const handleClickUpdate = () => {
+    navigate(`/admin/users-manager/update-user/${userId}`);
   };
 
-  console.log("user detail ", userInfo);
   useEffect(() => {
-    loadReportDetailUser();
+    const loadViewProfile = async () => {
+      const data = await viewProfile({ userId });
+      if (data.error === "User not found") {
+        toast.error("User not found !!!".toLocaleUpperCase());
+      } else {
+        setUserInfo(data);
+        setLoadingPage(false);
+      }
+    };
+
+    loadViewProfile();
   }, []);
 
   return (
-    <section className="row">
-      <LeftControl toggle="reports" />
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className={styles.rightContent}>
-          <div
-            className={styles.backButton}
-            onClick={() => window.history.back()}
-          >
-            <img src={BackButton} />
-            <p>Back</p>
-          </div>
-          <div className="d-flex">
-            <img className={styles.avatar} src={ReportUserImage} />
-            <div className={styles.idAndName}>
-              <p>User ID: #{userId}</p>
-              <p>{userInfo.fullName}</p>
+    <section>
+      <Header />
+      <div className="d-flex">
+        <LeftControl toggle="reports" />
+        {userInfo && <UserAvatarFrame userInfo={userInfo} />}
+        {loadingPage ? (
+          <Loading />
+        ) : (
+          <section className={` col-9 ${styles.boxPersonalInformation}`}>
+            <div className={`d-flex ${styles.personalInformation}`}>
+              <span>View user account</span>
             </div>
-          </div>
-          <div>
-            <div className={styles.shortInformation}>
-              <p>Gender:</p>
-              <p>{userInfo.gender}</p>
-            </div>
-            <div className={styles.shortInformation}>
-              <p>Email:</p>
-              <p>{userInfo.email}</p>
-            </div>
-            <h3 className={styles.contactInformation}>Contact Information</h3>
-            <div>
-              <div className={styles.shortInformation}>
-                <p>Address:</p>
-                <p>{userInfo.address}</p>
+            <form>
+              <ul className={styles.boxInformation}>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Fullname </label>
+                  <p>{userInfo.fullName}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Email </label>
+                  <p>{userInfo.email}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Gender</label>
+                  <p>{userInfo.gender}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Store name </label>
+                  <p>{userInfo.storeName}</p>
+                </li>
+              </ul>
+              <ul className={styles.boxInformation}>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>City/Province </label>
+                  <p>{userInfo.hometown}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>District </label>
+                  <p>{userInfo.district}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Ward </label>
+                  <p>{userInfo.ward}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Address </label>
+                  <p>{userInfo.address}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Phone number </label>
+                  <p>{userInfo.phoneNumber}</p>
+                </li>
+              </ul>
+              <ul className={styles.boxInformation}>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Username </label>
+                  <p>{userInfo.userName}</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Password </label>
+                  <p>{userInfo.password}</p>
+                </li>
+              </ul>
+              <div
+                className={` d-flex justify-content-center ${styles.btnUpdate}`}
+              >
+                <button onClick={handleClickUpdate}>Update</button>
               </div>
-              <div className={styles.shortInformation}>
-                <p>District:</p>
-                <p>{userInfo.district}</p>
-              </div>
-              <div className={styles.shortInformation}>
-                <p>Store Name:</p>
-                <p>{userInfo.storeName}</p>
-              </div>
-              <div className={styles.shortInformation}>
-                <p>Country:</p>
-                <p>{userInfo.hometown}</p>
-              </div>
-              <div className={styles.shortInformation}>
-                <p>Tel:</p>
-                <p>{userInfo.phoneNumber}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+            </form>
+          </section>
+        )}
+      </div>
     </section>
   );
 };
-export default ReportUserDetailAdmin;
+
+export default AdminReportUserDetail;

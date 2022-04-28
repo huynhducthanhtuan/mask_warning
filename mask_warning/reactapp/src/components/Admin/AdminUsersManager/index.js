@@ -9,7 +9,6 @@ import { deleteUser, searchUsers, viewUserList } from "../../../apis";
 import Loading from "../../Helper/Loading";
 import Modal from "./../../Helper/Modal/index";
 import { toast } from "react-toastify";
-import { async } from "@firebase/util";
 const UsersManagerAdmin = () => {
   const querySearchRef = useRef();
   const [users, setUsers] = useState();
@@ -43,9 +42,9 @@ const UsersManagerAdmin = () => {
     setUsers(data.usersList);
   };
 
-  const submitSearch = (event) => {
+  const submitSearch = async (event) => {
     event.preventDefault();
-    loadUsersSearched();
+    await loadUsersSearched();
   };
 
   return (
@@ -78,7 +77,13 @@ const UsersManagerAdmin = () => {
                     aria-hidden="true"
                     onClick={submitSearch}
                   ></i>
-                  <input type="text" name="" ref={querySearchRef} />
+                  <input
+                    type="text"
+                    name=""
+                    ref={querySearchRef}
+                    className={styles.searchInput}
+                    placeholder="Search..."
+                  />
                 </div>
               </form>
 

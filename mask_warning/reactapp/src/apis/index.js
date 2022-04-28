@@ -43,7 +43,7 @@ export const getVideoStreamUrlAPI = (data) => {
 
 export const changePasswordApi = (data) => {
   console.log(data);
-  return fetch("change-password/", {
+  return fetch("/change-password/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export const changePasswordApi = (data) => {
 };
 
 export const submitEmailApi = (data) => {
-  return fetch("forgot-password-submit-email/", {
+  return fetch("/forgot-password-submit-email/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export const submitEmailApi = (data) => {
 };
 
 export const submitCodeApi = (data) => {
-  return fetch("forgot-password-submit-code/", {
+  return fetch("/forgot-password-submit-code/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -79,7 +79,7 @@ export const submitCodeApi = (data) => {
 };
 
 export const resendCodeApi = (data) => {
-  return fetch("forgot-password-resend-code/", {
+  return fetch("/forgot-password-resend-code/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -91,7 +91,7 @@ export const resendCodeApi = (data) => {
 };
 
 export const createNewPasswordApi = (data) => {
-  return fetch("forgot-password-create-new-password/", {
+  return fetch("/forgot-password-create-new-password/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export const createNewPasswordApi = (data) => {
 };
 
 export const viewProfile = (data) => {
-  return fetch("profile/", {
+  return fetch("/profile/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -115,7 +115,7 @@ export const viewProfile = (data) => {
 };
 
 export const updateProfile = (data) => {
-  return fetch("update-profile/", {
+  return fetch("/update-profile/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -127,7 +127,7 @@ export const updateProfile = (data) => {
 };
 
 export const updateAvatar = (data) => {
-  return fetch("change-avatar/", {
+  return fetch("/change-avatar/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -241,6 +241,18 @@ export const viewNotificationAPI = (quantity = 0) => {
     .catch((err) => err);
 };
 
+export const searchUsers = (data) => {
+  return fetch("/admin/search-user/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
 export const deleteUser = (userId) => {
   return fetch("/admin/users-manager/delete-user/", {
     method: "POST",
@@ -259,29 +271,6 @@ export const countNewNotificationsQuantityAPI = () => {
     .catch((err) => err);
 };
 
-export const searchUsers = (data) => {
-  return fetch("/searchUsers/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((res) => res.json())
-    .catch((err) => err);
-};
-export const createNewUserAPI = (data) => {
-  return fetch("/admin/create-new-user/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((res) => res.json())
-    .catch((err) => err);
-};
-
 export const generateUserNameAPI = (data) => {
   return fetch("/admin/create-new-user/generate-username/", {
     method: "POST",
@@ -294,8 +283,26 @@ export const generateUserNameAPI = (data) => {
     .catch((err) => err);
 };
 
-export const generatePasswordAPI = (data) => {
-  return fetch("/admin/create-new-user/generate-password/", {
+export const generatePasswordAPI = () => {
+  return fetch("/admin/create-new-user/generate-password/")
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const createNewUserAPI = (data) => {
+  return fetch("/admin/create-new-user/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .catch((err) => err);
+};
+
+export const updateUserAPI = (data) => {
+  return fetch("/admin/update-user/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

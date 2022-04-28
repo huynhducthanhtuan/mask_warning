@@ -24,13 +24,13 @@ const Footer = () => {
           </div>
           <div className="col-lg-4">
             <div className={styles.footerContact}>
-              <h4 className={styles.footerContactHeading}>Office</h4>
+              <h4 className={styles.footerContactHeading}>WhatsApp</h4>
               <span className={styles.footerContactInfo}>
                 254 Nguyễn Văn Linh, Hải Châu, Đà Nẵng 550000
               </span>
             </div>
             <div className={styles.footerContact}>
-              <h4 className={styles.footerContactHeading}>Email</h4>
+              <h4 className={styles.footerContactHeading}>Office</h4>
               <span className={styles.footerContactInfo}>
                 votrunghieu3@dtu.edu.vn
               </span>

@@ -58,7 +58,7 @@ const Header = () => {
           </Link>
           <div className={`${styles.headerLogin}`} onClick={handleClickSignout}>
             <img src={LogOutIcon} alt="" />
-            <p>Sign Out</p>
+            <p className={styles.signOutText}>Sign out</p>
           </div>
         </div>
       );

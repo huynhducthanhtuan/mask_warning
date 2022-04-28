@@ -98,3 +98,7 @@ p {
   margin-bottom: unset;
   margin: unset;
 }
+
+.signOutText {
+  width: 70px;
+}

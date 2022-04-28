@@ -109,6 +109,7 @@
 .homeIconTopRight {
   width: 25px;
   height: 28px;
+  cursor: pointer;
 }
 
 .homeTabContents {

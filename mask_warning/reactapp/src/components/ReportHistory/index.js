@@ -14,11 +14,12 @@ const ReportHistory = () => {
       setReports(reports.result);
     });
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     loadReportsHistory();
   }, []);
-  console.log("reports", reports);
+
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />

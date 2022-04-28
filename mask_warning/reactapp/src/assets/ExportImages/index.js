@@ -28,6 +28,7 @@ export { default as reportManager } from "../../assets/icons/reports_manager.png
 export { default as useManager } from "../../assets/icons/users_manager.png";
 export { default as averageHours } from "../../assets/icons/average_hours.png";
 export { default as newUsersIcon } from "../../assets/icons/new_users.png";
+export { default as reportImageDefault } from "../../assets/img/imageDefault.jpg";
 
 //report user detail
 export { default as BackButton } from "../icons/arrow.png";

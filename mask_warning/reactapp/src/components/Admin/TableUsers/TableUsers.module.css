@@ -22,6 +22,7 @@
   width: 54px;
   height: 54px;
   background-size: cover;
+  -o-object-fit: contain;
   object-fit: contain;
   border-radius: 50%;
 }
@@ -30,8 +31,14 @@
   vertical-align: middle;
   align-items: center;
 }
+.actionEdit,
 .actionDelete {
   font-size: 14px;
   width: 84px;
   height: 30px;
+  margin-left: 10px;
+}
+
+.actionDelete {
+  margin-left: 30%;
 }

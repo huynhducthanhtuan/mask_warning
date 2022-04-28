@@ -26,11 +26,11 @@ import {
   AdminSignin,
   AdminHome,
   AdminReportsManager,
-  AdminCreateUser,
   AdminUsersManager,
   AdminReportDetail,
   AdminReportUserDetail,
-  UserDetail,
+  AdminUpdateUser,
+  AdminCreateUser,
 } from "../components/Admin";
 
 const ScreensRoot = () => {
@@ -73,30 +73,25 @@ const ScreensRoot = () => {
       <Route path="/admin/signin" element={<AdminSignin />} />
       <Route path="/admin/home" element={<AdminHome />} />
       <Route path="/admin/users-manager" element={<AdminUsersManager />} />
-      <Route path="/admin/users-manager" element={<AdminUsersManager />} />
-      <Route
-        path="/admin/users-manager/admin-create-user"
-        element={<AdminCreateUser />}
-      />
       <Route
         path="/admin/users-manager/create-user"
         element={<AdminCreateUser />}
       />
       <Route
+        path="/admin/users-manager/update-user/:userId"
+        element={<AdminUpdateUser />}
+      />
+      {/* <Route
         path="/admin/users-manager/user-detail/:userId"
         element={<UserDetail />}
-      />
+      /> */}
       <Route
         path="/admin/reports-manager/report-detail/:reportId"
         element={<AdminReportDetail />}
       />
-      {/* <Route
+      <Route
         path="/admin/reports-manager/user-detail/:userId"
         element={<AdminReportUserDetail />}
-      /> */}
-      <Route
-        path="/admin/user-manager/user-detail/:userId"
-        element={<UserDetail />}
       />
       <Route path="/admin/reports-manager" element={<AdminReportsManager />} />
     </Routes>

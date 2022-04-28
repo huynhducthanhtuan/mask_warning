@@ -85,11 +85,11 @@ const Profile = () => {
                   </li>
 
                   <li className={`d-flex ${styles.item}`}>
-                    <p>Tell: </p>
+                    <p>Phone number: </p>
                     <p>{userInfo.phoneNumber}</p>
                   </li>
                 </ul>
-                <Link to={`/profile-change-information`}>
+                <Link to="/profile-change-information">
                   <button className={styles.btnUpdate}>Update</button>
                 </Link>
               </>
