@@ -23,17 +23,19 @@ const ProfileChangeInformation = () => {
   const { user } = isAuthenticated();
   const navigate = useNavigate();
 
-  const addressRef = useRef();
+  const fullNameRef = useRef();
+  const emailRef = useRef();
   const storeNameRef = useRef();
   const phoneNumberRef = useRef();
   const genderRef = useRef();
-  const districtRef = useRef();
   const cityRef = useRef();
+  const districtRef = useRef();
   const wardRef = useRef();
+  const addressRef = useRef();
 
   const handleValidateFields = () => {
-    // const isValidFullName = validateFullName(fullNameRef.current.value.trim());
-    // const isValidEmail = validateEmail(emailRef.current.value.trim());
+    const isValidFullName = validateFullName(fullNameRef.current.value.trim());
+    const isValidEmail = validateEmail(emailRef.current.value.trim());
     const isValidAddress = validateAddress(addressRef.current.value.trim());
     const isValidPhoneNumber = validatePhoneNumber(
       phoneNumberRef.current.value.trim()
@@ -42,8 +44,8 @@ const ProfileChangeInformation = () => {
       storeNameRef.current.value.trim()
     );
 
-    // if (!isValidFullName.isValid) return { error: isValidFullName.error };
-    // if (!isValidEmail.isValid) return { error: isValidEmail.error };
+    if (!isValidFullName.isValid) return { error: isValidFullName.error };
+    if (!isValidEmail.isValid) return { error: isValidEmail.error };
     if (!isValidStoreName.isValid) return { error: isValidStoreName.error };
     if (!isValidPhoneNumber.isValid) return { error: isValidPhoneNumber.error };
     if (cityRef.current.value === "") return { error: "Please select city" };
@@ -57,30 +59,43 @@ const ProfileChangeInformation = () => {
     return { message: "success" };
   };
 
-  const submitUpdateProfile = (e) => {
+  const submitUpdateProfile = async (e) => {
     e.preventDefault();
     const validateResult = handleValidateFields();
 
     if (validateResult.message === "success") {
       const dataSubmit = {
-        address: addressRef.current.value,
-        storeName: storeNameRef.current.value,
-        phoneNumber: phoneNumberRef.current.value,
-        gender: genderRef.current.value,
+        fullName: fullNameRef.current.value.trim(),
+        email: emailRef.current.value.trim(),
+        address: addressRef.current.value.trim(),
+        storeName: storeNameRef.current.value.trim(),
+        phoneNumber: phoneNumberRef.current.value.trim(),
+        gender: genderRef.current.value.trim(),
         hometown: cityRef.current.value
-          ? cityRef.current.value
+          ? cityRef.current.value.trim()
           : userInfo.hometown,
         district: districtRef.current.value
-          ? districtRef.current.value
+          ? districtRef.current.value.trim()
           : userInfo.district,
-        ward: wardRef.current.value ? wardRef.current.value : userInfo.ward,
+        ward: wardRef.current.value
+          ? wardRef.current.value.trim()
+          : userInfo.ward,
         userId: user.userId,
       };
 
-      updateProfile(dataSubmit).then((result) => {
-        toast.success("Update profile success".toLocaleUpperCase());
-        navigate("/profile");
-      });
+      const data = await updateProfile(dataSubmit);
+      switch (data.message) {
+        case "Email is already exists":
+          toast.error("Email is already exists".toLocaleUpperCase());
+          break;
+        case "failed":
+          toast.success("Update profile failed".toLocaleUpperCase());
+          break;
+        case "success":
+          toast.success("Update profile success".toLocaleUpperCase());
+          navigate("/profile");
+          break;
+      }
     } else {
       toast.error(validateResult.error.toLocaleUpperCase());
     }
@@ -125,27 +140,33 @@ const ProfileChangeInformation = () => {
               <img src="./icons/personalInformationImage.png"></img>
               <span>Personal Information</span>
             </div>
-            <ul className={styles.boxInformation}>
-              <li className={`d-flex ${styles.item}`}>
-                <label>Name: </label>
-                <p>{userInfo.fullName}</p>
-              </li>
-
-              <li className={`d-flex ${styles.item}`}>
-                <label>Email: </label>
-                <p>{userInfo.email}</p>
-              </li>
-            </ul>
-            <div className={styles.fillText}>
-              <span>
-                Please fill in all the fields marked with a red * below
-              </span>
-            </div>
             <div className={styles.fillText}>
               <span>Personal information</span>
             </div>
 
             <form>
+              <ul className={styles.boxInformation}>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Fullname </label>
+                  <input
+                    name="text"
+                    ref={fullNameRef}
+                    required
+                    defaultValue={userInfo.fullName}
+                  />
+                  <p className={styles.warning}>*</p>
+                </li>
+                <li className={`d-flex ${styles.item}`}>
+                  <label>Email </label>
+                  <input
+                    name="email"
+                    ref={emailRef}
+                    required
+                    defaultValue={userInfo.email}
+                  />
+                  <p className={styles.warning}>*</p>
+                </li>
+              </ul>
               <ul className={styles.boxInformation}>
                 <li className={`d-flex ${styles.item}`}>
                   <label>Gender: </label>

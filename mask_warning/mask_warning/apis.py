@@ -52,7 +52,6 @@ def Signin(userName, password):
 
 def HandleSignin(request): 
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userName = body_data["userName"].strip()
@@ -84,12 +83,10 @@ def Signout(request):
 
 def ViewProfile(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userId = body_data["userId"]
         
-        # Xử lí
         try:
             user_ref = db.collection(f"users").document(userId)
             doc = user_ref.get().to_dict()
@@ -117,10 +114,10 @@ def ViewProfile(request):
 
 def UpdateProfile(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
-        userId = body_data["userId"]
+        fullName = body_data["fullName"]
+        email = body_data["email"]
         hometown = body_data["hometown"]
         district = body_data["district"]
         ward = body_data["ward"]
@@ -128,30 +125,33 @@ def UpdateProfile(request):
         storeName = body_data["storeName"]
         phoneNumber = body_data["phoneNumber"]
         gender = body_data["gender"]
+        userId = body_data["userId"]
         
-        # Xử lí
         try:
-            doc = db.collection(f"users").document(userId)
-            doc.update({
-                'address': f'{address}, {ward}, {district}, {hometown}',
-                'phoneNumber': phoneNumber,
-                'storeName': storeName,
-                'gender': gender
-            })
-            return JsonResponse({"status": "success"})
+            if CheckEmailExistExceptOne(userId, email):
+                return JsonResponse({"message": "Email is already exists"})
+            else:
+                doc = db.collection(f"users").document(userId)
+                doc.update({
+                    'address': f'{address}, {ward}, {district}, {hometown}',
+                    'phoneNumber': phoneNumber,
+                    'storeName': storeName,
+                    'gender': gender,
+                    'fullName': fullName,
+                    'email': email,
+                })
+                return JsonResponse({"message": "success"})
         except:
-            return JsonResponse({"status": "fail"})
+            return JsonResponse({"message": "fail"})
 
 
 def ChangeAvatar(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userId = body_data["userId"]
         avatar = body_data["avatar"]
         
-        # Xử lí
         try:
             doc = db.collection(f"users").document(userId)
             doc.update({ 'avatar': avatar })
@@ -210,7 +210,6 @@ def Notifications(request, quantity = 4):
 
 def ListOfUsers(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         pageSize = body_data['pageSize']
@@ -252,7 +251,6 @@ def checkExistAttributeValue(collection, attribute, value):
 
 def SearchUser(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         pageSize = body_data['pageSize']
@@ -381,7 +379,6 @@ def getRevenueByYear():
 
 def getRevenue(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         formatType = body_data['formatType']
@@ -514,7 +511,6 @@ def ChangePassword(userId, newPassword):
 
 def HandleChangePassword(request): 
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userId = body_data["userId"]
@@ -585,6 +581,38 @@ def CheckUserNameExist(userName):
     return check
 
 
+def CheckEmailExistExceptOne(userId, newEmail):
+    try:
+        # Lấy ra chính email của user đã đăng ký trong DB
+        oldEmail = db.collection('users').document(f"{userId}").get().to_dict().get("email")
+
+        # Lấy ra các document có email khác với oldEmail và giống newEmail
+        docs = db.collection('users').where(u"email", u"!=", f"{oldEmail}").where(u"email", u"==", f"{newEmail}").stream()
+
+        # Nếu có document thỏa điều kiện 
+        for doc in docs: 
+            return True
+        return False
+    except:
+        return False
+
+
+def CheckUserNameExistExceptOne(userId, newUserName):
+    try:
+        # Lấy ra chính userName của user đã đăng ký trong DB
+        oldUserName = db.collection('users').document(f"{userId}").get().to_dict().get("userName")
+
+        # Lấy ra các document có userName khác với oldUserName và giống newUserName
+        docs = db.collection('users').where(u"userName", u"!=", f"{oldUserName}").where(u"userName", u"==", f"{newUserName}").stream()
+
+        # Nếu có document thỏa điều kiện 
+        for doc in docs: 
+            return True
+        return False
+    except:
+        return False
+
+
 def CheckValidFormatEmail(email):
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'  
     if(re.search(regex, email)):   
@@ -615,7 +643,7 @@ def UpdateCodeInDB(email, code):
 
         # Lấy ra chính document đó theo document id lấy được ở trên và cập nhật nó
         if userId != "":
-            doc_ref = db.collection('users').document(userId)
+            doc_ref = db.c(userId)(userId)
             doc_ref.update({'code': code})
             return True
     except:
@@ -701,7 +729,6 @@ def SubmitCode(email, code):
 
 def HandleSubmitCode(request): 
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         email = body_data["email"].strip()
@@ -720,12 +747,10 @@ def HandleSubmitCode(request):
 
 def HandleReSendCode(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         email = body_data["email"].strip()
 
-        # Nếu gửi code lại không thành công
         if SendCode(email) == False:
             return JsonResponse({"message": "Failed to re-send code"})
         else:
@@ -744,7 +769,7 @@ def CreateNewPassword(email, newPassword):
 
         # Lấy ra chính document đó theo document id lấy được ở trên và cập nhật trường password
         if userId != "":
-            doc_ref = db.collection('users').document(userId)
+            doc_ref = db.c(userId)(userId)
             doc_ref.update({'password': newPassword})
             return True
         else:
@@ -755,7 +780,6 @@ def CreateNewPassword(email, newPassword):
 
 def HandleCreateNewPassword(request): 
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         email = body_data["email"]
@@ -802,12 +826,10 @@ def ViewReportList(request):
 
 def ViewReportDetailUser(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         reportId = body_data["reportId"]
         
-        # Xử lí
         try:
             report = db.collection(f"reports").document(reportId)
             userId = report.get().to_dict().get("userId")
@@ -956,7 +978,6 @@ def SendReport(request):
 
 def HandleSigninAdmin(request): 
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userName = body_data["userName"].strip()
@@ -989,14 +1010,13 @@ def HandleSigninAdmin(request):
 
 def SaveVideoStreamUrl(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         userId = body_data["userId"].strip()
         videoStreamUrl = body_data["videoStreamUrl"].strip()
 
         try:
-            user = db.collection('users').document(userId)
+            user = db.c(userId)(userId)
             user.update({'videoStreamUrl': videoStreamUrl})
             return JsonResponse({"status": "success"})
         except:
@@ -1014,12 +1034,10 @@ def GetVideoStreamUrl(userId):
 
 def GenerateUserName(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
         fullName = body_data["fullName"]
         
-        # Xử lí
         try:
             translator = Translator()
             translation = translator.translate(fullName, src="vi", dest='en')
@@ -1041,18 +1059,17 @@ def GeneratePassword(request):
 
 def CreateNewUser(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
+        fullName = body_data["fullName"]
+        email = body_data["email"]
+        gender = body_data["gender"]
+        storeName = body_data["storeName"]
         hometown = body_data["hometown"]
         district = body_data["district"]
         ward = body_data["ward"]
         address = body_data["address"]
-        fullName = body_data["fullName"]
         phoneNumber = body_data["phoneNumber"]
-        gender = body_data["gender"]
-        storeName = body_data["storeName"]
-        email = body_data["email"]
         userName = body_data["userName"]
         password = body_data["password"]
         
@@ -1085,33 +1102,41 @@ def CreateNewUser(request):
 
 def UpdateUser(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
-        userId = body_data["userId"]
+        fullName = body_data["fullName"]
+        email = body_data["email"]
+        gender = body_data["gender"]
+        storeName = body_data["storeName"]
         hometown = body_data["hometown"]
         district = body_data["district"]
         ward = body_data["ward"]
         address = body_data["address"]
-        fullName = body_data["fullName"]
         phoneNumber = body_data["phoneNumber"]
-        gender = body_data["gender"]
-        storeName = body_data["storeName"]
-        email = body_data["email"]
+        userName = body_data["userName"]
+        password = body_data["password"]
+        userId = body_data["userId"]
         
         try:
-            updateUser = {
-                'address': f'{address}, {ward}, {district}, {hometown}',
-                'email': email,
-                'fullName': fullName,
-                'gender': gender,
-                'phoneNumber': phoneNumber,
-                'storeName': storeName,
-            }
-            db.collection(f"users").document(f'{userId}').update(updateUser)
-
-            return JsonResponse({"status": "success"})
+            if CheckEmailExistExceptOne(userId, email):
+                return JsonResponse({"message": "Email is already exists"})
+            else:
+                if CheckUserNameExistExceptOne(userId, userName):
+                    return JsonResponse({"message": "Username is already exists"})
+                else:
+                    updateUser = {
+                        'address': f'{address}, {ward}, {district}, {hometown}',
+                        'email': email,
+                        'fullName': fullName,
+                        'gender': gender,
+                        'phoneNumber': phoneNumber,
+                        'storeName': storeName,
+                        'userName': userName,
+                        'password': password
+                    }
+                    db.collection(f"users").document(f'{userId}').update(updateUser)
+                    return JsonResponse({"message": "success"})
         except:
-            return JsonResponse({"status": "fail"})
+            return JsonResponse({"message": "fail"})
 
 

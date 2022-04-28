@@ -99,6 +99,17 @@ export const validateAddress = (address) => {
   }
 };
 
+export const validatePassword = (password) => {
+  if (password.length >= 15) {
+    return { isValid: true, error: "" };
+  } else {
+    return {
+      isValid: false,
+      error: "Password length must has more 15 characters",
+    };
+  }
+};
+
 export const validateVideoStreamUrl = (videoStreamUrl) => {
   const regex = new RegExp(
     /(rtsp):\/\/([^\s@/]+)@([^\s/:]+)(?::([0-9]+))?(\/.*)/gm

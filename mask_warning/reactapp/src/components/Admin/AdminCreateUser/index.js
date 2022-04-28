@@ -86,17 +86,17 @@ const AdminUpdateUser = () => {
 
     if (validateResult.message === "success") {
       const dataSubmit = {
-        fullName: fullNameRef.current.value,
-        email: emailRef.current.value,
-        storeName: storeNameRef.current.value,
-        phoneNumber: phoneNumberRef.current.value,
-        gender: genderRef.current.value,
-        hometown: cityRef.current.value,
-        district: districtRef.current.value,
-        ward: wardRef.current.value,
-        address: addressRef.current.value,
-        userName: userNameRef.current.value,
-        password: passwordRef.current.value,
+        fullName: fullNameRef.current.value.trim(),
+        email: emailRef.current.value.trim(),
+        storeName: storeNameRef.current.value.trim(),
+        phoneNumber: phoneNumberRef.current.value.trim(),
+        gender: genderRef.current.value.trim(),
+        hometown: cityRef.current.value.trim(),
+        district: districtRef.current.value.trim(),
+        ward: wardRef.current.value.trim(),
+        address: addressRef.current.value.trim(),
+        userName: userNameRef.current.value.trim(),
+        password: passwordRef.current.value.trim(),
       };
 
       const data = await createNewUserAPI(dataSubmit);
