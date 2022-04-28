@@ -15,6 +15,7 @@ import Loading from "../../Helper/Loading";
 import Address from "../../Admin/Address/Address";
 import LeftControl from "../AdminLeftControl";
 import styles from "./AdminUpdateUser.module.css";
+import UserAvatarFrame from "../UserAvatarFrame";
 
 const AdminUpdateUserTest = () => {
   const [loadingPage, setLoadingPage] = useState(true);
@@ -144,6 +145,9 @@ const AdminUpdateUserTest = () => {
       <Header />
       <div className="d-flex">
         <LeftControl toggle="reports" />
+        {userInfo && (
+          <UserAvatarFrame userInfo={userInfo} enableChangeAvatar={true} />
+        )}
         {loadingPage ? (
           <Loading />
         ) : (

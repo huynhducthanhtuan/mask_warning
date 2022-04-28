@@ -11,7 +11,6 @@ const ProfileSidebar = ({ userInfo }) => {
   const [previewUrl, setPreviewUrl] = useState();
   const [progress, setProgress] = useState(0);
   const [urlImage, setUrlImage] = useState();
-
   const { user } = isAuthenticated();
 
   useEffect(() => {
@@ -54,7 +53,6 @@ const ProfileSidebar = ({ userInfo }) => {
         )}
         <div className={styles.formUploadImage}>
           <button className={`${styles.uploadBtn} btn btn-primary`}>
-            {" "}
             <label for="files" className={` btn`} style={{ fontSize: "12px" }}>
               Change Avatar
             </label>
@@ -67,7 +65,6 @@ const ProfileSidebar = ({ userInfo }) => {
             className="input"
             onChange={(e) => setImage(e.target.files[0])}
           />
-          {/* <button>Change avatar</button> */}
         </div>
 
         <p className={styles.myProfile}>My Profile</p>

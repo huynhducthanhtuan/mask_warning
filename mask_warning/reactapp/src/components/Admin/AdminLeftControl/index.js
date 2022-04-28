@@ -14,9 +14,9 @@ const LeftControl = ({ toggle = "home" }) => {
 
   return (
     <div className="col-2">
-      <Link to="/admin/home">
+      {/* <Link to="/admin/home">
         <img src={VerticalLogo} />
-      </Link>
+      </Link> */}
       <h2 className={styles.reportTitle}>MANAGEMENTS</h2>
       <div className={styles.homeTabs}>
         <div

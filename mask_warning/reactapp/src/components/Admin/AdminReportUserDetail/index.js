@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { viewProfile } from "../../../apis";
 import Header from "../../Header";
 import Loading from "../../Helper/Loading";
-import Address from "../../Admin/Address/Address";
 import LeftControl from "../AdminLeftControl";
+import UserAvatarFrame from "../UserAvatarFrame";
 import styles from "./AdminReportUserDetail.module.css";
 
 const AdminReportUserDetail = () => {
@@ -37,6 +37,7 @@ const AdminReportUserDetail = () => {
       <Header />
       <div className="d-flex">
         <LeftControl toggle="reports" />
+        {userInfo && <UserAvatarFrame userInfo={userInfo} />}
         {loadingPage ? (
           <Loading />
         ) : (
