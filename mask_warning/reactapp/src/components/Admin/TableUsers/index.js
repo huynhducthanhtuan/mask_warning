@@ -25,7 +25,7 @@ const TableUsers = ({ users, OpenModal, setOpenModal, setUserIdToDelete }) => {
               return (
                 <tr className={styles.rowValueUser} key={index}>
                   <Link
-                    to={`/admin/reports-manager/user-detail/${user.userId}`}
+                    to={`/admin/users-manager/user-detail/${user.userId}`}
                   >
                     <td className={styles.customerName}>
                       <div

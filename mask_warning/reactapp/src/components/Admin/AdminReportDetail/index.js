@@ -55,19 +55,6 @@ const ReportDetailAdmin = () => {
     loadReportDetail();
   }, [report]);
 
-  const solved = () => {
-    if (!report.isSolved) {
-      return (
-        <button
-          className={`mt-4 ${styles.detailComplete}`}
-          onClick={() => setOpenModal(!openModal)}
-        >
-          <img src={CompleteIcon} /> Confirm Solved
-        </button>
-      );
-    }
-  };
-
   const handleShowImageModal = () => {
     setShowModal(true);
   };
@@ -100,8 +87,8 @@ const ReportDetailAdmin = () => {
         <div
           className={
             isSolved
-              ? `${styles.detailRightContent} ${styles.active}`
-              : styles.detailRightContent
+              ? `${styles.detailRightContent} ${styles.active} col-10`
+              : `${styles.detailRightContent} col-10`
           }
         >
           <div className={styles.detailTopInformation}>
@@ -111,45 +98,29 @@ const ReportDetailAdmin = () => {
           <div className={styles.detailUserInformation}>
             <p>User ID:</p>
             <h4>{report.userId}</h4>
-            <Link to={`/admin/reports-manager/user-detail/${report.userId}`}>
+            <Link to={`/admin/users-manager/user-detail/${report.userId}`}>
               <button>Detail user</button>
             </Link>
           </div>
-          <div className={styles.detailImageAndTitle}>
-            <img
-              src={report.image === "" ? reportImageDefault : report.image}
-              onClick={() => handleShowImageModal(report.image)}
-            />
-            <div>
-              <h2 className={report.isSolved ? "d-block" : "d-none"}>
-                You had solve this report.
-              </h2>
-              <h5>{report.title}</h5>
-            </div>
-            <div className={styles.detailUserInformation}>
-              <p>User ID:</p>
-              <h4>{report.userId}</h4>
-              <Link to={`/admin/reports-manager/user-detail/${report.userId}`}>
-                <button>Detail user</button>
-              </Link>
-            </div>
-            <div className={styles.detailImageAndTitle}>
-              <img src={report.image} />
-              <div>
+          <div className={`row ${styles.detailImageAndTitle}`}>
+            <div className="col-12 d-flex">
+              <img
+                src={report.image === "" ? reportImageDefault : report.image}
+                onClick={() => handleShowImageModal(report.image)}
+              />
+              <div className={styles.boxContent}>
                 <h2 className={report.isSolved ? "d-block" : "d-none"}>
-                  You have done this task
+                  You had solve this report.
                 </h2>
                 <h5>{report.title}</h5>
               </div>
             </div>
-            <div className={styles.detailReport}>
+            <div className={`col ${styles.detailReport}`}>
               <p>{report.description}</p>
             </div>
-            {solved()}
+            {/* {solved()} */}
           </div>
-          <div className={styles.detailReport}>
-            <p>{report.description}</p>
-          </div>
+
           {renderButtonConfirmSolved()}
         </div>
       )}

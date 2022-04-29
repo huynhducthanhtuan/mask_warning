@@ -10,12 +10,13 @@ import {
   validateAddress,
   validatePassword,
 } from "../../../helpers/validator";
-import Header from "../../Header";
+
 import Loading from "../../Helper/Loading";
 import Address from "../../Admin/Address/Address";
 import LeftControl from "../AdminLeftControl";
 import styles from "./AdminUpdateUser.module.css";
 import UserAvatarFrame from "../UserAvatarFrame";
+import Frame from "../Frame";
 
 const AdminUpdateUserTest = () => {
   const [loadingPage, setLoadingPage] = useState(true);
@@ -141,10 +142,8 @@ const AdminUpdateUserTest = () => {
   }, []);
 
   return (
-    <section>
-      <Header />
+    <Frame>
       <div className="d-flex">
-        <LeftControl toggle="reports" />
         {userInfo && (
           <UserAvatarFrame userInfo={userInfo} enableChangeAvatar={true} />
         )}
@@ -280,7 +279,7 @@ const AdminUpdateUserTest = () => {
           </section>
         )}
       </div>
-    </section>
+    </Frame>
   );
 };
 

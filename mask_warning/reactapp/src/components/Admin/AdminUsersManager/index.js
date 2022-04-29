@@ -9,6 +9,7 @@ import { deleteUser, searchUsers, viewUserList } from "../../../apis";
 import Loading from "../../Helper/Loading";
 import Modal from "./../../Helper/Modal/index";
 import { toast } from "react-toastify";
+import Frame from "../Frame";
 const UsersManagerAdmin = () => {
   const querySearchRef = useRef();
   const [users, setUsers] = useState();
@@ -47,72 +48,47 @@ const UsersManagerAdmin = () => {
     await loadUsersSearched();
   };
 
-  return (
-    <div className="container">
-      {OpenModal && userIdToDelete && (
-        <Modal
-          setOpenModal={setOpenModal}
-          title="DELETE USER "
-          body="Are you sure you want to delete this user?"
-          action={handleDeleteUser}
-          userDeleteId={userIdToDelete}
+  const searchBar = () => {
+    return (<form onSubmit={(e) => submitSearch(e)}>
+      <div className={styles.box}>
+        <i
+          className="fa fa-search"
+          aria-hidden="true"
+          onClick={submitSearch}
+        ></i>
+        <input
+          type="text"
+          name=""
+          ref={querySearchRef}
+          className={styles.searchInput}
+          placeholder="Search..."
         />
-      )}
-      <div className="row">
-        <LeftControl toggle="users" />
-        <div className="col-10">
-          <div
-            className={styles.usersManager}
-            style={
-              !users
-                ? { backgroundColor: "#fff" }
-                : { backgroundColor: "#f0f7fd" }
-            }
-          >
-            <div className="d-lex mb-4">
-              <form onSubmit={(e) => submitSearch(e)}>
-                <div className={styles.box}>
-                  <i
-                    className="fa fa-search"
-                    aria-hidden="true"
-                    onClick={submitSearch}
-                  ></i>
-                  <input
-                    type="text"
-                    name=""
-                    ref={querySearchRef}
-                    className={styles.searchInput}
-                    placeholder="Search..."
-                  />
-                </div>
-              </form>
-
-              <ShowBox />
-            </div>
-
-            <Link to="/admin/users-manager/create-user">
-              {" "}
-              <button
-                type="button"
-                className={`btn btn-warning mt-4 ${styles.createAccountUser}`}
-              >
-                Create Account for user
-              </button>
-            </Link>
-            {users ? (
-              <TableUsers
-                users={users}
-                OpenModal={OpenModal}
-                setOpenModal={setOpenModal}
-                setUserIdToDelete={setUserIdToDelete}
-              />
-            ) : (
-              <Loading />
-            )}
-          </div>
-        </div>
       </div>
-    </div>
+    </form>)
+  }
+
+  return (
+    <Frame searchBar={searchBar} titleToggle="users"  >
+      <Link to="/admin/users-manager/create-user">
+        {" "}
+        <button
+          type="button"
+          className={`btn btn-warning mt-4 ${styles.createAccountUser}`}
+        >
+          Create Account for user
+        </button>
+      </Link>
+      {users ? (
+        <TableUsers
+          users={users}
+          OpenModal={OpenModal}
+          setOpenModal={setOpenModal}
+          setUserIdToDelete={setUserIdToDelete}
+        />
+      ) : (
+        <Loading />
+      )}
+    </Frame>
   );
 };
 export default UsersManagerAdmin;

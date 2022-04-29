@@ -28,8 +28,9 @@
   left: 700px;
   font-family: "Inter";
   font-style: italic;
-  font-weight: 100;
+  font-weight: 400;
   font-size: 18px;
+  color: #0e0c0c;
 }
 .cardMain :nth-child(4) {
   width: 144px;
@@ -71,15 +72,15 @@
 }
 
 .cardMainFields p:nth-child(1) {
-  margin: 0 20px;
+  margin: 0 55px;
 }
 
 .cardMainFields p:nth-child(2) {
-  margin: 0 42% 0 2%;
+  margin: 0 27% 0 5%;
 }
 
 .cardMainFields p:nth-child(3) {
-  margin-right: 23%;
+  margin-right: 32%;
 }
 
 .cardMainFields p:nth-child(4) {

@@ -79,12 +79,7 @@
   height: 200px;
   transform: scale(0.8);
   scroll-behavior: smooth;
-}
-
-.detailImageAndTitle img:hover {
-  transform: scale(1);
-  width: 600px;
-  height: 400px;
+  cursor: pointer;
 }
 
 .detailImageAndTitle h2 {
@@ -125,4 +120,16 @@
 
 .detailFitWindow {
   height: 62px;
+}
+
+.boxContent {
+  margin-top: 70px;
+}
+
+.boxContent h2 {
+  margin-left: 0;
+}
+
+.boxContent h5 {
+  margin-left: 0;
 }

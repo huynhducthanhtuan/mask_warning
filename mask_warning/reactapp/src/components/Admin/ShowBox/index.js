@@ -12,7 +12,7 @@ import {
   signOutApi,
 } from "../../../apis";
 
-const ShowBox = () => {
+const ShowBox = ({ setOpenModal }) => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -78,14 +78,7 @@ const ShowBox = () => {
 
   return (
     <div>
-      {modalOpen && (
-        <Modal
-          body="Are you sure to sign out ??"
-          setOpenModal={setModalOpen}
-          action={handleSignout}
-        // isCss={true}
-        />
-      )}
+
       <div className={styles.homeTopRightControl}>
         <p>Admin</p>
         <div className={styles.homeNotify} onClick={() => setShowBox(!showBox)}>
@@ -102,7 +95,7 @@ const ShowBox = () => {
             See More
           </button>
         </div>
-        <div onClick={() => setModalOpen(true)}>
+        <div onClick={() => setOpenModal(true)}>
           <img className={styles.homeIconTopRight} src={LogOutIcon} alt="" />
         </div>
       </div>

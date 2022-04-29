@@ -2,14 +2,13 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 
 import StatisticCard from "../AdminStatisticCard";
-import LeftControl from "../AdminLeftControl";
-import ShowBox from "../ShowBox";
 import styles from "./Home.module.css";
 
 import Loading from "../../Helper/Loading";
 import { ellipse, averageHours, newUsersIcon } from "../../../assets/ExportImages";
 import ChartAdmin from "../ChartAdmin";
-import { countNewUsers } from "../../../apis";
+import { countNewUsers, signOutApi } from "../../../apis";
+import Frame from "../Frame";
 
 function countUsers(users) {
   var sum = 0;
@@ -28,6 +27,7 @@ const HomeAdmin = () => {
   const [newUsers, setNewUsers] = useState();
   const [statisticToggle, setStatisticToggle] = useState("w");
 
+
   const [calNewUsers, setCalNewUsers] = useState({
     w: 0,
     m: 0,
@@ -43,99 +43,85 @@ const HomeAdmin = () => {
     setNewUsers(res.countNewUser)
     setChartNewUsers(res.countNewUser.newUserDaily)
   };
-  if (newUsers) {
-    console.log(newUsers);
-
-  }
+  // if (newUsers) {
+  //   // console.log(newUsers);
+  // }
   useEffect(() => {
     loadDataNewUsers();
-
   }, []);
 
   useEffect(() => {
-
     if (newUsers) {
       setCalNewUsers({
         w: countUsers(newUsers.newUserDaily),
         m: countUsers(newUsers.newUserWeekly),
         y: countUsers(newUsers.newUserMonthly)
       })
-
-
     }
   }, [newUsers])
 
 
-
-
-  console.log(calNewUsers);
-
   const renderHome = () => {
     if (isAdminLoggedIn) {
       return (
-        <div className="row">
-          <LeftControl />
-          <div className="col-10">
-            <div className={`${styles.homeTabContents} mb-4`}>
-              <ShowBox />
-              <div>
-                <div className={styles.homeStatisticButtonGroup}>
-                  <div
-                    className={
-                      statisticToggle === "w"
-                        ? `${styles.homeStatisticButton} ${styles.active}`
-                        : styles.homeStatisticButton
-                    }
-                    onClick={() => {
-                      setStatisticToggle("w")
-                      setChartNewUsers(newUsers.newUserDaily)
-                    }}
-                  >
-                    <img src={ellipse} />
-                    <p>Week</p>
-                  </div>
-                  <div
-                    className={
-                      statisticToggle === "m"
-                        ? `${styles.homeStatisticButton} ${styles.active}`
-                        : styles.homeStatisticButton
-                    }
-                    onClick={() => {
-                      setStatisticToggle("m")
-                      setChartNewUsers(newUsers.newUserWeekly)
-                    }}
-                  >
-                    <img src={ellipse} />
-                    <p>Month</p>
-                  </div>
-                  <div
-                    className={
-                      statisticToggle === "y"
-                        ? `${styles.homeStatisticButton} ${styles.active}`
-                        : styles.homeStatisticButton
-                    }
-                    onClick={() => {
-                      setStatisticToggle("y")
-                      setChartNewUsers(newUsers.newUserMonthly)
-                    }}
-                  >
-                    <img src={ellipse} />
-                    <p>Year</p>
-                  </div>
-                </div>
-                <div className={styles.homeStatisticCards}>
-                  <StatisticCard
-                    cardName={"User(s)"}
-                    data={calNewUsers[statisticToggle]}
-                    dataType={" new user(s)"}
-                    iconLink={newUsersIcon}
-                  />
-                </div>
+        <Frame >
+          <div>
+            <div className={styles.homeStatisticButtonGroup}>
+              <div
+                className={
+                  statisticToggle === "w"
+                    ? `${styles.homeStatisticButton} ${styles.active}`
+                    : styles.homeStatisticButton
+                }
+                onClick={() => {
+                  setStatisticToggle("w")
+                  setChartNewUsers(newUsers.newUserDaily)
+                }}
+              >
+                <img src={ellipse} />
+                <p>Week</p>
               </div>
-              <ChartAdmin newUsers={chartNewUsers} />
+              <div
+                className={
+                  statisticToggle === "m"
+                    ? `${styles.homeStatisticButton} ${styles.active}`
+                    : styles.homeStatisticButton
+                }
+                onClick={() => {
+                  setStatisticToggle("m")
+                  setChartNewUsers(newUsers.newUserWeekly)
+                }}
+              >
+                <img src={ellipse} />
+                <p>Month</p>
+              </div>
+              <div
+                className={
+                  statisticToggle === "y"
+                    ? `${styles.homeStatisticButton} ${styles.active}`
+                    : styles.homeStatisticButton
+                }
+                onClick={() => {
+                  setStatisticToggle("y")
+                  setChartNewUsers(newUsers.newUserMonthly)
+                }}
+              >
+                <img src={ellipse} />
+                <p>Year</p>
+              </div>
+            </div>
+            <div className={styles.homeStatisticCards}>
+              <StatisticCard
+                cardName={"User(s)"}
+                data={calNewUsers[statisticToggle]}
+                dataType={" new user(s)"}
+                iconLink={newUsersIcon}
+              />
             </div>
           </div>
-        </div>
+          <ChartAdmin newUsers={chartNewUsers} />
+
+        </Frame>
       );
     } else {
       return <Navigate to="/admin/signin" replace />;

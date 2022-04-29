@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { viewProfile } from "../../../apis";
-import Header from "../../Header";
 import Loading from "../../Helper/Loading";
 import LeftControl from "../AdminLeftControl";
 import UserAvatarFrame from "../UserAvatarFrame";
 import styles from "./AdminReportUserDetail.module.css";
+import Frame from "../Frame";
 
 const AdminReportUserDetail = () => {
   const [loadingPage, setLoadingPage] = useState(true);
@@ -33,15 +33,14 @@ const AdminReportUserDetail = () => {
   }, []);
 
   return (
-    <section>
-      <Header />
+    <Frame>
       <div className="d-flex">
-        <LeftControl toggle="reports" />
+
         {userInfo && <UserAvatarFrame userInfo={userInfo} />}
         {loadingPage ? (
           <Loading />
         ) : (
-          <section className={` col-9 ${styles.boxPersonalInformation}`}>
+          <section className={` col-7 ${styles.boxPersonalInformation}`}>
             <div className={`d-flex ${styles.personalInformation}`}>
               <span>View user account</span>
             </div>
@@ -105,7 +104,7 @@ const AdminReportUserDetail = () => {
           </section>
         )}
       </div>
-    </section>
+    </Frame>
   );
 };
 

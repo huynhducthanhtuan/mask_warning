@@ -13,11 +13,12 @@ import {
   validatePhoneNumber,
   validateAddress,
 } from "../../../helpers/validator";
-import Header from "../../Header";
+
 import Loading from "../../Helper/Loading";
 import LeftControl from "../AdminLeftControl";
 import AddressCreateUser from "../../Admin/Address/AddressCreateUser";
 import styles from "./AdminCreateUser.module.css";
+import Frame from "../Frame";
 
 const AdminCreateUser = () => {
   const [loadingPage, setLoadingPage] = useState(true);
@@ -138,10 +139,8 @@ const AdminCreateUser = () => {
   }, []);
 
   return (
-    <section>
-      <Header />
+    <Frame>
       <div className="d-flex">
-        <LeftControl toggle="users" />
         {loadingPage ? (
           <Loading />
         ) : (
@@ -149,91 +148,87 @@ const AdminCreateUser = () => {
             <div className={`d-flex ${styles.personalInformation}`}>
               <span>Create new user account</span>
             </div>
-            <ul className={styles.boxInformation}>
-              <li className={`d-flex ${styles.item}`}>
-                <label>Fullname </label>
-                <input
-                  name="text"
-                  ref={fullNameRef}
-                  required
-                  onBlur={handleGenerateUserName}
-                />
-              </li>
-
-              <li className={`d-flex ${styles.item}`}>
-                <label>Email </label>
-                <input name="email" ref={emailRef} required />
-              </li>
-            </ul>
-
-            <form>
-              <ul className={styles.boxInformation}>
-                <li className={`d-flex ${styles.item}`}>
-                  <label>Gender</label>
-                  <select ref={genderRef}>
-                    <option value={"Male"}>Male</option>
-                    <option value={"Female"}>Female</option>
-                    <option value={"Other"}>Other</option>
-                  </select>
-                  <p className={styles.warning}>*</p>
-                </li>
-                <li className={`d-flex ${styles.item}`}>
-                  <label>Store name </label>
-                  <input name="text" ref={storeNameRef} required />
-                  <p className={styles.warning}>*</p>
-                </li>
-              </ul>
-
-              <ul className={styles.boxInformation}>
-                {cities !== [] && (
-                  <AddressCreateUser
-                    wardRef={wardRef}
-                    districtRef={districtRef}
-                    cityRef={cityRef}
-                    cities={cities}
-                    defaultValue={{
-                      ward: "",
-                      district: "",
-                      hometown: "",
-                    }}
-                  />
-                )}
-                <li className={`d-flex ${styles.item}`}>
-                  <label>Address </label>
-                  <input name="text" ref={addressRef} required />
-                  <p className={styles.warning}>*</p>
-                </li>
-                <li className={`d-flex ${styles.item}`}>
-                  <label>Phone number </label>
-                  <input name="text" ref={phoneNumberRef} required />
-                  <p className={styles.warning}>*</p>
-                </li>
-              </ul>
-              <ul className={styles.boxInformation}>
-                <li className={`d-flex ${styles.item}`}>
-                  <label>Username </label>
-                  <input name="text" ref={userNameRef} required />
-                  <p className={styles.warning}>*</p>
-                </li>
-                <li className={`d-flex ${styles.item}`}>
-                  <label>Password </label>
-                  <input name="text" ref={passwordRef} required />
-                  <p className={styles.warning}>*</p>
-                </li>
-              </ul>
-              <div
-                className={` d-flex justify-content-center ${styles.btnChangePassword}`}
-              >
-                <button onClick={submitCreateUser}>Create</button>
-                <button onClick={cancelCreateUser} className={styles.btnCancel}>
-                  Cancel
-                </button>
+            <div className="row">
+              <div className="col-6">
+                <ul className={styles.boxInformation}>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Fullname </label>
+                    <input
+                      name="text"
+                      ref={fullNameRef}
+                      required
+                      onBlur={handleGenerateUserName}
+                    />
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Email </label>
+                    <input name="email" ref={emailRef} required />
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Phone number </label>
+                    <input name="text" ref={phoneNumberRef} required />
+                  </li>
+                </ul>
+                <ul className={styles.boxInformation}>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Gender</label>
+                    <select ref={genderRef}>
+                      <option value={"Male"}>Male</option>
+                      <option value={"Female"}>Female</option>
+                      <option value={"Other"}>Other</option>
+                    </select>
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Store name </label>
+                    <input name="text" ref={storeNameRef} required />
+                  </li>
+                </ul>
               </div>
-            </form>
+
+              <form className="col-6">
+                <ul className={styles.boxInformation}>
+                  {cities !== [] && (
+                    <AddressCreateUser
+                      wardRef={wardRef}
+                      districtRef={districtRef}
+                      cityRef={cityRef}
+                      cities={cities}
+                      defaultValue={{
+                        ward: "",
+                        district: "",
+                        hometown: "",
+                      }}
+                    />
+                  )}
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Address </label>
+                    <input name="text" ref={addressRef} required />
+                  </li>
+                </ul>
+                <ul className={styles.boxInformation}>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Username </label>
+                    <input name="text" ref={userNameRef} required />
+                  </li>
+                  <li className={`d-flex ${styles.item}`}>
+                    <label>Password </label>
+                    <input name="text" ref={passwordRef} required />
+                  </li>
+                </ul>
+                <div
+                  className={` d-flex justify-content-center ${styles.btnChangePassword}`}
+                >
+                  <button onClick={submitCreateUser}>Create</button>
+                  <button onClick={cancelCreateUser} className={styles.btnCancel}>
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
           </section>
         )}
       </div>
-    </section>
+    </Frame>
   );
 };
 

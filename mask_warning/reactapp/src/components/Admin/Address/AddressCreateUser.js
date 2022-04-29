@@ -28,7 +28,7 @@ const AddressCreateUser = ({
     setWards(ward[0].wards);
   };
 
-  const readDistrict = () => {};
+  const readDistrict = () => { };
 
   return (
     <React.Fragment>
@@ -84,26 +84,26 @@ const AddressCreateUser = ({
         </select>
       </li>
       <li className={`d-flex ${styles.item}`}>
-        <div className={`d-flex ${styles.boxContent}`}>
-          <label className="">Wards</label>
-          <select className="form-select" ref={wardRef}>
-            {wards.map((ward, index) => {
-              if (defaultValue.ward === ward.name) {
-                return (
-                  <option key={index} value={ward.name} selected>
-                    {ward.name}{" "}
-                  </option>
-                );
-              } else {
-                return (
-                  <option key={index} value={ward.name}>
-                    {ward.name}{" "}
-                  </option>
-                );
-              }
-            })}
-          </select>
-        </div>
+        {/* <div className={`d-flex ${styles.boxContent}`}> */}
+        <label className="">Wards</label>
+        <select className="form-select" ref={wardRef}>
+          {wards.map((ward, index) => {
+            if (defaultValue.ward === ward.name) {
+              return (
+                <option key={index} value={ward.name} selected>
+                  {ward.name}{" "}
+                </option>
+              );
+            } else {
+              return (
+                <option key={index} value={ward.name}>
+                  {ward.name}{" "}
+                </option>
+              );
+            }
+          })}
+        </select>
+        {/* </div> */}
       </li>
     </React.Fragment>
   );
