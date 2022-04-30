@@ -65,11 +65,64 @@ const ReportDetailAdmin = () => {
 
   return (
     <div className="container">
+      {showModal && (
+        <ImageModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          imageUrl={report.image}
+        />
+      )}
+      {openModal && (
+        <Modal
+          setOpenModal={setOpenModal}
+          Dialog="Question?"
+          body="Are you sure this problem has been solved ?"
+          action={handleConfirmSolvedReport}
+        />
+      )}
       <div className="row">
-        <LeftControl />
-        <div className="col-10">
-
-        </div>
+        <LeftControl toggle="reports" />
+        {loading ? (
+          <Loading />
+        ) : (
+          <div
+            className={
+              isSolved
+                ? `${styles.detailRightContent} ${styles.active} col-10`
+                : `${styles.detailRightContent} col-10`
+            }
+          >
+            <div className={styles.detailTopInformation}>
+              <h3 className={styles.detailId}>Report ID: {reportId}</h3>
+              <p>{report.createdDate.split("T")[0]}</p>
+            </div>
+            <div className={styles.detailUserInformation}>
+              <p>User ID:</p>
+              <h4>{report.userId}</h4>
+              <Link to={`/admin/users-manager/user-detail/${report.userId}`}>
+                <button>Detail user</button>
+              </Link>
+            </div>
+            <div className={`row ${styles.detailImageAndTitle}`}>
+              <div className="col-12 d-flex">
+                <img
+                  src={report.image === "" ? reportImageDefault : report.image}
+                  onClick={() => handleShowImageModal(report.image)}
+                />
+                <div className={styles.boxContent}>
+                  <h2 className={report.isSolved ? "d-block" : "d-none"}>
+                    You had solve this report.
+                  </h2>
+                  <h5>{report.title}</h5>
+                </div>
+              </div>
+              <div className={`col ${styles.detailReport}`}>
+                <p>{report.description}</p>
+              </div>
+            </div>
+            {renderButtonConfirmSolved()}
+          </div>
+        )}
       </div>
     </div>
   );

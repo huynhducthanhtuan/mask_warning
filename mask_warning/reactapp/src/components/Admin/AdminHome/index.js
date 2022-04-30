@@ -118,8 +118,10 @@ const HomeAdmin = () => {
                 iconLink={newUsersIcon}
               />
             </div>
+          </div >
+          <div className="container-fluid">
+            <ChartAdmin newUsers={chartNewUsers} />
           </div>
-          <ChartAdmin newUsers={chartNewUsers} />
 
         </Frame>
       );

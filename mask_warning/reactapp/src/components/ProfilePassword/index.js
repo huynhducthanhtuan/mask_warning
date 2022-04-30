@@ -72,10 +72,10 @@ const ProfilePassword = () => {
                 </li>
               </ul>
               <div
-                className={` d-flex justify-content-start ${styles.btnChangePassword}`}
+                className={` d-flex justify-content-center ${styles.btnChangePassword}`}
               >
-                <button onClick={handleChangePassword}>Update</button>
-                <button>Cancel</button>
+                <button onClick={handleChangePassword} className="btn btn-primary" styles={{ marginLeft: "50%" }}>Update</button>
+
               </div>
               <ul className={styles.textPassword}>
                 <li>The password must meet the following conditions:</li>
@@ -83,13 +83,9 @@ const ProfilePassword = () => {
                   Password should not be less than 8 characters or greater than 15
                   characters
                 </li>
-                <li>Password should not contain whitespace characters</li>
-                <li>Password should contain at least one lower case letter</li>
-                <li>Password should contain at least one upper case letter</li>
-                <li>Password should contain at least one numeric value</li>
-                <li>
-                  Password should contain at least one special case characters
-                </li>
+                {/* <li>Password should not contain whitespace characters</li> */}
+                {/* <li>Password should contain at least one lower case letter</li> */}
+
               </ul>
             </div>
           </section>

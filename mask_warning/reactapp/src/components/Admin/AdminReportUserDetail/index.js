@@ -7,6 +7,7 @@ import LeftControl from "../AdminLeftControl";
 import UserAvatarFrame from "../UserAvatarFrame";
 import styles from "./AdminReportUserDetail.module.css";
 import Frame from "../Frame";
+import { LoadingUserManage } from "../../../assets/ExportImages";
 
 const AdminReportUserDetail = () => {
   const [loadingPage, setLoadingPage] = useState(true);
@@ -33,12 +34,12 @@ const AdminReportUserDetail = () => {
   }, []);
 
   return (
-    <Frame>
+    <Frame titleToggle="users">
       <div className="d-flex">
 
         {userInfo && <UserAvatarFrame userInfo={userInfo} />}
         {loadingPage ? (
-          <Loading />
+          <Loading srcIcon={LoadingUserManage} />
         ) : (
           <section className={` col-7 ${styles.boxPersonalInformation}`}>
             <div className={`d-flex ${styles.personalInformation}`}>
@@ -98,7 +99,7 @@ const AdminReportUserDetail = () => {
               <div
                 className={` d-flex justify-content-center ${styles.btnUpdate}`}
               >
-                <button onClick={handleClickUpdate}>Update</button>
+                <button onClick={handleClickUpdate} className="btn">Update</button>
               </div>
             </form>
           </section>

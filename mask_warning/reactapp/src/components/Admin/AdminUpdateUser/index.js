@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import React, { useRef, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
@@ -106,13 +107,15 @@ const AdminUpdateUserTest = () => {
           toast.success("Update user account success".toLocaleUpperCase());
           break;
       }
+      navigate("/admin/users-manager");
+
     } else {
       toast.error(validateResult.error.toLocaleUpperCase());
     }
   };
 
   const cancelUpdateUser = () => {
-    navigate(-1);
+    navigate("/admin/users-manager");
   };
 
   useEffect(() => {
@@ -270,8 +273,8 @@ const AdminUpdateUserTest = () => {
               <div
                 className={` d-flex justify-content-center ${styles.btnParts}`}
               >
-                <button onClick={submitUpdateUser}>Update</button>
-                <button onClick={cancelUpdateUser} className={styles.btnCancel}>
+                <button onClick={submitUpdateUser} className="btn btn-primary">Update</button>
+                <button onClick={cancelUpdateUser} className="btn btn-info">
                   Cancel
                 </button>
               </div>

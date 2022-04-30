@@ -72,7 +72,7 @@
 }
 
 .cardMainFields p:nth-child(1) {
-  margin: 0 55px;
+  margin: 0 30px;
 }
 
 .cardMainFields p:nth-child(2) {
@@ -80,9 +80,9 @@
 }
 
 .cardMainFields p:nth-child(3) {
-  margin-right: 32%;
+  margin-left: 18%;
 }
 
 .cardMainFields p:nth-child(4) {
-  margin-left: 6%;
+  margin-left: 15%;
 }
