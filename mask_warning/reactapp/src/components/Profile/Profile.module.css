@@ -139,13 +139,10 @@
 }
 
 .btnUpdate {
-  font-size: 18px;
   margin-left: calc((100% - 182px) / 2);
-  padding: 8px 50px;
-  border-radius: 50px;
-  background: #7877b9;
   cursor: pointer;
   transition: 0.5s;
+  margin-bottom: 60px;
 }
 
 .btnUpdate:hover {

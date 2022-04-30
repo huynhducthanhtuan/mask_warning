@@ -247,12 +247,12 @@ const ProfileChangeInformation = () => {
               >
                 <button
                   onClick={submitUpdateProfile}
-                  className={styles.updateBtn}
+                  className={`btn btn-info`}
                 >
                   Update
                 </button>
                 <Link to="/profile">
-                  <button className={styles.cancelBtn}>Cancel</button>
+                  <button className={` btn btn-primary`}>Cancel</button>
                 </Link>
               </div>
 

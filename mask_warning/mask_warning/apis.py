@@ -1136,7 +1136,6 @@ def HandleSigninAdmin(request):
                 except:
                     return JsonResponse({"message": "Signin failed"})
 
-
 def SaveVideoStreamUrl(request):
     if request.method == "POST":
         body_unicode = request.body.decode('utf-8')
@@ -1145,7 +1144,7 @@ def SaveVideoStreamUrl(request):
         videoStreamUrl = body_data["videoStreamUrl"].strip()
 
         try:
-            user = db.c(userId)(userId)
+            user = db.collection('users').document(userId)
             user.update({'videoStreamUrl': videoStreamUrl})
             return JsonResponse({"status": "success"})
         except:

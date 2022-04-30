@@ -72,20 +72,20 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 	return (locs, preds)
 
 # # load our serialized face detector model from disk
-# prototxtPath = fr"{os.getcwd()}\deploy.prototxt"
-# weightsPath = fr"{os.getcwd()}\res10_300x300_ssd_iter_140000.caffemodel"
-# faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
+prototxtPath = fr"{os.getcwd()}\deploy.prototxt"
+weightsPath = fr"{os.getcwd()}\res10_300x300_ssd_iter_140000.caffemodel"
+faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
-# # load the face mask detector model from disk
-# maskNet = load_model(fr"{os.getcwd()}\mask_detector.model")
-# # maskNet = load_model("keras_model.h5")
-# # initialize the video stream
+# load the face mask detector model from disk
+maskNet = load_model(fr"{os.getcwd()}\mask_detector.model")
+# maskNet = load_model("keras_model.h5")
+# initialize the video stream
 
-# # Create red corner
-# pts = np.array([[15,15], [625, 15], 
-# 	[625, 465], [15, 465]],
-# 	np.int32)
-# pts = pts.reshape((-1, 1, 2))
+# Create red corner
+pts = np.array([[15,15], [625, 15], 
+	[625, 465], [15, 465]],
+	np.int32)
+pts = pts.reshape((-1, 1, 2))
 
 # Frame time when red corner off
 redCornerOffFrame = [7,8,9]
@@ -95,8 +95,10 @@ def playUnmaskSound(urlSound):
 	playsound(urlSound)
 
 
-def stream(videoStream):
-	cap = cv2.VideoCapture(videoStream) 
+def stream(videoStreamUrl):
+	# cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:80/onvif13") 
+	# cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:8080/onvif13") 
+	cap = cv2.VideoCapture(videoStreamUrl) 
 	frame_count = 0
 
 	limitCallSound = 50;
@@ -156,6 +158,8 @@ def stream(videoStream):
 			label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
 
 			
+
+
 			# display the label and bounding box rectangle on the output
 			# frame
 			cv2.putText(frame, label, (startX, startY - 10),
@@ -170,12 +174,16 @@ def stream(videoStream):
 		yield (b'--frame\r\n'
 				b'Content-Type: image/jpeg\r\n\r\n' + open('demo.jpg', 'rb').read() + b'\r\n')
 
-
 def showCamera(request, userId):
 	try:
 		if request.method == "GET":
 			videoStreamUrl = GetVideoStreamUrl(userId)
 			return StreamingHttpResponse(stream(videoStreamUrl), content_type='multipart/x-mixed-replace; boundary=frame')
+			# return StreamingHttpResponse(stream(), content_type='multipart/x-mixed-replace; boundary=frame')
 	except:
 		return JsonResponse({"error": "Connect camera failed"})
+    # return StreamingHttpResponse(stream(), content_type='multipart/x-mixed-replace; boundary=frame')
 
+
+def index(request):
+    return render(request,'my_app/index.html')

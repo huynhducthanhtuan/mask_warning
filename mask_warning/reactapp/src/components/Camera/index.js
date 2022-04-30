@@ -28,6 +28,7 @@ const Camera = () => {
           <img
             className={styles.activeCamraImage}
             src={videoStreamUrl ? `/camera/${userId}/` : ""}
+
             alt="camera video"
           />
           <div className={styles.speaker}>
@@ -42,6 +43,8 @@ const Camera = () => {
   useEffect(() => {
     getVideoStreamUrl();
   }, [videoStreamUrl]);
+
+  console.log(videoStreamUrl);
 
   return videoStreamUrl ? renderCameraPage() : renderConnectCameraPage();
 };

@@ -218,8 +218,8 @@ const AdminCreateUser = () => {
                 <div
                   className={` d-flex justify-content-center ${styles.btnChangePassword}`}
                 >
-                  <button onClick={submitCreateUser}>Create</button>
-                  <button onClick={cancelCreateUser} className={styles.btnCancel}>
+                  <button onClick={submitCreateUser} className="btn btn-primary">Create</button>
+                  <button onClick={cancelCreateUser} className="btn btn-info">
                     Cancel
                   </button>
                 </div>

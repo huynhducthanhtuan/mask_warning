@@ -90,7 +90,7 @@ const Profile = () => {
                   </li>
                 </ul>
                 <Link to="/profile-change-information">
-                  <button className={styles.btnUpdate}>Update</button>
+                  <button className={`btn btn-primary btn-all-action  ${styles.btnUpdate}`}>Update</button>
                 </Link>
               </>
             )}

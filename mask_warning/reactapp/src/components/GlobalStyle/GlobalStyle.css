@@ -16,3 +16,11 @@ li {
 .d-none {
   display: none;
 }
+.btn-all-action {
+  font-size: 14px;
+  padding: 5px 25px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.5s;
+  margin-right: 10px;
+}
