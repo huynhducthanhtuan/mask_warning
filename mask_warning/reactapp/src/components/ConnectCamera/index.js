@@ -13,19 +13,19 @@ const ConnectCamera = ({ setVideoStreamUrl }) => {
 
     const videoStreamUrl = videoStreamInputRef.current.value.trim();
 
-    // if (validateVideoStreamUrl(videoStreamUrl)) {
-    // Lấy userId từ localStorage
-    // Call API
-    const data = await saveVideoStreamUrlAPI({ userId, videoStreamUrl });
+    if (validateVideoStreamUrl(videoStreamUrl)) {
+      // Lấy userId từ localStorage
+      // Call API
+      const data = await saveVideoStreamUrlAPI({ userId, videoStreamUrl });
 
-    if (data.status === "success") {
-      setVideoStreamUrl(videoStreamUrl);
-      localStorage.setItem("videoStreamUrl", videoStreamUrl);
+      if (data.status === "success") {
+        setVideoStreamUrl(videoStreamUrl);
+        localStorage.setItem("videoStreamUrl", videoStreamUrl);
+      }
+    } else {
+      toast.error("Invalid video stream format".toLocaleUpperCase());
+      // alert("loi")
     }
-    // } else {
-    //   // toast.error("Invalid video stream format".toLocaleUpperCase());
-    //   alert("loi")
-    // }
   };
 
   return (
