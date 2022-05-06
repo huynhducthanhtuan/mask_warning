@@ -14,7 +14,7 @@
   width: 300px;
   height: 300px;
   border-radius: 4px;
-  margin-left: calc((100% - 112%) / 2);
+  margin-left: calc((100% - 75%) / 2);
 }
 .uploadBtn {
   margin: 0;

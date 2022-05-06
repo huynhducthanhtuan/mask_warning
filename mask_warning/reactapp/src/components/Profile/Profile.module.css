@@ -142,6 +142,7 @@
   margin-left: calc((100% - 182px) / 2);
   cursor: pointer;
   transition: 0.5s;
+  padding: 10px 35px;
   margin-bottom: 60px;
 }
 
