@@ -35,21 +35,22 @@ const Report = () => {
   const formHandler = () => {
     const dataUpload = {
       userId: user.userId,
-      image: urlImage,
+      image: urlImage || "",
       title: inputTitleRef.current.value,
       description: descriptionRef.current.value,
     };
     console.log(dataUpload);
     sendReport(dataUpload).then((result) => {
       if (result.error) {
-        toast.error(result.error);
+        toast.error(result.error.toUpperCase());
       } else {
-        toast.success(result.status);
+        toast.success("SEND REPORT SUCCESS");
         inputTitleRef.current.value = "";
         descriptionRef.current.value = "";
         setPreviewUrl(undefined);
         // console.log(result);
       }
+      // console.log(result);
     });
   };
   return (

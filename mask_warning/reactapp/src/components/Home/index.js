@@ -15,9 +15,9 @@ import "slick-carousel/slick/slick-theme.css";
 import "./sliderDot.css";
 
 const Home = () => {
-  const { state, payload } = useContext(UserContext);
+  // const { state, payload } = useContext(UserContext);
   const { token } = isAuthenticated();
-
+  console.log(token);
   var settings = {
     dots: true,
     infinite: true,
@@ -28,7 +28,7 @@ const Home = () => {
   };
 
   const notify = () => {
-    if (!state) {
+    if (!token) {
       toast.info("YOU MUST SIGN IN !");
     }
   };
@@ -44,7 +44,7 @@ const Home = () => {
         <Slider {...settings}>
           <div className={styles.homeSlider}>
             <img className={styles.sliderImage} src="./icons/slider.png"></img>
-            <Link to={state ? "/camera" : "/signin"}>
+            <Link to={token ? "/camera" : "/signin"}>
               <div className={`${styles.homeSliderGettingStarted}`}>
                 <p>Getting Started</p>
               </div>
@@ -57,7 +57,7 @@ const Home = () => {
           </div>
           <div className={styles.homeSlider}>
             <img className={styles.sliderImage} src={Slider2}></img>
-            <Link to={state ? "/camera" : "/signin"}>
+            <Link to={token ? "/camera" : "/signin"}>
               <div className={styles.homeSliderGettingStarted}>
                 <p>Getting Started</p>
               </div>
@@ -70,7 +70,7 @@ const Home = () => {
           </div>
           <div className={styles.homeSlider}>
             <img className={styles.sliderImage} src={Slider3}></img>
-            <Link to={state ? "/camera" : "/signin"}>
+            <Link to={token ? "/camera" : "/signin"}>
               <div className={styles.homeSliderGettingStarted}>
                 <p>Getting Started</p>
               </div>
@@ -124,7 +124,7 @@ const Home = () => {
         <div className={styles.homeGuideImage}>
           <img src="./icons/outline.png"></img>
         </div>
-        <Link to={state ? "/guide" : "/signin"} onClick={notify}>
+        <Link to={token ? "/guide" : "/signin"} onClick={notify}>
           <div className={styles.homeButton}>
             <p>View more</p>
           </div>
@@ -180,7 +180,7 @@ const Home = () => {
               what you met.
             </p>
           </div>
-          <Link to={state ? "/report" : "/signin"} onClick={notify}>
+          <Link to={token ? "/report" : "/signin"} onClick={notify}>
             <div className={styles.homeButton}>
               <p>View more</p>
             </div>

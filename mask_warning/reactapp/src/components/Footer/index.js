@@ -19,7 +19,7 @@ const Footer = () => {
             </div>
             <div className={styles.footerContact}>
               <h4 className={styles.footerContactHeading}>WhatsApp</h4>
-              <span className={styles.footerContactInfo}>+84 376122913</span>
+              <span className={styles.footerContactInfo}>votrunghieu3@dtu.edu.vn</span>
             </div>
           </div>
           <div className="col-lg-4">
@@ -32,7 +32,7 @@ const Footer = () => {
             <div className={styles.footerContact}>
               <h4 className={styles.footerContactHeading}>Office</h4>
               <span className={styles.footerContactInfo}>
-                votrunghieu3@dtu.edu.vn
+                BAP Company
               </span>
             </div>
           </div>

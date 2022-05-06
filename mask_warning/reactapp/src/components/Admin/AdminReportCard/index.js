@@ -9,7 +9,7 @@ const ReportCard = ({ reports }) => {
       <div className={styles.cardMainFields}>
         <p>Id</p>
         <p>Date</p>
-        <p>Description</p>
+        <p>Title</p>
         <p>Action</p>
       </div>
       {reports.map((report, index) => {

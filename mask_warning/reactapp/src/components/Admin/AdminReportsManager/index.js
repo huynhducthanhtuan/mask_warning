@@ -7,6 +7,7 @@ import ReportCard from "../AdminReportCard";
 import ShowBox from "../ShowBox";
 import Loading from "../../Helper/Loading";
 import Frame from "../Frame";
+import { LoadingUserManage } from "../../../assets/ExportImages";
 
 const ReportsManagerAdmin = (onClick) => {
   const [toggle, setToggle] = useState("all");
@@ -78,8 +79,10 @@ const ReportsManagerAdmin = (onClick) => {
           </div>
         </>
       ) : (
-        // <Loading />
-        <div className={` col-10 `}></div>
+
+        <div className={` col-10 `}>
+          <Loading srcIcon={LoadingUserManage} />
+        </div>
       )}
 
     </Frame>

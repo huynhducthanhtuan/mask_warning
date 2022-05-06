@@ -28,7 +28,7 @@ const UsersManagerAdmin = () => {
 
   const handleDeleteUser = (userIdToDelete) => {
     deleteUser({ userId: userIdToDelete }).then((result) => {
-      toast.success(result.status.toUpperCase());
+      toast.success("DELETE USER SUCCESS");
       loadUsersManage();
     });
   };
@@ -72,7 +72,7 @@ const UsersManagerAdmin = () => {
       {OpenModal && userIdToDelete && (
         <Modal
           setOpenModal={setOpenModal}
-          title="DELETE USER "
+          title="Delete user "
           body="Are you sure you want to delete this user?"
           action={handleDeleteUser}
           userDeleteId={userIdToDelete}
