@@ -14,8 +14,6 @@
 
 #### 6. Gõ lệnh "python manage.py runserver"
 
-#### 7. Ctrl+Click vào đường dẫn "http://127.0.0.1:8000/" ở cửa sổ Terminal
-
 ### Cách chạy dự án (Front-end)
 
 #### 1. Tại thư mục (mask_warning/mask_warning/reactapp), mở CMD
