@@ -1,13 +1,11 @@
-import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { UserContext } from "../../App";
-import { AboutUsIcon } from "../../assets/ExportImages";
-import { ToastContainer, toast } from "react-toastify";
-import { isAuthenticated } from "./../Auth/index";
+import React, { useEffect } from "react";
 import styles from "./Home.module.css";
 import Header from "../Header";
 import Footer from "../Footer";
 import Slider from "react-slick";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { isAuthenticated } from "./../Auth/index";
 import { Slider2 } from "../../assets/ExportImages";
 import { Slider3 } from "../../assets/ExportImages";
 import "slick-carousel/slick/slick.css";
@@ -15,9 +13,8 @@ import "slick-carousel/slick/slick-theme.css";
 import "./sliderDot.css";
 
 const Home = () => {
-  // const { state, payload } = useContext(UserContext);
   const { token } = isAuthenticated();
-  console.log(token);
+
   var settings = {
     dots: true,
     infinite: true,
@@ -75,7 +72,7 @@ const Home = () => {
                 <p>Getting Started</p>
               </div>
             </Link>
-            <Link to="/">
+            <Link to={token ? "/camera" : "/signin"}>
               <div className={styles.homeSliderArrowBot}>
                 <img src="./icons/arrowBottom.png"></img>
               </div>
