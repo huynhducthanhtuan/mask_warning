@@ -19,20 +19,22 @@ const Footer = () => {
             </div>
             <div className={styles.footerContact}>
               <h4 className={styles.footerContactHeading}>WhatsApp</h4>
-              <span className={styles.footerContactInfo}>votrunghieu3@dtu.edu.vn</span>
+              <span className={styles.footerContactInfo}>
+                +971 555 0114 321
+              </span>
             </div>
           </div>
           <div className="col-lg-4">
             <div className={styles.footerContact}>
-              <h4 className={styles.footerContactHeading}>WhatsApp</h4>
+              <h4 className={styles.footerContactHeading}>Email</h4>
               <span className={styles.footerContactInfo}>
-                254 Nguyễn Văn Linh, Hải Châu, Đà Nẵng 550000
+                votrunghieu3@dtu.edu.vn
               </span>
             </div>
             <div className={styles.footerContact}>
               <h4 className={styles.footerContactHeading}>Office</h4>
               <span className={styles.footerContactInfo}>
-                BAP Company
+                254 Nguyễn Văn Linh, Hải Châu, Đà Nẵng
               </span>
             </div>
           </div>

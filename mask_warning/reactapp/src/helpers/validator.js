@@ -117,3 +117,25 @@ export const validateVideoStreamUrl = (videoStreamUrl) => {
 
   return regex.test(videoStreamUrl);
 };
+
+export const validateTitleBug = (title) => {
+  if (title.length >= 7) {
+    return { isValid: true, error: "" };
+  } else {
+    return {
+      isValid: false,
+      error: "Title bug is not valid",
+    };
+  }
+};
+
+export const validateDescriptionBug = (description) => {
+  if (description.length >= 10) {
+    return { isValid: true, error: "" };
+  } else {
+    return {
+      isValid: false,
+      error: "Description bug is not valid",
+    };
+  }
+};

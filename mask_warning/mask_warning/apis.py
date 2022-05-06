@@ -1025,7 +1025,7 @@ def ViewReportDetail(request):
 
 def ViewUserList(request):
     try:
-        docs = db.collection(f"users").stream()
+        docs = db.collection(f"users").order_by(u'createdDate', direction=firestore.Query.DESCENDING).get()
         result = []
 
         for doc in docs:
@@ -1069,7 +1069,7 @@ def ConfirmSolvedReport(request):
         
 
 def ValidateReport(image, title, description):
-    if image.strip() != "" and title.strip() != "" and description.strip() != "":
+    if image.strip() != "" and len(title.strip()) >= 6 and len(description.strip()) >= 6:
         return True
     else:
         return False
@@ -1098,11 +1098,11 @@ def SendReport(request):
                     "description": description,
                     "isSolved": False,
                 })
-                return JsonResponse({"status": "success"})
+                return JsonResponse({"message": "success"})
             except:
-                return JsonResponse({"status": "fail"})
+                return JsonResponse({"message": "failed"})
         else:
-            return JsonResponse({"error": "Please enter all information"})
+            return JsonResponse({"message": "Please enter valid all information"})
 
 
 def HandleSigninAdmin(request): 

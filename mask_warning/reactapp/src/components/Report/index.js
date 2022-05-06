@@ -6,8 +6,7 @@ import Header from "../Header";
 import { Link } from "react-router-dom";
 import { UploadImageToFirebase } from "./../Helper/UploadImageToFirebase/index";
 import { isAuthenticated } from "./../Auth/index";
-import { async } from "@firebase/util";
-import { sendReport } from "./../../apis/index";
+import { sendReport } from "./../../apis";
 import { toast } from "react-toastify";
 const path = "report-images";
 
@@ -20,45 +19,55 @@ const Report = () => {
 
   const inputTitleRef = useRef();
   const descriptionRef = useRef();
+
   useEffect(() => {
     if (!image) {
       return;
     }
+
     const fileReader = new FileReader();
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
     };
     fileReader.readAsDataURL(image);
+
     //upload image report to firebase storage
     UploadImageToFirebase(image, setProgress, setUrlImage, path);
   }, [image]);
-  const formHandler = () => {
+
+  const formHandler = async () => {
     const dataUpload = {
       userId: user.userId,
       image: urlImage || "",
       title: inputTitleRef.current.value,
       description: descriptionRef.current.value,
     };
-    console.log(dataUpload);
-    sendReport(dataUpload).then((result) => {
-      if (result.error) {
-        toast.error(result.error.toUpperCase());
-      } else {
+
+    const data = await sendReport(dataUpload);
+    switch (data.message) {
+      case "Please enter valid all information":
+        toast.error(data.message.toUpperCase());
+        break;
+      case "failed":
+        toast.error("SEND REPORT FAILED");
+        break;
+      case "success":
         toast.success("SEND REPORT SUCCESS");
         inputTitleRef.current.value = "";
         descriptionRef.current.value = "";
         setPreviewUrl(undefined);
-        // console.log(result);
-      }
-      // console.log(result);
-    });
+        break;
+    }
   };
+
   return (
     <section className={`container_fluid ${styles.camera}`}>
       <Header />
       <div className={`container ${styles.cameraContainer}`}>
         <div className={`row ${styles.camera__header}`}>
-          <div className={`col-3 animate__animated animate__bounceIn animate__delay-1s ${styles.sideBar}`}>
+          <div
+            className={`col-3 animate__animated animate__bounceIn animate__delay-1s ${styles.sideBar}`}
+          >
             <Link to="/report">
               <div className={`d-flex ${styles.sideBar__home}`}>
                 <img src="./icons/home.png"></img>
@@ -72,7 +81,9 @@ const Report = () => {
               </div>
             </Link>
           </div>
-          <div className={`col-3 animate__animated animate__backInRight animate__delay-1s ${styles.chooseImage}`}>
+          <div
+            className={`col-3 animate__animated animate__backInRight animate__delay-1s ${styles.chooseImage}`}
+          >
             <h5>Choose image</h5>
             <img
               src={previewUrl ? previewUrl : "./img/imageDefault.jpg"}
@@ -88,7 +99,9 @@ const Report = () => {
               onChange={(e) => setImage(e.target.files[0])}
             />
           </div>
-          <div className={`col-3 animate__animated animate__backInRight animate__delay-2s ${styles.chooseImage}`}>
+          <div
+            className={`col-3 animate__animated animate__backInRight animate__delay-2s ${styles.chooseImage}`}
+          >
             <h5>Title bug</h5>
             <div className="form-group">
               <input
@@ -100,7 +113,9 @@ const Report = () => {
               />
             </div>
           </div>
-          <div className={`col-3 animate__animated animate__backInRight animate__delay-3s ${styles.reportDescription}`}>
+          <div
+            className={`col-3 animate__animated animate__backInRight animate__delay-3s ${styles.reportDescription}`}
+          >
             <div className="form-group">
               <p>Description</p>
               <textarea

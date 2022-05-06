@@ -1,11 +1,10 @@
 from django.urls import include, path
 from django.contrib import admin
-# from .views import showCamera
+from .views import showCamera
 from .apis import HandleSignin, Signout, ViewProfile, UpdateProfile, ChangeAvatar, HandleChangePassword, CreateNewUser
 from .apis import HandleSubmitEmail, HandleSubmitCode, HandleReSendCode, HandleCreateNewPassword, DeleteUser, SendReport
 from .apis import ViewReportList, ViewReportDetailUser, ViewReportHistory, ViewReportDetail, ViewUserList, ConfirmSolvedReport
 from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl,searchUsers
-from .views import showCamera,stream
 from .apis import GenerateUserName, GeneratePassword
 from .apis import HandleSigninAdmin, Notifications, CountNewNotificationsQuantity, SaveVideoStreamUrl, GetVideoStreamUrl
 from .apis import GenerateUserName, GeneratePassword, SearchUser, countNewUser, UpdateUser
