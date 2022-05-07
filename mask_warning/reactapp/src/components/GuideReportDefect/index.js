@@ -51,7 +51,7 @@ const GuideReportDefect = () => {
       <Link to="/guide-connect-camera" className={styles.button}>
 
         <img src={ArrowLeft}></img>
-        <p className={styles.text}>Previous guide 1</p>
+        <p className={styles.text}>Guide 1</p>
       </Link>
     </section>
   );

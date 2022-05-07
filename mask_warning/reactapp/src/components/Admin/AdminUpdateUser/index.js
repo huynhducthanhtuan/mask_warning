@@ -14,7 +14,6 @@ import {
 
 import Loading from "../../Helper/Loading";
 import Address from "../../Admin/Address/Address";
-import LeftControl from "../AdminLeftControl";
 import styles from "./AdminUpdateUser.module.css";
 import UserAvatarFrame from "../UserAvatarFrame";
 import Frame from "../Frame";
@@ -23,8 +22,8 @@ const AdminUpdateUserTest = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const [userInfo, setUserInfo] = useState();
   const [cities, setCities] = useState([]);
-  const navigate = useNavigate();
   const { userId } = useParams();
+  const navigate = useNavigate();
 
   const fullNameRef = useRef();
   const emailRef = useRef();
@@ -105,17 +104,18 @@ const AdminUpdateUserTest = () => {
           break;
         case "success":
           toast.success("Update user account success".toLocaleUpperCase());
+          navigate(`/admin/users-manager/user-detail/${userId}`);
           break;
       }
-      navigate("/admin/users-manager");
 
     } else {
       toast.error(validateResult.error.toLocaleUpperCase());
     }
   };
 
-  const cancelUpdateUser = () => {
-    navigate("/admin/users-manager");
+  const cancelUpdateUser = (e) => {
+    e.preventDefault()
+    navigate(-1);
   };
 
   useEffect(() => {

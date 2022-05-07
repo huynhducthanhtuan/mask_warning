@@ -21,6 +21,10 @@ const Report = () => {
   const descriptionRef = useRef();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (!image) {
       return;
     }

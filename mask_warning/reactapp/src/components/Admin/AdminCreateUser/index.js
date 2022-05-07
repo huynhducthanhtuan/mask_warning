@@ -121,7 +121,7 @@ const AdminCreateUser = () => {
   };
 
   const cancelCreateUser = () => {
-    navigate(-1);
+    navigate("/admin/users-manager");
   };
 
   useEffect(async () => {

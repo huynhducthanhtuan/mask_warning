@@ -13,7 +13,6 @@ import Frame from "../Frame";
 function countUsers(users) {
   var sum = 0;
   for (const key in users) {
-    console.log(users[key]);
     sum += users[key]
   }
   return sum;

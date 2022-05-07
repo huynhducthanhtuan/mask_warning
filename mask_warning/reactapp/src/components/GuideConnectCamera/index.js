@@ -35,7 +35,7 @@ const GuideConnectCamera = () => {
 
           <div className={styles.item}>
             <p className={styles.text}>
-              3. click on “connect camera” button in Camera page
+              3. Click on “Connect Camera” button in Camera page
             </p>
             <img className={styles.image} src={ButtonConnectCamera}></img>
           </div>
@@ -43,7 +43,7 @@ const GuideConnectCamera = () => {
       </div>
 
       <Link to="/guide-report-defect" className={styles.button}>
-        <p className={styles.text}>Next guide 2</p>
+        <p className={styles.text}>Guide 2</p>
         <img src={ArrowRight}></img>
       </Link>
     </section>

@@ -18,9 +18,9 @@ const Footer = () => {
               <span className={styles.footerContactInfo}>(+84) 376122913</span>
             </div>
             <div className={styles.footerContact}>
-              <h4 className={styles.footerContactHeading}>WhatsApp</h4>
+              <h4 className={styles.footerContactHeading}>Telegram</h4>
               <span className={styles.footerContactInfo}>
-                +971 555 0114 321
+                votrunghieu
               </span>
             </div>
           </div>
