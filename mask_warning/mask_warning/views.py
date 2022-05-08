@@ -12,7 +12,7 @@ import threading, imutils, time, cv2, os, numpy as np
 from threading import Thread
 
 
-def detect_and_predict_mask(frame, faceNet, maskNet):
+def detect_and_predict_mask(frame, faceNet, maskNet, zoomRate):
     # grab the dimensions of the frame and then construct a blob
     # from it
     (h, w) = frame.shape[:2]
@@ -109,15 +109,23 @@ def stream(videoStreamUrl):
     while True:
         frame_count += 1
         frame = threaded_camera.show_frame()
-        frame = imutils.resize(frame,width=400)
+        (h,w) = frame.shape[:2]
+
+        # print('----------------------\n',h,w)
+        # frame = imutils.resize(frame,width=400)
+        # (h,w) = frame.shape[:2]
+        # print(h,w,'-----------------------\n')
+        zoomRate = float(400) / w
         # ret,frame = cap.read()
-        (locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
+        (locs, preds) = detect_and_predict_mask(imutils.resize(frame,width=400), faceNet, maskNet, zoomRate)
 
         # loop over the detected face locations and their corresponding
         # locations
         for (box, pred) in zip(locs, preds):
             # unpack the bounding box and predictions
             (startX, startY, endX, endY) = box
+            (startX, startY, endX, endY) = (np.int32(startX*3.2), np.int32(startY*3.2), np.int32(endX*3), np.int32(endY*3))
+            # print(startX, startY, endX, endY)
             (mask, withoutMask) = pred
 
             # determine the class label and color we'll use to draw
@@ -139,7 +147,6 @@ def stream(videoStreamUrl):
                     isOnRedcorner = False
                     break
             
-            (h,w) = frame.shape[:2]
             # print(h,w)
             if isOnRedcorner:
                 cv2.rectangle(frame, (0, 0), (w, h), color, 40)
