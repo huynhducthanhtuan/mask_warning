@@ -1,0 +1,44 @@
+.headerGuide {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  padding-top: 20px;
+}
+
+.contentString {
+  text-align: center;
+  font-weight: 600;
+  font-size: 40px;
+  text-align: center;
+  color: #4754a2;
+  margin: 50px 0;
+}
+
+.text {
+  color: #4754a2;
+  font-weight: 700;
+}
+
+.item {
+  padding-left: 200px;
+  padding-top: 20px;
+}
+
+.image {
+  width: 350px;
+  height: 250px;
+}
+.image2 {
+  width: 550px;
+  height: 350px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+}
+
+.button span {
+  font-size: 35px;
+  margin-bottom: 4px;
+}

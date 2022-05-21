@@ -1,0 +1,130 @@
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.cameraConnect {
+  background: url(/src/assets/img/connectCamera.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.buttonLink {
+  margin-left: 80%;
+  background-color: #7877b9;
+  line-height: 49px;
+  width: 107.2px;
+  height: 49.55px;
+  box-sizing: border-box;
+  border-radius: 18.0174px;
+  text-decoration: none;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18.0174px;
+  color: #ffffff;
+}
+
+.logo {
+  margin: 8px;
+  width: 120px;
+  height: 120px;
+}
+
+.headerString {
+  padding: 20px;
+  color: #3751fe;
+  font-weight: 700;
+  justify-content: center;
+}
+
+.imageLock {
+  width: 90px;
+  height: 60px;
+}
+
+.formHeader {
+  color: #3c3b93;
+  font-weight: 700;
+  font-size: 30px;
+}
+.formButton {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-top: 25px;
+  transition: 0.5s;
+}
+
+.formButton:hover {
+  opacity: 0.9;
+}
+
+.buttonConnect {
+  padding: 8px 39px;
+  color: #ffffff;
+  background-color: #3751fe;
+  border: 1px solid;
+  font-size: 18px;
+  cursor: pointer;
+}
+.buttonCancel {
+  padding: 8px 39px;
+  color: #000000;
+  background-color: #d9d9d9;
+  border: 1px solid;
+  font-size: 18px;
+  margin-right: 20px;
+}
+.form {
+  margin: 0 auto;
+  width: 700px;
+  background: rgba(196, 196, 196, 0.18);
+  align-self: center;
+  padding: 30px;
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+
+.line {
+  width: 593px;
+}
+
+.lineAll {
+  width: 95%;
+  height: 1px;
+  top: 160px;
+}
+
+.formControl {
+  color: #030303;
+  width: 513px;
+  height: 30px;
+  border: 1px solid #000000 !important;
+  padding: 8px 0px 6px 12px !important;
+  border-radius: 7px !important;
+  margin-top: 10px;
+}
+.formContentPart {
+  color: #030303;
+  border-radius: 7px !important;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+}
+.inputPart {
+  margin-top: 50px;
+  margin-bottom: 20px;
+  width: 500px;
+}
+.imageForgot {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  left: 1130px;
+  top: 400px;
+  -o-object-fit: inherit;
+  object-fit: inherit;
+}

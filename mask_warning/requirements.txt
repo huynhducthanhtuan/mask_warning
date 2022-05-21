@@ -1,0 +1,16 @@
+tensorflow
+keras
+pandas
+imutils
+numpy
+opencv-python
+matplotlib
+scipy
+django
+firebase_admin
+gcloud
+django-rest_framework
+django-cors-headers
+pyjwt[crypto]
+googletrans==3.1.0a0
+playsound==1.2.2

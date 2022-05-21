@@ -1,0 +1,136 @@
+.homeMain {
+  display: flex;
+}
+
+.detailRightContent {
+  width: 100%;
+  height: 100vh;
+  background-color: #f0f7fd;
+}
+.detailRightContent.active {
+  background-color: #abcb9c;
+}
+.detailTopInformation {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 20px;
+}
+
+.detailTopInformation p {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.detailId {
+  color: #6160dc;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.detailUserInformation {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 15px;
+  margin: 10px;
+}
+.detailUserInformation p {
+  width: 100px;
+  font-weight: 700;
+}
+
+.detailUserInformation a {
+  margin-left: 55%;
+}
+
+.detailUserInformation h4 {
+  font-size: 20px;
+  font-weight: 700;
+  background-color: #d7d3d3;
+  padding: 10px;
+  margin-left: 50px;
+}
+.detailUserInformation:nth-child(3) {
+  width: 224px;
+  margin-left: 55%;
+  cursor: pointer;
+}
+.detailUserInformation button {
+  width: 144px;
+  height: 37px;
+  background: #6160dc;
+  border: #6160dc;
+  color: white;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.detailImageAndTitle {
+  display: flex;
+  align-items: flex-end;
+  margin: 20px 12px 20px;
+  transition: 0.5s;
+}
+.detailImageAndTitle img {
+  width: 400px;
+  height: 200px;
+  transform: scale(0.8);
+  scroll-behavior: smooth;
+  cursor: pointer;
+  object-fit: contain;
+}
+
+.detailImageAndTitle h2 {
+  margin-left: 50px;
+  margin-bottom: 30px;
+  font-weight: 600;
+  font-size: 35px;
+}
+.detailImageAndTitle h5 {
+  width: fit-content;
+  background-color: #b099c7;
+  margin-left: 25px;
+  padding: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.detailReport {
+  justify-self: center;
+
+  height: 150px;
+  padding: 25px;
+  margin: 0 auto;
+  background-color: white;
+  box-shadow: 27.2308px 13.6154px 81.6923px rgba(0, 0, 0, 0.03);
+  border-radius: 24px;
+}
+
+.detailComplete {
+  padding: 6px;
+  margin-top: 5px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 10px;
+  background-color: #4abc3b;
+}
+
+.detailFitWindow {
+  height: 62px;
+}
+
+.boxContent {
+  margin-top: 70px;
+}
+
+.boxContent h2 {
+  margin-left: 0;
+}
+
+.boxContent h5 {
+  margin-left: 0;
+}

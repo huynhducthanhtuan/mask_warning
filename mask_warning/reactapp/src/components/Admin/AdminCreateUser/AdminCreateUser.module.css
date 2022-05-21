@@ -1,0 +1,106 @@
+.personalInformation {
+  justify-content: flex-start;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d9d9d9;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.boxPersonalInformation .fillText {
+  color: #cf4646;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.boxPersonalInformation {
+  padding: 30px 80px !important;
+}
+
+.boxInformation li {
+  border-top: 1px solid #d9d9d9;
+  padding: 15px 0px;
+}
+
+.item label {
+  width: 200px;
+  font-size: 16px;
+}
+
+.item p {
+  font-weight: 500;
+}
+
+.item select,
+input {
+  width: 350px;
+  padding: 5px 0px;
+  font-size: 14px;
+}
+
+.warning {
+  font-size: 16px;
+  color: red;
+  cursor: pointer;
+  transition: 0.5s;
+  padding-left: 5px;
+}
+
+.containerCreateAccount button:hover {
+  opacity: 0.6;
+}
+
+.genderCheckbox {
+  width: 80%;
+}
+
+.genderCheckbox .form-check {
+  display: flex !important;
+  justify-content: space-between !important;
+  flex-flow: wrap-reverse !important;
+}
+
+.genderCheckbox .form-check-input {
+  margin-top: 0.8rem !important;
+  margin-left: 3.75rem !important;
+}
+
+.genderCheckbox .form-check-label {
+  margin-top: 20px !important;
+  margin-left: 10px !important;
+}
+
+.confirmPassword {
+  margin-bottom: 60px !important;
+}
+
+.submitButtonPart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  color: red;
+}
+
+.btnChangePassword {
+  margin-bottom: 40px;
+  margin-left: calc((100% - 68%) / 2);
+}
+
+.btnChangePassword button {
+  font-size: 14px;
+  padding: 5px 25px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.5s;
+  margin-right: 10px;
+}
+
+.btnChangePassword button:hover {
+  opacity: 0.7;
+}
+
+.btnCancel {
+  background-color: #7877b9;
+}

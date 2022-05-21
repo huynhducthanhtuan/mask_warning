@@ -1,0 +1,15 @@
+.slick-dots {
+  bottom: 50px;
+  left: 1%;
+  margin-left: calc((100% - 102%) / 2);
+}
+
+.slick-next:before {
+  background-color: #5d5fef;
+  border-radius: 12px;
+  content: "→";
+}
+
+.slick-next {
+  display: none !important;
+}

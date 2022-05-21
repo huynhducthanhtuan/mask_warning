@@ -1,0 +1,73 @@
+.profileSidebar h2 {
+  font-size: 48px;
+  font-weight: bold;
+  color: #3751fe;
+  margin-bottom: 15px;
+}
+
+.profileSidebar {
+  padding: 0;
+  margin: 0;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.boxSide {
+  background: #f7fafc;
+  /* padding: 28px 22px; */
+  width: 200px;
+  height: 200px;
+  margin-top: 100px;
+  margin-left: -11%;
+}
+
+.avatarName {
+  width: 100%;
+}
+.uploadBtn {
+  margin: 0;
+  /* margin-left: 35px; */
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.formUploadImage button {
+  margin-left: calc((100% - 182) / 2);
+  color: #595d7b;
+  background: #b5befb;
+  padding: 5px 40px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.myProfile {
+  color: #333;
+  background: #8a9ae4;
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.boxSide ul li {
+  display: flex;
+  background: #cfd7f3;
+  padding: 4px;
+  margin: 10px 0px;
+  transition: 0.5s;
+}
+
+.boxSide ul li:hover {
+  background: #8a9ae4;
+}
+
+.boxSide li p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #2d3748;
+  align-items: center;
+}

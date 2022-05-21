@@ -1,0 +1,74 @@
+.personalInformation {
+  justify-content: flex-start;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d9d9d9;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: -260px;
+}
+
+.boxPersonalInformation .fillText {
+  color: #cf4646;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.boxPersonalInformation {
+  padding: 30px 0 !important;
+}
+
+.boxInformation {
+  padding: 20px 0;
+}
+
+.boxInformation li {
+  border-top: 1px solid #d9d9d9;
+  padding: 15px 0px;
+}
+
+.item label {
+  width: 200px;
+  font-size: 16px;
+}
+
+.item p {
+  font-weight: 500;
+}
+
+.item select,
+input {
+  width: 350px;
+  padding: 5px 0px;
+  font-size: 14px;
+}
+
+.warning {
+  font-size: 16px;
+  margin-left: 5px;
+  color: red;
+}
+
+.btnParts {
+  margin-bottom: 40px;
+  margin-left: 120px;
+  justify-content: flex-start !important;
+}
+
+.btnParts button {
+  font-size: 14px;
+  padding: 5px 25px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.5s;
+  margin-right: 10px;
+}
+
+.btnParts button:hover {
+  opacity: 0.7;
+}
+
+.btnCancel {
+  background-color: #7877b9;
+}
