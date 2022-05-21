@@ -128,7 +128,9 @@ def stream(videoStreamUrl):
             # print(startX, startY, endX, endY)
             (mask, withoutMask) = pred
 
-            # determine the class label and color we'll use to draw
+
+            # test pull request
+            # # determine the class label and color we'll use to draw
             # the bounding box and text
             # and put red corner if need
             if mask > withoutMask:
