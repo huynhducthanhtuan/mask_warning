@@ -16,9 +16,9 @@
 
 #### create-react-app: Mở CMD và gõ lệnh "npm install -g create-react-app"
 
-### II. Cách chạy dự án (chạy cả Back-end và Front-end)
+### II. Các bước chạy dự án (chạy cả Back-end và Front-end)
 
-### 1. Cách chạy dự án (Back-end)
+### 1. Back-end
 
 #### Tại thư mục gốc (mask_warning), mở CMD
 
@@ -28,7 +28,7 @@
 
 #### Gõ lệnh "python manage.py runserver"
 
-### 2 Cách chạy dự án (Front-end)
+### 2 Front-end
 
 #### Tại thư mục (mask_warning/mask_warning/reactapp), mở CMD
 
