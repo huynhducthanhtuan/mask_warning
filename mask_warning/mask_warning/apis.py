@@ -1,11 +1,8 @@
-from tabnanny import check
-from tkinter.tix import Tree
 from django.http import JsonResponse
 from googletrans import Translator
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from firebase_admin import credentials, firestore
-from numpy import true_divide
 from datetime import datetime, timedelta, date
 import firebase_admin, smtplib, math, random, smtplib, ssl
 import string, pytz, json, os, jwt, re, pandas
@@ -24,7 +21,7 @@ db = firestore.client()
 # APIS
 def Signin(userName, password):
     try:
-        # Lấy ra mảng các document theo userName và password truyền vào
+        # Lấy ra mảng các users
         docs = (
             db.collection(f"users")
             .where("userName", "==", f"{userName}")
@@ -32,12 +29,12 @@ def Signin(userName, password):
             .stream()
         )
 
-        # Nếu có document chứa userName và password truyền vào thì lấy ra document id của document đó
+        # Nếu có document chứa userName, password truyền vào thì lấy ra document id của document đó
         userId = ""
         for doc in docs:
             userId = doc.id
 
-        # Nếu không có document chứa userName và password truyền vào
+        # Nếu không có document chứa userName, password truyền vào
         if userId == "":
             return False
         else:
@@ -63,7 +60,6 @@ def HandleSignin(request):
         if userName == "" or password == "":
             return JsonResponse({"message": "Please enter all information"})
         else:
-            # Nếu độ dài mật khẩu < 8
             if len(password) < 8:
                 return JsonResponse(
                     {"message": "Please enter password has more 8 characters"}
@@ -154,9 +150,7 @@ def UpdateProfile(request):
 
 
 def searchUsers(request):
-
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode("utf-8")
         body_data = json.loads(body_unicode)
         pageSize = body_data["pageSize"]
@@ -237,10 +231,10 @@ def GetCurrentTimestamp():
 
 
 def CalculateTimestampDifferent(timestampInDB):
-    # Lấy ra timestamp ngay thời điểm hiện tại
+    # Lấy ra timestamp thời điểm hiện tại
     current_timestamp = GetCurrentTimestamp()
 
-    # Tính khoảng cách giữa timestamp ngay thời điểm hiện tại và timestamp trong DB
+    # Tính khoảng cách giữa timestamp thời điểm hiện tại và timestamp trong DB
     timestamp_diff = abs(
         pandas.Timestamp(current_timestamp) - pandas.Timestamp(timestampInDB)
     )
@@ -336,7 +330,6 @@ def checkExistAttributeValue(collection, attribute, value):
 
 def SearchUser(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode("utf-8")
         body_data = json.loads(body_unicode)
         pageSize = body_data["pageSize"]
@@ -409,7 +402,6 @@ def countNewUserDaily(users):
         revenueByDay[iDayAgo.strftime("%a")] = countNewUserInRange(
             iDayAgo, iDayAgo, users
         )
-
     return revenueByDay
 
 
@@ -459,7 +451,6 @@ def countNewUserMonthly(users):
 
 
 def countNewUser(request):
-
     users = db.collection(f"users").get()
     newUserDaily = countNewUserDaily(users)
     newUserWeekly = countNewUserWeekly(users)
@@ -480,7 +471,6 @@ def countNewUser(request):
 
 def getRevenueInRange(startTime, endTime):
     newAccountPrice = 500000
-
     return newAccountPrice * countNewUserInRange(startTime, endTime)
 
 
@@ -493,7 +483,6 @@ def getRevenueByDay():
         revenueByDay[iDayAgo.strftime("%a")] = getRevenueInRange(
             iDayAgo, iDayAgo
         )
-
     return revenueByDay
 
 
@@ -530,7 +519,6 @@ def getRevenueByMonth():
             date(pastYears, pastMonth, 1),
             date(pastYears, pastMonth, days_in_month(pastMonth, pastYears)),
         )
-
     return revenueByMonth
 
 
@@ -544,7 +532,6 @@ def getRevenueByYear():
             date(iYearsAgo, 1, 1),
             date(iYearsAgo, 12, 31),
         )
-
     return revenueByYear
 
 
@@ -669,6 +656,7 @@ def ChangePassword(userId, newPassword):
     try:
         doc_ref = db.collection(f"users").document(userId)
         doc_ref.update({"password": newPassword})
+
         return True
     except:
         return False
@@ -693,7 +681,6 @@ def HandleChangePassword(request):
             ):
                 return JsonResponse({"message": "Please enter all information"})
             else:
-                # Nếu độ dài 1 trong 3 mật khẩu < 8
                 if (
                     len(oldPassword) < 8
                     or len(newPassword) < 8
@@ -705,7 +692,6 @@ def HandleChangePassword(request):
                         }
                     )
                 else:
-                    # Nếu mật khẩu mới và xác nhận mật khẩu mới khác nhau
                     if newPassword != newPasswordConfirm:
                         return JsonResponse(
                             {
@@ -715,7 +701,7 @@ def HandleChangePassword(request):
                     else:
                         # Kiểm tra mật khẩu cũ có đúng ko
                         if CheckPasswordExist(userId, oldPassword):
-                            # Thực hiện cập nhật mật khẩu
+                            # Cập nhật mật khẩu
                             if ChangePassword(userId, newPassword):
                                 return JsonResponse(
                                     {"success": "Change password success"}
@@ -737,7 +723,6 @@ def CheckUserIdExist(userId):
         # Lấy ra document đó theo document id
         doc_ref = db.collection(f"users").document(userId)
 
-        # Nếu có document đó thì return True, ngược lại: False
         if doc_ref.get().to_dict():
             return True
         else:
@@ -826,6 +811,7 @@ def CheckUserNameExistExceptOne(userId, newUserName):
 
 def CheckValidFormatEmail(email):
     regex = "^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
+
     if re.search(regex, email):
         return True
     else:
@@ -835,6 +821,7 @@ def CheckValidFormatEmail(email):
 def RandomCode():
     digits = [i for i in range(0, 10)]
     random_str = ""
+
     for i in range(6):
         index = math.floor(random.random() * 10)
         random_str += str(digits[index])
@@ -842,7 +829,6 @@ def RandomCode():
 
 
 def UpdateCodeInDB(email, code):
-    print(email, code)
     try:
         # Lấy ra mảng các document theo email
         docs = db.collection("users").where("email", "==", f"{email}").stream()
@@ -895,16 +881,13 @@ def SendCode(email):
 
 def HandleSubmitEmail(request):
     if request.method == "POST":
-        # Lấy dữ liệu client gởi lên
         body_unicode = request.body.decode("utf-8")
         body_data = json.loads(body_unicode)
         email = body_data["email"].strip()
 
-        # Nếu người dùng không nhập gì cả
         if email == "":
             return JsonResponse({"message": "Please enter your email"})
         else:
-            # Kiểm tra email có đúng format
             if CheckValidFormatEmail(email) == False:
                 return JsonResponse(
                     {"message": "Please enter an valid format email"}
@@ -954,7 +937,6 @@ def HandleSubmitCode(request):
         email = body_data["email"].strip()
         code = body_data["code"].strip()
 
-        # Nếu người dùng không nhập gì cả
         if code == "":
             return JsonResponse({"message": "Please enter code"})
         else:
@@ -993,6 +975,7 @@ def CreateNewPassword(email, newPassword):
         if userId != "":
             doc_ref = db.c(userId)(userId)
             doc_ref.update({"password": newPassword})
+
             return True
         else:
             return False
@@ -1008,13 +991,10 @@ def HandleCreateNewPassword(request):
         newPassword = body_data["newPassword"].strip()
         newPasswordConfirm = body_data["newPasswordConfirm"].strip()
 
-        # Kiểm tra user có tồn tại thông qua email
         if CheckEmailExist(email):
-            # Nếu người dùng ko nhập gì cả
             if newPassword == "" or newPasswordConfirm == "":
                 return JsonResponse({"message": "Please enter all information"})
             else:
-                # Nếu độ dài 1 trong 2 mật khẩu < 8
                 if len(newPassword) < 8 or len(newPasswordConfirm) < 8:
                     return JsonResponse(
                         {
@@ -1022,7 +1002,6 @@ def HandleCreateNewPassword(request):
                         }
                     )
                 else:
-                    # Nếu mật khẩu mới và xác nhận mật khẩu mới khác nhau
                     if newPassword != newPasswordConfirm:
                         return JsonResponse(
                             {
@@ -1030,7 +1009,6 @@ def HandleCreateNewPassword(request):
                             }
                         )
                     else:
-                        # Thực hiện tạo mật khẩu mới
                         if CreateNewPassword(email, newPassword):
                             return JsonResponse(
                                 {"message": "Create new password success"}
@@ -1164,6 +1142,7 @@ def DeleteUser(request):
         try:
             if CheckUserIdExist(userId):
                 db.collection(f"users").document(userId).delete()
+
                 return JsonResponse({"status": "success"})
             else:
                 return JsonResponse({"status": "fail"})
@@ -1180,6 +1159,7 @@ def ConfirmSolvedReport(request):
         try:
             doc = db.collection(f"reports").document(reportId)
             doc.update({"isSolved": True})
+
             return JsonResponse({"status": "success"})
         except:
             return JsonResponse({"status": "fail"})
@@ -1230,6 +1210,7 @@ def SendReport(request):
                         "isSolved": False,
                     }
                 )
+
                 return JsonResponse({"message": "success"})
             except:
                 return JsonResponse({"message": "failed"})
@@ -1246,18 +1227,16 @@ def HandleSigninAdmin(request):
         userName = body_data["userName"].strip()
         password = body_data["password"].strip()
 
-        # Nếu người dùng ko nhập gì cả
         if userName == "" or password == "":
             return JsonResponse({"message": "Please enter all information"})
         else:
-            # Nếu độ dài mật khẩu < 8
             if len(password) < 8:
                 return JsonResponse(
                     {"message": "Please enter password has more 8 characters"}
                 )
             else:
                 try:
-                    # Thực hiện đăng nhập
+                    # Đăng nhập
                     docs = (
                         db.collection(f"admins")
                         .where("userName", "==", f"{userName}")
@@ -1293,6 +1272,7 @@ def SaveVideoStreamUrl(request):
         try:
             user = db.collection("users").document(userId)
             user.update({"videoStreamUrl": videoStreamUrl})
+
             return JsonResponse({"status": "success"})
         except:
             return JsonResponse({"status": "failed"})
@@ -1302,6 +1282,7 @@ def GetVideoStreamUrl(userId):
     try:
         user = db.collection("users").document(userId)
         videoStreamUrl = user.get().to_dict().get("videoStreamUrl")
+
         return videoStreamUrl
     except:
         return ""
