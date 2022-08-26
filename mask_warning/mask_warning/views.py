@@ -12,32 +12,32 @@ import threading, imutils, time, cv2, os, numpy as np
 from threading import Thread
 import pandas as pd
 
-index = ["color_name","R","G","B"]
-csv = pd.read_csv('./maMau4.csv', names=index, header=None)
-h,w = 0,0
-
+index = ["color_name", "R", "G", "B"]
+csv = pd.read_csv("./maMau4.csv", names=index, header=None)
+h, w = 0, 0
 
 
 def get_color_name(R, G, B):
     minimum = 10000
-    cname = 'undefined'
-    r,g,b = 0,0,0
+    cname = "undefined"
+    r, g, b = 0, 0, 0
     for i in range(len(csv)):
         r = R - int(csv.loc[i, "R"])
         g = G - int(csv.loc[i, "G"])
         b = B - int(csv.loc[i, "B"])
-        d = np.sqrt(r**2+b**2+g**2)
+        d = np.sqrt(r**2 + b**2 + g**2)
         if d <= minimum:
             minimum = d
             cname = csv.loc[i, "color_name"]
 
     return cname
 
-def detectColor(frame,x,y,color):
-    h,w = frame.shape[:2]
+
+def detectColor(frame, x, y, color):
+    h, w = frame.shape[:2]
 
     if y >= h or x >= w:
-        return 'undefined'
+        return "undefined"
 
     b, g, r = frame[y, x]
     b = int(b)
@@ -56,22 +56,25 @@ def detectColor(frame,x,y,color):
 
     # For very light colours we will display text in black colour
     # if r + g + b >= 600:
-        # cv2.putText(frame, text, (50, 50), 2, 0.8, (0, 0, 0), 2, cv2.LINE_AA)
+    # cv2.putText(frame, text, (50, 50), 2, 0.8, (0, 0, 0), 2, cv2.LINE_AA)
 
     return text
-face_cascade = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
+
+
+face_cascade = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
+
 
 def predict_mask(frame, maskNet):
-    h,w = frame.shape[:2]    
+    h, w = frame.shape[:2]
     faces = []
     locs = []
     preds = []
 
-    face_rects = face_cascade.detectMultiScale(frame) 
-    
-    for (x,y,wf,hf) in face_rects: 
-        (startX, startY, endX, endY) = (x,y,x+wf,y+hf)
-        if(wf*hf <= 10000):
+    face_rects = face_cascade.detectMultiScale(frame)
+
+    for (x, y, wf, hf) in face_rects:
+        (startX, startY, endX, endY) = (x, y, x + wf, y + hf)
+        if wf * hf <= 10000:
             continue
         # ensure the bounding boxes fall within the dimensions of
         # the frame
@@ -103,47 +106,47 @@ def predict_mask(frame, maskNet):
     # locations
     return (locs, preds)
 
+
 # # load our serialized face detector model from disk
-prototxtPath = fr"{os.getcwd()}\deploy.prototxt"
-weightsPath = fr"{os.getcwd()}\res10_300x300_ssd_iter_140000.caffemodel"
+prototxtPath = rf"{os.getcwd()}\deploy.prototxt"
+weightsPath = rf"{os.getcwd()}\res10_300x300_ssd_iter_140000.caffemodel"
 faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # load the face mask detector model from disk
-maskNet = load_model(fr"{os.getcwd()}\mask_detector.model")
+maskNet = load_model(rf"{os.getcwd()}\mask_detector.model")
 # maskNet = load_model("keras_model.h5")
 # initialize the video stream
 
 # Create red corner
-pts = np.array([[15,15], [625, 15], 
-    [625, 465], [15, 465]],
-    np.int32)
+pts = np.array([[15, 15], [625, 15], [625, 465], [15, 465]], np.int32)
 pts = pts.reshape((-1, 1, 2))
 
 # Frame time when red corner off
-redCornerOffFrame = [5,6]
+redCornerOffFrame = [5, 6]
 
-prefix = fr"{os.getcwd()}\colorSound\prefix.mp3"
-posfix = fr"{os.getcwd()}\colorSound\posfix.mp3"
+prefix = rf"{os.getcwd()}\colorSound\prefix.mp3"
+posfix = rf"{os.getcwd()}\colorSound\posfix.mp3"
+
 
 def playUnmaskSound(unmaskColors):
 
-    if unmaskColors == ['undefined']:
-        playsound(fr"{os.getcwd()}\colorSound\undefined.mp3")
+    if unmaskColors == ["undefined"]:
+        playsound(rf"{os.getcwd()}\colorSound\undefined.mp3")
         return
     unmaskColors = list(dict.fromkeys(unmaskColors))
     print(unmaskColors)
     playsound(prefix)
     for color in unmaskColors:
-        if color not in'undefined':
-            playsound(fr"{os.getcwd()}\colorSound\{color}.mp3")
+        if color not in "undefined":
+            playsound(rf"{os.getcwd()}\colorSound\{color}.mp3")
     playsound(posfix)
 
 
 def stream(videoStreamUrl):
-    # cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:80/onvif13") 
-    # cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:8080/onvif13") 
+    # cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:80/onvif13")
+    # cap = cv2.VideoCapture("rtsp://admin:123@192.168.11.105:8080/onvif13")
     # cap = cv2.VideoCapture(videoStreamUrl)
-    threaded_camera = ThreadedCamera(videoStreamUrl) 
+    threaded_camera = ThreadedCamera(videoStreamUrl)
     frame_count = 0
 
     limitCallSound = 150
@@ -156,15 +159,17 @@ def stream(videoStreamUrl):
     while True:
 
         try:
-            frame,frame_count = threaded_camera.show_frame()
+            frame, frame_count = threaded_camera.show_frame()
         except:
-            print(frame_count,'-fail')
+            print(frame_count, "-fail")
             continue
 
-        h,w = frame.shape[:2]
-        if (frame_count - lastFrameDetect >= limitDetected) or (lastFrameDetect == 0):
+        h, w = frame.shape[:2]
+        if (frame_count - lastFrameDetect >= limitDetected) or (
+            lastFrameDetect == 0
+        ):
             lastFrameDetect = frame_count
-            (locs, preds) = predict_mask(frame,maskNet)
+            (locs, preds) = predict_mask(frame, maskNet)
 
             # loop over the detected face locations and their corresponding
             # locations
@@ -180,32 +185,34 @@ def stream(videoStreamUrl):
                 # the bounding box and text
                 # and put red corner if need
                 if mask > withoutMask:
-                    label = 'Mask'
+                    label = "Mask"
                     color = (0, 255, 0)
 
                 else:
-                    label = 'No Mask'
+                    label = "No Mask"
                     color = (0, 0, 255)
                     isOnRedcorner = True
 
-                
-                
                 # print(h,w)
-                    
+
                 #     frame = cv2.polylines(frame, [pts], isClosed=True, color=color, thickness=30)
 
-                shirtColor = detectColor(frame,np.int32(startX+(endX-startX)/2),np.int32(endY+(endY-startY)/1.7),color)
+                shirtColor = detectColor(
+                    frame,
+                    np.int32(startX + (endX - startX) / 2),
+                    np.int32(endY + (endY - startY) / 1.7),
+                    color,
+                )
 
                 # print(frame_count,lastFrameCallSound)
-                if label == 'No Mask':
+                if label == "No Mask":
                     unmaskColors.append(shirtColor)
 
-
                 # include the probability in the label
-                label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
-                label += f'-{shirtColor}'
-                
-
+                label = "{}: {:.2f}%".format(
+                    label, max(mask, withoutMask) * 100
+                )
+                label += f"-{shirtColor}"
 
                 # display the label and bounding box rectangle on the output
                 # frame
@@ -213,15 +220,17 @@ def stream(videoStreamUrl):
                 #     cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
                 cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
 
-            if unmaskColors != [] :
+            if unmaskColors != []:
                 if stopFrameRedCorner < frame_count:
                     stopFrameRedCorner = frame_count + 200
 
                 if frame_count - lastFrameCallSound >= limitCallSound:
                     lastFrameCallSound = frame_count
-                    t2 = threading.Thread(target=playUnmaskSound, args=(unmaskColors,))
+                    t2 = threading.Thread(
+                        target=playUnmaskSound, args=(unmaskColors,)
+                    )
                     t2.start()
-        
+
         # print(stopFrameRedCorner,frame_count)
         if stopFrameRedCorner >= frame_count:
             lastFrameRedCorner = frame_count
@@ -230,20 +239,28 @@ def stream(videoStreamUrl):
                     isOnRedcorner = False
                     break
             if isOnRedcorner:
-                cv2.rectangle(frame, (0, 0), (w, h), (0, 0, 255), 20)  
+                cv2.rectangle(frame, (0, 0), (w, h), (0, 0, 255), 20)
             isOnRedcorner = True
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
             break
-        cv2.imwrite('demo.jpg', frame)
-        yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + open('demo.jpg', 'rb').read() + b'\r\n')
+        cv2.imwrite("demo.jpg", frame)
+        yield (
+            b"--frame\r\n"
+            b"Content-Type: image/jpeg\r\n\r\n"
+            + open("demo.jpg", "rb").read()
+            + b"\r\n"
+        )
+
 
 def showCamera(request, userId):
     try:
         if request.method == "GET":
             videoStreamUrl = GetVideoStreamUrl(userId)
-            return StreamingHttpResponse(stream(videoStreamUrl), content_type='multipart/x-mixed-replace; boundary=frame')
+            return StreamingHttpResponse(
+                stream(videoStreamUrl),
+                content_type="multipart/x-mixed-replace; boundary=frame",
+            )
             # return StreamingHttpResponse(stream(), content_type='multipart/x-mixed-replace; boundary=frame')
     except:
         return JsonResponse({"error": "Connect camera failed"})
@@ -251,7 +268,8 @@ def showCamera(request, userId):
 
 
 def index(request):
-    return render(request,'my_app/index.html')
+    return render(request, "my_app/index.html")
+
 
 class ThreadedCamera(object):
     def __init__(self, src=0):
@@ -259,27 +277,27 @@ class ThreadedCamera(object):
         self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 2)
         self.frameCount = 0
         (self.status, self.frame) = self.capture.read()
-        h,w = self.frame.shape[:2]
+        h, w = self.frame.shape[:2]
         # FPS = 1/X
         # X = desired FPS
-        self.FPS = 1/50
+        self.FPS = 1 / 50
         self.FPS_MS = int(self.FPS * 1000)
-        
+
         # Start frame retrieval thread
         self.thread = Thread(target=self.update, args=())
         self.thread.daemon = True
         self.thread.start()
-        
+
     def update(self):
         while True:
             if self.capture.isOpened():
                 self.frameCount += 1
                 (self.status, self.frame) = self.capture.read()
             time.sleep(self.FPS)
-            
+
     def show_frame(self):
         cv2.waitKey(self.FPS_MS)
-        return self.frame,self.frameCount
+        return self.frame, self.frameCount
         # image = self.frame
         # _, jpeg = cv2.imencode('.jpg', image)
         # return jpeg.tobytes()
