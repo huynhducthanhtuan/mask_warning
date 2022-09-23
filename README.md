@@ -6,8 +6,6 @@
 
 ### Ngày bảo vệ: 18/05/2022
 
-### Thông tin nhóm trưởng: Huỳnh Đức Thanh Tuấn - 0377981893 - tuan40655@gmail.com
-
 ### I. Cài đặt các thư viện và công cụ cần thiết để chạy dự án
 
 #### Visual Studio Code: https://code.visualstudio.com/Download
@@ -30,7 +28,7 @@
 
 #### Gõ lệnh "python manage.py runserver"
 
-### 2 Front-end
+### 2. Front-end
 
 #### Tại thư mục gốc (mask_warning), mở CMD
 
@@ -39,19 +37,3 @@
 #### Gõ lệnh "npm install"
 
 #### Gõ lệnh "npm start"
-
-### 3. Tài khoản đăng nhập vào hệ thống
-
-#### Tài khoản người chủ cửa hàng, dịch vụ:
-
-##### Username: nguyenkimthuy
-
-##### Password: BUIdy2um2leHNDD
-
-#### Tài khoản người quản trị hệ thống:
-
-##### Username: admin01
-
-##### Password: admin01@huynhducthanhtuan
-
-### 4. Cấu hình, dò tìm, kết nối và định dạng đường truyền kết nối Camera IP: Vì tính chất phức tạp nên nhóm sẽ demo nếu được quý thầy cô yêu cầu
