@@ -14,8 +14,6 @@
 
 #### NodeJS: https://nodejs.org/en/
 
-#### create-react-app: Mở CMD và gõ lệnh "npm install -g create-react-app"
-
 ### II. Các bước chạy dự án (chạy cả Back-end và Front-end)
 
 ### 1. Back-end
